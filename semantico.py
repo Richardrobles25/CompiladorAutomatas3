@@ -435,6 +435,25 @@ def interpretar_secuencia(secuencia, contexto):
     tipos   = [i['tipo']   for i in infos]
     negados = [i['negado'] for i in infos]
     patron  = detectar_patron(tipos, contexto, hay_urgente, negados)
+
+    # ── Advertencias semánticas ──────────────────────────────────────────────
+    if patron == 'general':
+        print("[SEM-001] Advertencia semántica: combinación sin patrón específico.")
+        print("  → Agrega 'palma_arriba' para petición, 'sonrie' para emoción positiva,")
+        print("    o usa [contexto] para más precisión.")
+
+    if negados and all(negados):
+        print("[SEM-002] Advertencia semántica: todos los tokens están negados (~).")
+        print("  → Una secuencia de puros '~' puede ser difícil de interpretar.")
+
+    if tipos == ['PAUSA']:
+        print("[SEM-003] Advertencia semántica: 'pausa' sola no comunica una intención.")
+        print("  → Usa 'pausa' junto con otros tokens. Ejemplo: mmm + pausa + palma_arriba")
+
+    if len(tipos) > 6:
+        print(f"[SEM-004] Advertencia semántica: secuencia larga ({len(tipos)} tokens).")
+        print("  → Considera dividir con ';' para dos mensajes más claros.")
+
     return generar_frase(infos, patron, contexto, hay_urgente)
 
 # ── Interpretar una expresión completa ───────────────────────────────────────

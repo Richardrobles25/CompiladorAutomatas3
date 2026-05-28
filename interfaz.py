@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, scrolledtext
-import sys, os, io, contextlib
+import sys, os, io, contextlib, threading
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.stdout.reconfigure(encoding='utf-8')
@@ -8,6 +8,36 @@ sys.stdout.reconfigure(encoding='utf-8')
 from lexer    import lexer, CONTEXTOS_VALIDOS
 from sintactico import analizar, imprimir_ast
 from semantico  import compilar
+
+# ── Síntesis de voz ──────────────────────────────────────────────────────────
+try:
+    import pyttsx3
+    # Detectar el ID de la voz en español una sola vez al arrancar
+    _tmp = pyttsx3.init()
+    _VOZ_ID_ES = None
+    for v in _tmp.getProperty('voices'):
+        # Checar el campo languages ('es-MX', 'es-ES', etc.) en lugar del path
+        # del registro, que contiene "voices" con "es" en inglés también
+        langs = [str(l).lower() for l in v.languages]
+        if any(l.startswith('es') for l in langs):
+            _VOZ_ID_ES = v.id
+            break
+    _tmp.stop()
+    del _tmp
+    _VOZ_DISPONIBLE = (_VOZ_ID_ES is not None)
+except Exception:
+    _VOZ_ID_ES = None
+    _VOZ_DISPONIBLE = False
+
+
+def _crear_motor():
+    """Crea un motor TTS fresco cada vez — evita el bug de 'solo habla una vez'."""
+    motor = pyttsx3.init()
+    if _VOZ_ID_ES:
+        motor.setProperty('voice', _VOZ_ID_ES)
+    motor.setProperty('rate', 148)
+    motor.setProperty('volume', 1.0)
+    return motor
 
 # ── Datos de tokens por categoría ───────────────────────────────────────────
 
@@ -53,6 +83,7 @@ class Interfaz:
         self.root.configure(bg="#1A1A2E")
         self.root.resizable(True, True)
         self.contexto_activo = tk.StringVar(value="")
+        self.frase_actual    = ""          # guarda la última frase para leerla
         self._construir_ui()
         self.root.update_idletasks()
         # Ajustar al 90% de la pantalla disponible, sin sobrepasar
@@ -211,9 +242,28 @@ class Interfaz:
         f_frase = tk.Frame(marco, bg="#0F3460", pady=5)
         f_frase.grid(row=3, column=0, sticky="ew", padx=8, pady=(8, 0))
         f_frase.columnconfigure(0, weight=1)
-        tk.Label(f_frase, text="TRADUCCIÓN",
+
+        # Fila de encabezado: etiqueta TRADUCCIÓN + botón 🔊
+        f_frase_hdr = tk.Frame(f_frase, bg="#0F3460")
+        f_frase_hdr.grid(row=0, column=0, sticky="ew", padx=8)
+        f_frase_hdr.columnconfigure(0, weight=1)
+        tk.Label(f_frase_hdr, text="TRADUCCIÓN",
                  font=("Segoe UI", 7, "bold"), bg="#0F3460", fg="#A0A8D0"
-                 ).grid(row=0, column=0, sticky="w", padx=8)
+                 ).grid(row=0, column=0, sticky="w")
+
+        tip_voz = "Leer en voz alta" if _VOZ_DISPONIBLE else "Voz no disponible"
+        self.btn_voz = tk.Button(
+            f_frase_hdr,
+            text="🔊",
+            font=("Segoe UI", 10),
+            bg="#0F3460", fg="#FFD166" if _VOZ_DISPONIBLE else "#555577",
+            activebackground="#1A3A6E", activeforeground="white",
+            relief="flat", cursor="hand2" if _VOZ_DISPONIBLE else "arrow",
+            state="normal" if _VOZ_DISPONIBLE else "disabled",
+            command=self._hablar
+        )
+        self.btn_voz.grid(row=0, column=1, sticky="e")
+
         self.lbl_frase = tk.Label(f_frase, text="— escribe una expresión y presiona Compilar —",
                                   font=("Segoe UI", 10), bg="#0F3460", fg="#FFD166",
                                   wraplength=480, justify="left")
@@ -240,11 +290,14 @@ class Interfaz:
                                           relief="flat", padx=8, pady=6,
                                           state="disabled")
             t.pack(fill="both", expand=True)
-            t.tag_config("titulo",    foreground="#A0A8D0", font=("Segoe UI", 9, "bold"))
-            t.tag_config("error",     foreground="#FF006E")
-            t.tag_config("ok",        foreground=fg)
-            t.tag_config("dim",       foreground="#555577")
-            t.tag_config("frase_tab", foreground="#FFD166",
+            t.tag_config("titulo",      foreground="#A0A8D0", font=("Segoe UI", 9, "bold"))
+            t.tag_config("error",       foreground="#FF006E")
+            t.tag_config("advertencia", foreground="#FFB703")
+            t.tag_config("sugerencia",  foreground="#06D6A0",
+                          font=("Consolas", 9, "italic"))
+            t.tag_config("ok",          foreground=fg)
+            t.tag_config("dim",         foreground="#555577")
+            t.tag_config("frase_tab",   foreground="#FFD166",
                           font=("Segoe UI", 10, "bold"))
             notebook.add(f, text=etiqueta)
             return t
@@ -274,9 +327,26 @@ class Interfaz:
         else:
             self.txt_expresion.insert("end", f" {simbolo} ")
 
+    def _hablar(self):
+        """Lee la frase actual en voz alta en un hilo separado.
+        Se crea un motor fresco cada vez para permitir múltiples clics."""
+        if not _VOZ_DISPONIBLE or not self.frase_actual:
+            return
+        texto = self.frase_actual
+        def _leer():
+            try:
+                motor = _crear_motor()
+                motor.say(texto)
+                motor.runAndWait()
+                motor.stop()
+            except Exception:
+                pass
+        threading.Thread(target=_leer, daemon=True).start()
+
     def _borrar(self):
         self.txt_expresion.delete("1.0", "end")
         self.contexto_activo.set("")
+        self.frase_actual = ""
         self.lbl_frase.config(text="— escribe una expresión y presiona Compilar —")
         for tab in (self.tab_lexico, self.tab_sintactico, self.tab_semantico):
             self._escribir(tab, [("Borrado.\n", "dim")])
@@ -307,8 +377,7 @@ class Interfaz:
         lineas_lex.append((f"Entrada: {entrada}\n", "titulo"))
         lineas_lex.append(("─" * 48 + "\n", "dim"))
         if errores_lexico.strip():
-            for e in errores_lexico.strip().splitlines():
-                lineas_lex.append((e + "\n", "error"))
+            lineas_lex.extend(_clasificar_lineas(errores_lexico))
             lineas_lex.append(("─" * 48 + "\n", "dim"))
         if toks:
             lineas_lex.append((f"{'TIPO':<24} {'VALOR':<18} LÍNEA\n", "dim"))
@@ -330,8 +399,7 @@ class Interfaz:
         lineas_sint.append((f"Entrada: {entrada}\n", "titulo"))
         lineas_sint.append(("─" * 48 + "\n", "dim"))
         if errores_sint.strip():
-            for e in errores_sint.strip().splitlines():
-                lineas_sint.append((e + "\n", "error"))
+            lineas_sint.extend(_clasificar_lineas(errores_sint, ocultar_lex=True))
             lineas_sint.append(("─" * 48 + "\n", "dim"))
         if ast:
             lineas_sint.append(("AST (Árbol de Sintaxis Abstracta):\n", "titulo"))
@@ -354,8 +422,7 @@ class Interfaz:
         lineas_sem.append((f"Entrada: {entrada}\n", "titulo"))
         lineas_sem.append(("─" * 48 + "\n", "dim"))
         if errores_sem.strip():
-            for e in errores_sem.strip().splitlines():
-                lineas_sem.append((e + "\n", "error"))
+            lineas_sem.extend(_clasificar_lineas(errores_sem, ocultar_lex=True))
             lineas_sem.append(("─" * 48 + "\n", "dim"))
 
         if frases and frases[0] != 'Error: no se pudo analizar la entrada.':
@@ -363,11 +430,13 @@ class Interfaz:
                 if len(frases) > 1:
                     lineas_sem.append((f"Expresión {i}:\n", "dim"))
                 lineas_sem.append((f"{f}\n", "frase_tab"))
-            # Actualizar label prominente
+            # Actualizar label prominente y guardar frase para voz
             texto_label = "\n".join(frases)
+            self.frase_actual = texto_label
             self.lbl_frase.config(text=texto_label)
         else:
             lineas_sem.append(("No se pudo generar la frase.\n", "error"))
+            self.frase_actual = ""
             self.lbl_frase.config(text="⚠ Error al generar la traducción.")
 
         self._escribir(self.tab_semantico, lineas_sem)
@@ -378,6 +447,30 @@ class Interfaz:
         for texto, tag in lineas:
             widget.insert("end", texto, tag)
         widget.configure(state="disabled")
+
+
+def _clasificar_lineas(texto, ocultar_lex=False):
+    """Convierte el stdout capturado en lista de (texto, tag) para los tabs.
+    ocultar_lex=True: omite [LEX-*] (ya se muestran en la Fase 1)."""
+    lineas = []
+    for linea in texto.strip().splitlines():
+        # Filtrar warnings internos de PLY
+        if any(s in linea for s in ("WARNING:", "Generating", "NOTE:", "Using cached")):
+            continue
+        if linea.startswith("[LEX-"):
+            if ocultar_lex:
+                continue
+            tag = "error"
+        elif linea.startswith("[SIN-"):
+            tag = "error"
+        elif linea.startswith("[SEM-"):
+            tag = "advertencia"
+        elif linea.strip().startswith("→"):
+            tag = "sugerencia"
+        else:
+            tag = "error"
+        lineas.append((linea + "\n", tag))
+    return lineas
 
 
 # ── Entry point ──────────────────────────────────────────────────────────────

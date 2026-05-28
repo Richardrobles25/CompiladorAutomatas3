@@ -437,6 +437,93 @@ python interfaz.py
 
 ---
 
+### ETAPA 6 — Pruebas formales ✅
+**Archivo:** `tests.py`
+**Estado:** Completo
+
+#### ¿Qué hace?
+Suite de pruebas automatizadas que verifica el funcionamiento correcto de las tres fases del compilador sin intervención manual. Cubre los criterios 3.2 (Pruebas de Integración) y 3.4 (Pruebas de Casos de Error) de la rúbrica.
+
+#### Estructura
+
+| Bloque | Pruebas | Qué verifica |
+|--------|---------|-------------|
+| 1 · Léxico | 21 | Tokens de las 6 categorías, operadores, contextos válidos e inválidos, comentarios, mayúsculas |
+| 2 · Sintáctico | 16 | AST construido correctamente, estructura de nodos, flags `negado`/`urgente`, separador `;`, errores |
+| 3 · Semántico | 20 | 13 patrones, overrides de contexto, operadores `~` y `!`, modificadores E6 |
+| 4 · Integración | 13 | Pipeline completo end-to-end, entrada vacía, entrada inválida, expresión larga, todos los contextos |
+| **Total** | **70** | **100% pasadas** |
+
+#### Técnica utilizada
+Todas las pruebas usan `contextlib.redirect_stdout` para capturar el output de PLY sin que interfiera con el reporte de resultados. Cada prueba valida comportamiento real del compilador — no simulaciones.
+
+```
+python tests.py   →  70/70 ✅  Cobertura: 100%
+```
+
+---
+
+### ETAPA 7 — Síntesis de voz ✅
+**Archivo:** `interfaz.py` (añadido botón 🔊)
+**Estado:** Completo
+
+#### ¿Qué hace?
+Permite escuchar la frase traducida en voz alta usando la voz **Microsoft Sabina Desktop (español México)** disponible en el sistema.
+
+#### Implementación
+
+- **Librería:** `pyttsx3`
+- **Voz detectada:** `TTS_MS_ES-MX_SABINA_11.0` — español de México
+- **Detección:** se usa `v.languages` (ej. `['es-MX']`) en lugar del path del registro, que contiene `"voices"` con `"es"` y causaba selección incorrecta de la voz en inglés
+- **Hilo separado:** `threading.Thread(daemon=True)` — la interfaz no se congela mientras habla
+- **Motor fresco por clic:** se llama `pyttsx3.init()` cada vez para evitar el bug de "solo habla una vez" que ocurre cuando `runAndWait()` deja el motor en estado inconsistente
+- **Botón 🔊:** aparece junto a la etiqueta TRADUCCIÓN; deshabilitado automáticamente si `pyttsx3` no está disponible
+
+---
+
+### ETAPA 8 — Sistema de errores tipificados y sugerencias ✅
+**Archivos:** `lexer.py`, `sintactico.py`, `semantico.py`, `interfaz.py`
+**Estado:** Completo
+
+#### ¿Qué hace?
+Clasifica todos los errores del compilador con códigos únicos y agrega sugerencias de corrección para cada uno, igual a como lo hacen compiladores modernos (GCC, Python, Rust).
+
+#### Tabla de códigos de error
+
+| Código | Fase | Archivo | Cuándo aparece |
+|--------|------|---------|----------------|
+| `[LEX-001]` | Léxico | `lexer.py` → `t_TOKEN()` | Token no reconocido |
+| `[LEX-002]` | Léxico | `lexer.py` → `t_CONTEXTO()` | Contexto inválido |
+| `[LEX-003]` | Léxico | `lexer.py` → `t_error()` | Carácter no permitido |
+| `[SIN-001]` | Sintáctico | `sintactico.py` → `p_error()` | Operador `+` o `\|` mal ubicado, token inesperado |
+| `[SIN-002]` | Sintáctico | `sintactico.py` → `p_error()` | `!` sin token previo, `~` en posición inválida |
+| `[SIN-003]` | Sintáctico | `sintactico.py` → `p_secuencia_error_mas()` | Token faltante después de `+` |
+| `[SIN-004]` | Sintáctico | `sintactico.py` → `p_error()` | `;` sin expresión válida |
+| `[SIN-005]` | Sintáctico | `sintactico.py` → `p_error()` | Contexto `[x]` fuera de lugar |
+| `[SIN-006]` | Sintáctico | `sintactico.py` → `p_error()` | Entrada incompleta |
+| `[SEM-001]` | Semántico | `semantico.py` → `interpretar_secuencia()` | Combinación sin patrón reconocido |
+| `[SEM-002]` | Semántico | `semantico.py` → `interpretar_secuencia()` | Todos los tokens negados con `~` |
+| `[SEM-003]` | Semántico | `semantico.py` → `interpretar_secuencia()` | `pausa` sola |
+| `[SEM-004]` | Semántico | `semantico.py` → `interpretar_secuencia()` | Secuencia de más de 6 tokens |
+
+#### Sugerencias con difflib
+Para `[LEX-001]` y `[LEX-002]` se usa `difflib.get_close_matches()` con umbral `cutoff=0.6` para proponer el token o contexto más parecido al que escribió el usuario:
+
+```
+[LEX-001] Error léxico: token 'sonie' no reconocido.
+  → ¿Quisiste decir: sonrie?
+```
+
+#### Visualización en la interfaz
+Los mensajes en los tabs usan colores diferenciados:
+- 🔴 `[LEX-*]` y `[SIN-*]` → errores reales (rojo `#FF006E`)
+- 🟡 `[SEM-*]` → advertencias semánticas (amarillo `#FFB703`)
+- 🟢 Líneas `→ ...` → sugerencias de corrección (verde `#06D6A0`)
+
+Los tabs de Fase 2 y Fase 3 filtran los `[LEX-*]` para no duplicar mensajes que ya aparecen en Fase 1.
+
+---
+
 ## Decisiones de diseño registradas
 
 | Decisión | Alternativa descartada | Razón |
@@ -457,10 +544,13 @@ python interfaz.py
 | Analizador sintáctico | ✅ Completo | `sintactico.py` |
 | Analizador semántico | ✅ Completo | `semantico.py` |
 | Interfaz gráfica integrada | ✅ Completo | `interfaz.py` |
+| Suite de pruebas formales | ✅ Completo | `tests.py` |
+| Síntesis de voz (español) | ✅ Completo | `interfaz.py` |
+| Sistema de errores tipificados | ✅ Completo | `lexer.py`, `sintactico.py`, `semantico.py` |
 | Manual interno | ✅ Completo | `MANUAL_COMPILADOR.md` |
 | Referencia de combinaciones | ✅ Completo | `COMBINACIONES.md` |
 | Documento formal (14 secciones) | 🔜 Pendiente | — |
 
 ---
 
-*Bitácora actualizada al terminar la Etapa 5 — Integración final. El compilador está funcional end-to-end.*
+*Bitácora actualizada al terminar la Etapa 8 — Sistema de errores tipificados y sugerencias.*
