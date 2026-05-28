@@ -1,4 +1,5 @@
 import ply.lex as lex
+import difflib
 
 tokens = (
     # E1 sonidos vocales
@@ -78,9 +79,14 @@ def t_CONTEXTO(t):
     valor = t.value[1:-1]
     if valor not in CONTEXTOS_VALIDOS:
         col = _columna(t)
-        print(f"Error léxico — línea {t.lineno}, columna {col}: "
-              f"contexto '[{valor}]' no reconocido. "
-              f"Válidos: {sorted(CONTEXTOS_VALIDOS)}")
+        print(f"[LEX-002] Error léxico — línea {t.lineno}, col {col}: "
+              f"contexto '[{valor}]' no válido.")
+        sugs = difflib.get_close_matches(valor, CONTEXTOS_VALIDOS, n=1, cutoff=0.5)
+        if sugs:
+            print(f"  → ¿Quisiste decir: [{sugs[0]}]?")
+        else:
+            validos = ', '.join(f'[{c}]' for c in sorted(CONTEXTOS_VALIDOS))
+            print(f"  → Contextos válidos: {validos}")
         return None
     t.value = valor
     return t
@@ -120,13 +126,30 @@ def t_TOKEN(t):
         t.type = tipo
         return t
     col = _columna(t)
-    print(f"Error léxico — línea {t.lineno}, columna {col}: "
-          f"token '{t.value}' no reconocido")
+    print(f"[LEX-001] Error léxico — línea {t.lineno}, col {col}: "
+          f"token '{t.value}' no reconocido.")
+    sugs = difflib.get_close_matches(t.value, token_map.keys(), n=2, cutoff=0.6)
+    if sugs:
+        print(f"  → ¿Quisiste decir: {' o '.join(sugs)}?")
+    else:
+        print(f"  → Usa uno de los 55 tokens del alfabeto (ej. mmm, sonrie, palma_arriba).")
 
 def t_error(t):
     col = _columna(t)
-    print(f"Error léxico — línea {t.lineno}, columna {col}: "
-          f"carácter '{t.value[0]}' no válido")
+    c = t.value[0]
+    print(f"[LEX-003] Error léxico — línea {t.lineno}, col {col}: "
+          f"carácter '{c}' no válido.")
+    sugs_char = {
+        '@': "los tokens solo usan letras minúsculas, números y '_'.",
+        '(': "el lenguaje no usa paréntesis.",
+        ')': "el lenguaje no usa paréntesis.",
+        '{': "el lenguaje no usa llaves.",
+        '}': "el lenguaje no usa llaves.",
+        ',': "usa '+' para separar tokens en secuencia.",
+        '.': "los tokens no llevan punto.",
+    }
+    sug = sugs_char.get(c, "solo se permiten: letras minúsculas, +  |  !  ~  ;  [ ]")
+    print(f"  → {sug}")
     t.lexer.skip(1)
 
 def _columna(t):

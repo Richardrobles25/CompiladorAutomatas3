@@ -174,17 +174,56 @@ def p_token_base(p):
 
 def p_secuencia_error_mas(p):
     'secuencia : secuencia MAS error'
-    print(f"Error sintáctico en línea {p.lineno(3)}: "
-          f"se esperaba un token después de '+'")
+    print(f"[SIN-003] Error sintáctico — línea {p.lineno(3)}: "
+          f"se esperaba un token después de '+'.")
+    print(f"  → Ejemplo correcto: mmm + sonrie  (token + operador + token)")
     p[0] = p[1]
 
 def p_error(p):
     if p:
-        print(f"Error sintáctico en línea {p.lineno}: "
-              f"token inesperado '{p.value}' (tipo {p.type})")
+        tipo  = p.type
+        valor = p.value
+        linea = p.lineno
+
+        if tipo in ('MAS', 'O'):
+            op = '+' if tipo == 'MAS' else '|'
+            print(f"[SIN-001] Error sintáctico — línea {linea}: "
+                  f"operador '{op}' en posición inválida.")
+            print(f"  → '{op}' necesita un token antes y después.  "
+                  f"Ejemplo: mmm {op} sonrie")
+
+        elif tipo == 'URGENTE':
+            print(f"[SIN-002] Error sintáctico — línea {linea}: "
+                  f"'!' sin token previo.")
+            print(f"  → '!' va después de un token.  Ejemplo: sonrie !")
+
+        elif tipo == 'NEG':
+            print(f"[SIN-002] Error sintáctico — línea {linea}: "
+                  f"'~' en posición inválida.")
+            print(f"  → '~' va antes de un token.  Ejemplo: ~cabeza_no")
+
+        elif tipo == 'FIN_EXPR':
+            print(f"[SIN-004] Error sintáctico — línea {linea}: "
+                  f"';' sin expresión válida antes o después.")
+            print(f"  → ';' separa dos expresiones completas.  "
+                  f"Ejemplo: mmm + sonrie ; palma_arriba")
+
+        elif tipo == 'CONTEXTO':
+            print(f"[SIN-005] Error sintáctico — línea {linea}: "
+                  f"contexto '[{valor}]' fuera de lugar.")
+            print(f"  → El contexto va al inicio de la expresión.  "
+                  f"Ejemplo: [dolor] uff + sonido_largo")
+
+        else:
+            print(f"[SIN-001] Error sintáctico — línea {linea}: "
+                  f"token inesperado '{valor}' (tipo {tipo}).")
+            print(f"  → Verifica que los tokens estén separados por '+'.  "
+                  f"Ejemplo: mmm + palma_arriba + sonrie")
+
         parser.errok()
     else:
-        print("Error sintáctico: la entrada terminó de forma inesperada")
+        print("[SIN-006] Error sintáctico: la entrada terminó de forma inesperada.")
+        print("  → La expresión está incompleta.  Ejemplo válido: mmm + sonrie")
 
 
 # ── Construcción del parser ──────────────────────────────────────────────────
