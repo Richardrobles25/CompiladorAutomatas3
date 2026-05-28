@@ -284,6 +284,10 @@ def generar_frase(infos, patron, contexto, hay_urgente):
     # general: combinar todos los significados
     sigs_filtrados = [s for s, t in zip(sigs, tipos)
                       if t not in ('RAPIDO','LENTO','DOBLE','TRIPLE','PAUSA')]
+    if not sigs_filtrados:
+        # Todos los tokens eran modificadores E6 (ej. solo 'pausa')
+        # Usar el significado de todos sin filtrar
+        sigs_filtrados = list(sigs)
     return f'{". ".join(s.capitalize() for s in sigs_filtrados)}.{intensidad}'
 
 

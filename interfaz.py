@@ -9,35 +9,92 @@ from lexer    import lexer, CONTEXTOS_VALIDOS
 from sintactico import analizar, imprimir_ast
 from semantico  import compilar
 
-# ── Síntesis de voz ──────────────────────────────────────────────────────────
-try:
-    import pyttsx3
-    # Detectar el ID de la voz en español una sola vez al arrancar
-    _tmp = pyttsx3.init()
-    _VOZ_ID_ES = None
-    for v in _tmp.getProperty('voices'):
-        # Checar el campo languages ('es-MX', 'es-ES', etc.) en lugar del path
-        # del registro, que contiene "voices" con "es" en inglés también
-        langs = [str(l).lower() for l in v.languages]
-        if any(l.startswith('es') for l in langs):
-            _VOZ_ID_ES = v.id
-            break
-    _tmp.stop()
-    del _tmp
-    _VOZ_DISPONIBLE = (_VOZ_ID_ES is not None)
-except Exception:
-    _VOZ_ID_ES = None
-    _VOZ_DISPONIBLE = False
+# ── Síntesis de voz (PowerShell + System.Speech) ─────────────────────────────
+# Se usa PowerShell en lugar de pyttsx3 porque pyttsx3 deja el motor COM de
+# Windows en mal estado al llamar init() varias veces en el mismo proceso.
+# PowerShell crea un proceso limpio cada vez → funciona siempre.
+import subprocess as _sp
+
+def _detectar_voz_es():
+    """Devuelve el nombre exacto de la primera voz en español instalada, o None."""
+    try:
+        r = _sp.run(
+            ['powershell', '-Command',
+             'Add-Type -AssemblyName System.Speech; '
+             '$s = New-Object System.Speech.Synthesis.SpeechSynthesizer; '
+             '$s.GetInstalledVoices() | ForEach-Object { $_.VoiceInfo.Name }'],
+            capture_output=True, text=True, timeout=8
+        )
+        for nombre in r.stdout.strip().splitlines():
+            if 'sabina' in nombre.lower() or 'spanish' in nombre.lower():
+                return nombre.strip()
+    except Exception:
+        pass
+    return None
+
+_VOZ_NOMBRE    = _detectar_voz_es()
+_VOZ_DISPONIBLE = (_VOZ_NOMBRE is not None)
 
 
-def _crear_motor():
-    """Crea un motor TTS fresco cada vez — evita el bug de 'solo habla una vez'."""
-    motor = pyttsx3.init()
-    if _VOZ_ID_ES:
-        motor.setProperty('voice', _VOZ_ID_ES)
-    motor.setProperty('rate', 148)
-    motor.setProperty('volume', 1.0)
-    return motor
+def _hablar_ps(texto):
+    """Ejecuta la síntesis en un proceso PowerShell independiente."""
+    # Escapar comillas dobles para PowerShell
+    texto_ps = texto.replace('"', '`"')
+    seleccion = f'$s.SelectVoice("{_VOZ_NOMBRE}"); ' if _VOZ_NOMBRE else ''
+    cmd = (
+        'Add-Type -AssemblyName System.Speech; '
+        '$s = New-Object System.Speech.Synthesis.SpeechSynthesizer; '
+        f'{seleccion}'
+        '$s.Rate = -1; '
+        f'$s.Speak("{texto_ps}")'
+    )
+    try:
+        _sp.run(['powershell', '-Command', cmd],
+                capture_output=True, timeout=30)
+    except Exception:
+        pass
+
+# ── Categoría de cada tipo de token (para la tabla léxica) ──────────────────
+
+CATEGORIA_TOKEN = {
+    # E1 — Sonidos vocales
+    'MMM':'E1 · Vocal', 'ATA':'E1 · Vocal', 'AAH':'E1 · Vocal',
+    'UUH':'E1 · Vocal', 'OH':'E1 · Vocal',  'SHH':'E1 · Vocal',
+    'HMM':'E1 · Vocal', 'UFF':'E1 · Vocal', 'AY':'E1 · Vocal',
+    'ANA':'E1 · Vocal', 'BAH':'E1 · Vocal', 'PFF':'E1 · Vocal',
+    # E2 — Gestos de manos
+    'SENALA':'E2 · Manos',       'PALMA_ARRIBA':'E2 · Manos',
+    'PALMA_ABAJO':'E2 · Manos',  'PUNO':'E2 · Manos',
+    'MANO_ABIERTA':'E2 · Manos', 'TOCA':'E2 · Manos',
+    'AGITA':'E2 · Manos',        'APUNTA_SI':'E2 · Manos',
+    'JUNTA_DEDOS':'E2 · Manos',  'SEPARA_MANOS':'E2 · Manos',
+    'PULGAR_ARRIBA':'E2 · Manos','PULGAR_ABAJO':'E2 · Manos',
+    # E3 — Vocalizaciones
+    'SONIDO_LARGO':'E3 · Vocaliz.', 'SONIDO_CORTO':'E3 · Vocaliz.',
+    'SONIDO_REPETIDO':'E3 · Vocaliz.', 'SONIDO_AGUDO':'E3 · Vocaliz.',
+    'SONIDO_GRAVE':'E3 · Vocaliz.',    'SONIDO_SUAVE':'E3 · Vocaliz.',
+    # E4 — Movimientos corporales
+    'CABEZA_SI':'E4 · Corporal',    'CABEZA_NO':'E4 · Corporal',
+    'CABEZA_LADO':'E4 · Corporal',  'INCLINA_CUERPO':'E4 · Corporal',
+    'ACERCA_CUERPO':'E4 · Corporal','ALEJA_CUERPO':'E4 · Corporal',
+    'SENALA_PROPIO':'E4 · Corporal','SENALA_EXTERNO':'E4 · Corporal',
+    'ENCOGE_HOMBROS':'E4 · Corporal','LEVANTA_BRAZO':'E4 · Corporal',
+    # E5 — Expresiones faciales
+    'CIERRA_OJOS':'E5 · Facial', 'ABRE_OJOS':'E5 · Facial',
+    'FRUNCE_CENO':'E5 · Facial', 'SONRIE':'E5 · Facial',
+    'LLANTO':'E5 · Facial',      'BOCA_ABIERTA':'E5 · Facial',
+    'MIRA_ARRIBA':'E5 · Facial', 'MIRA_ABAJO':'E5 · Facial',
+    'MIRA_OBJETO':'E5 · Facial', 'PARPADEO_RAPIDO':'E5 · Facial',
+    # E6 — Modificadores
+    'RAPIDO':'E6 · Modif.', 'LENTO':'E6 · Modif.',
+    'DOBLE':'E6 · Modif.',  'TRIPLE':'E6 · Modif.',
+    'PAUSA':'E6 · Modif.',
+    # Operadores
+    'MAS':'Operador', 'O':'Operador', 'URGENTE':'Operador',
+    'NEG':'Operador', 'FIN_EXPR':'Operador',
+    # Contexto
+    'CONTEXTO':'Contexto',
+}
 
 # ── Datos de tokens por categoría ───────────────────────────────────────────
 
@@ -328,20 +385,11 @@ class Interfaz:
             self.txt_expresion.insert("end", f" {simbolo} ")
 
     def _hablar(self):
-        """Lee la frase actual en voz alta en un hilo separado.
-        Se crea un motor fresco cada vez para permitir múltiples clics."""
+        """Lee la frase actual en voz alta en un proceso PowerShell separado."""
         if not _VOZ_DISPONIBLE or not self.frase_actual:
             return
         texto = self.frase_actual
-        def _leer():
-            try:
-                motor = _crear_motor()
-                motor.say(texto)
-                motor.runAndWait()
-                motor.stop()
-            except Exception:
-                pass
-        threading.Thread(target=_leer, daemon=True).start()
+        threading.Thread(target=_hablar_ps, args=(texto,), daemon=True).start()
 
     def _borrar(self):
         self.txt_expresion.delete("1.0", "end")
@@ -355,6 +403,11 @@ class Interfaz:
         expr = self.txt_expresion.get("1.0", "end-1c").strip()
         ctx  = self.contexto_activo.get()
         if ctx:
+            # No duplicar si el usuario ya escribió [contexto] a mano
+            import re
+            ya_tiene_ctx = bool(re.match(r'^\[[a-z]+\]', expr))
+            if ya_tiene_ctx:
+                return expr          # usar tal cual, ignorar radio button
             return f"[{ctx}] {expr}" if expr else f"[{ctx}]"
         return expr
 
@@ -380,10 +433,14 @@ class Interfaz:
             lineas_lex.extend(_clasificar_lineas(errores_lexico))
             lineas_lex.append(("─" * 48 + "\n", "dim"))
         if toks:
-            lineas_lex.append((f"{'TIPO':<24} {'VALOR':<18} LÍNEA\n", "dim"))
-            lineas_lex.append(("─"*24 + " " + "─"*18 + " ─────\n", "dim"))
+            lineas_lex.append((f"{'TIPO':<22} {'CATEGORÍA':<16} {'VALOR':<18} LÍN\n", "dim"))
+            lineas_lex.append(("─"*22 + " " + "─"*16 + " " + "─"*18 + " ───\n", "dim"))
             for tok in toks:
-                lineas_lex.append((f"{tok.type:<24} {repr(tok.value):<18} {tok.lineno}\n", "ok"))
+                cat = CATEGORIA_TOKEN.get(tok.type, '—')
+                lineas_lex.append((
+                    f"{tok.type:<22} {cat:<16} {repr(tok.value):<18} {tok.lineno}\n",
+                    "ok"
+                ))
             lineas_lex.append(("─" * 48 + "\n", "dim"))
             lineas_lex.append((f"Total: {len(toks)} token(s)\n", "titulo"))
         else:
