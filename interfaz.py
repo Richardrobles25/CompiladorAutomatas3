@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 import sys, os, io, contextlib, threading
+from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.stdout.reconfigure(encoding='utf-8')
@@ -141,6 +142,7 @@ class Interfaz:
         self.root.resizable(True, True)
         self.contexto_activo = tk.StringVar(value="")
         self.frase_actual    = ""          # guarda la última frase para leerla
+        self.historial       = []          # lista de entradas del historial
         self._construir_ui()
         self.root.update_idletasks()
         # Ajustar al 90% de la pantalla disponible, sin sobrepasar
@@ -363,6 +365,87 @@ class Interfaz:
         self.tab_sintactico = _tab("  Fase 2 · Sintáctico  ", "#4CC9F0")
         self.tab_semantico  = _tab("  Fase 3 · Semántico  ",  "#FFD166")
 
+        # ── Pestaña Historial ─────────────────────────────────────
+        self._construir_tab_historial(notebook)
+
+    # ── Pestaña Historial ────────────────────────────────────────────────────
+
+    def _construir_tab_historial(self, notebook):
+        """Crea la pestaña Historial con su área de texto y botón limpiar."""
+        f = tk.Frame(notebook, bg="#0A0A1A")
+        notebook.add(f, text="  📋 Historial  ")
+
+        # Encabezado con botón limpiar
+        f_hdr = tk.Frame(f, bg="#0A0A1A")
+        f_hdr.pack(fill="x", padx=8, pady=(6, 2))
+        tk.Label(f_hdr, text="Compilaciones realizadas en esta sesión",
+                 font=("Segoe UI", 8, "bold"), bg="#0A0A1A", fg="#A0A8D0"
+                 ).pack(side="left")
+        tk.Button(f_hdr, text="🗑  Limpiar",
+                  font=("Segoe UI", 7), bg="#2D2D44", fg="#AAAACC",
+                  relief="flat", padx=6, pady=2, cursor="hand2",
+                  command=self._limpiar_historial
+                  ).pack(side="right")
+
+        # Área de texto
+        self.tab_historial = scrolledtext.ScrolledText(
+            f, font=("Consolas", 9),
+            bg="#0A0A1A", fg="#E0E0FF",
+            relief="flat", padx=8, pady=6,
+            state="disabled"
+        )
+        self.tab_historial.pack(fill="both", expand=True)
+        self.tab_historial.tag_config("hora",      foreground="#555577",
+                                       font=("Consolas", 8))
+        self.tab_historial.tag_config("expr",      foreground="#A0A8D0",
+                                       font=("Consolas", 9))
+        self.tab_historial.tag_config("frase",     foreground="#FFD166",
+                                       font=("Segoe UI", 10, "bold"))
+        self.tab_historial.tag_config("sep",       foreground="#1E1E3A")
+        self.tab_historial.tag_config("vacio",     foreground="#555577",
+                                       font=("Segoe UI", 9, "italic"))
+
+        self._actualizar_historial()
+
+    def _agregar_a_historial(self, entrada, frases):
+        """Registra una compilación exitosa en el historial."""
+        ahora = datetime.now().strftime("%H:%M:%S")
+        self.historial.append({
+            "hora":   ahora,
+            "entrada": entrada,
+            "frases":  list(frases),
+        })
+        self._actualizar_historial()
+
+    def _actualizar_historial(self):
+        """Redibuja toda la pestaña Historial con las entradas actuales."""
+        t = self.tab_historial
+        t.configure(state="normal")
+        t.delete("1.0", "end")
+
+        if not self.historial:
+            t.insert("end",
+                     "\n  Ninguna compilación aún.\n"
+                     "  Escribe una expresión y presiona ▶ Compilar.\n",
+                     "vacio")
+            t.configure(state="disabled")
+            return
+
+        # Mostrar en orden inverso (más reciente primero)
+        for entrada in reversed(self.historial):
+            t.insert("end", f"  {entrada['hora']}  ", "hora")
+            t.insert("end", f"{entrada['entrada']}\n", "expr")
+            for frase in entrada['frases']:
+                t.insert("end", f"  → {frase}\n", "frase")
+            t.insert("end", "  " + "─" * 52 + "\n", "sep")
+
+        t.configure(state="disabled")
+
+    def _limpiar_historial(self):
+        """Borra todas las entradas del historial."""
+        self.historial.clear()
+        self._actualizar_historial()
+
     # ── Lógica ───────────────────────────────────────────────────────────────
 
     def _agregar_token(self, token):
@@ -491,6 +574,8 @@ class Interfaz:
             texto_label = "\n".join(frases)
             self.frase_actual = texto_label
             self.lbl_frase.config(text=texto_label)
+            # Registrar en historial
+            self._agregar_a_historial(entrada, frases)
         else:
             lineas_sem.append(("No se pudo generar la frase.\n", "error"))
             self.frase_actual = ""
