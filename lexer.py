@@ -1,11 +1,9 @@
 import ply.lex as lex
 
-# lista de todos los tokens
 tokens = (
     # E1 sonidos vocales
     'MMM', 'ATA', 'AAH', 'UUH', 'OH', 'SHH', 'HMM',
     'UFF', 'AY', 'ANA', 'BAH', 'PFF',
-
 
     # E2 gestos de manos
     'SENALA', 'PALMA_ARRIBA', 'PALMA_ABAJO', 'PUNO',
@@ -29,9 +27,19 @@ tokens = (
     # E6 modificadores
     'RAPIDO', 'LENTO', 'DOBLE', 'TRIPLE', 'PAUSA',
 
+    # Operadores
+    'MAS',       # +  secuencia
+    'O',         # |  alternativa
+    'URGENTE',   # !  urgencia (postfijo)
+    'NEG',       # ~  negación (prefijo)
+    'FIN_EXPR',  # ;  nueva idea
+
+    # Contexto temporal/situacional
+    'CONTEXTO',
 )
 
-# mapeo de texto a token
+CONTEXTOS_VALIDOS = {'manana', 'noche', 'tarde', 'dolor'}
+
 token_map = {
     'mmm': 'MMM', 'ata': 'ATA', 'aah': 'AAH', 'uuh': 'UUH',
     'oh': 'OH', 'shh': 'SHH', 'hmm': 'HMM', 'uff': 'UFF',
@@ -59,19 +67,103 @@ token_map = {
     'triple': 'TRIPLE', 'pausa': 'PAUSA',
 }
 
+# Comentarios: líneas que empiezan con # se descartan completas
+def t_COMMENT(t):
+    r'\#[^\n]*'
+    pass
+
+# Contexto entre corchetes: [manana], [noche], [tarde], [dolor]
+def t_CONTEXTO(t):
+    r'\[[a-z]+\]'
+    valor = t.value[1:-1]
+    if valor not in CONTEXTOS_VALIDOS:
+        col = _columna(t)
+        print(f"Error léxico — línea {t.lineno}, columna {col}: "
+              f"contexto '[{valor}]' no reconocido. "
+              f"Válidos: {sorted(CONTEXTOS_VALIDOS)}")
+        return None
+    t.value = valor
+    return t
+
+# Operadores
+def t_MAS(t):
+    r'\+'
+    return t
+
+def t_O(t):
+    r'\|'
+    return t
+
+def t_URGENTE(t):
+    r'\!'
+    return t
+
+def t_NEG(t):
+    r'\~'
+    return t
+
+def t_FIN_EXPR(t):
+    r'\;'
+    return t
+
+# Contador de líneas para rastrear posición en errores
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
+t_ignore = ' \t'
+
 def t_TOKEN(t):
     r'[a-z][a-z0-9_]*'
     tipo = token_map.get(t.value)
     if tipo:
         t.type = tipo
         return t
-    else:
-        print(f"Token no reconocido: '{t.value}'")
-
-t_ignore = ' \t\n'
+    col = _columna(t)
+    print(f"Error léxico — línea {t.lineno}, columna {col}: "
+          f"token '{t.value}' no reconocido")
 
 def t_error(t):
-    print(f"Carácter no válido: '{t.value[0]}'")
+    col = _columna(t)
+    print(f"Error léxico — línea {t.lineno}, columna {col}: "
+          f"carácter '{t.value[0]}' no válido")
     t.lexer.skip(1)
 
+def _columna(t):
+    ultimo_salto = t.lexer.lexdata.rfind('\n', 0, t.lexpos)
+    return t.lexpos - ultimo_salto
+
+
 lexer = lex.lex()
+
+
+if __name__ == '__main__':
+    casos = [
+        ("Secuencia basica",                 "mmm + palma_arriba + sonido_largo"),
+        ("Con contexto manana",              "[manana] boca_abierta + senala_propio"),
+        ("Con contexto dolor",               "[dolor] uff + sonido_largo + encoge_hombros"),
+        ("Urgencia  !",                      "[dolor] sonido_largo + frunce_ceno !"),
+        ("Negacion  ~",                      "~cabeza_no + sonrie"),
+        ("Alternativa  |",                   "palma_arriba | mira_objeto"),
+        ("Dos ideas  ;",                     "[manana] sonrie + cabeza_si ; [dolor] ay + senala_propio"),
+        ("Combinado complejo",               "[dolor] ~sonrie + uff + sonido_largo !"),
+        ("Comentario ignorado",              "# el paciente se desperto agitado\n[noche] agita + sonido_largo !"),
+        ("Token no reconocido",              "token_invalido"),
+        ("Contexto invalido",                "[desayuno] mmm"),
+        ("Caracter invalido",                "mmm @ palma_arriba"),
+    ]
+
+    for descripcion, entrada in casos:
+        print(f"\n--- {descripcion} ---")
+        print(f"Entrada: {entrada!r}")
+        lexer.input(entrada)
+        lexer.lineno = 1
+        toks = list(lexer)
+        if toks:
+            print(f"  {'TIPO':<22} {'VALOR':<20} LINEA")
+            print(f"  {'-'*22} {'-'*20} -----")
+            for tok in toks:
+                print(f"  {tok.type:<22} {repr(tok.value):<20} {tok.lineno}")
+            print(f"  Total: {len(toks)} token(s)")
+        else:
+            print("  (sin tokens validos)")
