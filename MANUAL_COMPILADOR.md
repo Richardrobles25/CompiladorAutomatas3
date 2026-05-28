@@ -56,12 +56,11 @@ Sonidos que la persona produce con la voz sin articular palabras.
 | Token | Descripción | Interpretación base |
 |-------|-------------|---------------------|
 | `mmm` | Sonido nasal cerrado | Duda, pensando, atención |
-| `ata` | Vocalización corta "ata" | Llamada de atención |
+| `ata` | Vocalización corta "ata" | Llama a su hermano |
 | `aah` | Sonido abierto prolongado | Alivio, satisfacción |
 | `uuh` | Sonido grave de queja | Molestia, incomodidad |
 | `oh` | Sonido de sorpresa | Sorpresa, descubrimiento |
-| `shh` | Sonido sibilante | Silencio, esperar |
-| `hmm` | Sonido de reflexión | Indecisión, considerando |
+| `shh` | Sonido sibilante | ganas de hacer del baño |
 | `uff` | Sonido de esfuerzo/cansancio | Dolor, cansancio, frustración |
 | `ay` | Exclamación de dolor | Dolor agudo o susto |
 | `ana` | Vocalización repetitiva | Llamado a persona cercana |
@@ -84,10 +83,12 @@ Movimientos que la persona puede hacer con las manos o brazos.
 | `toca` | Toca algo o a alguien | Quiere ese objeto o persona |
 | `agita` | Agita la mano o brazo | Llamar atención, urgencia |
 | `apunta_si` | Apunta con el dedo afirmativamente | Confirmar, eso es, sí |
-| `junta_dedos` | Junta los dedos (gesto italiano) | Exactamente eso, preciso |
+| `junta_dedos` | Junta los dedos (gesto italiano) | poquito |
 | `separa_manos` | Separa las manos | No sé, no tengo idea |
-| `pulgar_arriba` | Pulgar hacia arriba | Sí, bien, de acuerdo |
-| `pulgar_abajo` | Pulgar hacia abajo | No, mal, no quiero |
+| `dedoindice_boca` | dedo indice sobre la boca | Guardar silencio |
+| `mueve_pulgares`  |  mueve pulgares simulando control | Quiere jugar videojuegos |
+| `mano_derecha_a_izquierda` | mueve la mano de derecha a izquierda rapidamemente | indica que algo lo acabo todo |
+| `manos_palmas_hacia_arriba` | manos arriba con palmas hacia arriba | quiere que le digan que tiene razon |
 
 ---
 
@@ -97,12 +98,13 @@ Sonidos sostenidos o patrones vocales con características específicas.
 
 | Token | Descripción | Interpretación base |
 |-------|-------------|---------------------|
-| `sonido_largo` | Vocalización sostenida larga | Urgencia, necesita atención ahora |
+| `sonido_largo` | Vocalización sostenida larga | Urgencia |
 | `sonido_corto` | Vocalización breve | Petición simple, aviso |
 | `sonido_repetido` | Vocalización que se repite | Insistencia, no ha sido atendido |
 | `sonido_agudo` | Vocalización en tono alto | Dolor agudo, susto, alerta |
 | `sonido_grave` | Vocalización en tono bajo | Cansancio, somnolencia |
 | `sonido_suave` | Vocalización muy tenue | Bienestar, tranquilidad |
+| `sonido_ronquido` | Simulacion de ronquido | irse a dormir |
 
 ---
 
@@ -133,7 +135,7 @@ Gestos y expresiones del rostro.
 |-------|-------------|---------------------|
 | `cierra_ojos` | Cierra los ojos | Cansancio, quiere dormir, no quiere ver |
 | `abre_ojos` | Abre los ojos muy grandes | Sorpresa, miedo, alerta |
-| `frunce_ceno` | Frunce el ceño | Dolor, disgusto, confusión |
+| `frunce_ceno` | Frunce el ceño | Enojo |
 | `sonrie` | Sonrisa | Bienestar, felicidad, de acuerdo |
 | `llanto` | Llora o hace ademán de llorar | Tristeza, dolor intenso, miedo |
 | `boca_abierta` | Abre la boca | Hambre, sed, quiere hablar |
