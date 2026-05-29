@@ -2,18 +2,21 @@ import ply.lex as lex
 import difflib
 
 tokens = (
-    # E1 sonidos vocales
-    'MMM', 'ATA', 'AAH', 'UUH', 'OH', 'SHH', 'HMM',
+    # E1 sonidos vocales (11)
+    'MMM', 'ATA', 'AAH', 'UUH', 'OH', 'SHH',
     'UFF', 'AY', 'ANA', 'BAH', 'PFF',
 
-    # E2 gestos de manos
+    # E2 gestos de manos (14)
     'SENALA', 'PALMA_ARRIBA', 'PALMA_ABAJO', 'PUNO',
     'MANO_ABIERTA', 'TOCA', 'AGITA', 'APUNTA_SI',
-    'JUNTA_DEDOS', 'SEPARA_MANOS', 'PULGAR_ARRIBA', 'PULGAR_ABAJO',
+    'JUNTA_DEDOS', 'SEPARA_MANOS',
+    'DEDOINDICE_BOCA', 'MUEVE_PULGARES',
+    'MANO_DERECHA_A_IZQUIERDA', 'MANOS_PALMAS_HACIA_ARRIBA',
 
-    # E3 vocalizaciones
+    # E3 vocalizaciones (7)
     'SONIDO_LARGO', 'SONIDO_CORTO', 'SONIDO_REPETIDO',
     'SONIDO_AGUDO', 'SONIDO_GRAVE', 'SONIDO_SUAVE',
+    'SONIDO_RONQUIDO',
 
     # E4 movimientos corporales
     'CABEZA_SI', 'CABEZA_NO', 'CABEZA_LADO', 'INCLINA_CUERPO',
@@ -43,17 +46,20 @@ CONTEXTOS_VALIDOS = {'manana', 'noche', 'tarde', 'dolor'}
 
 token_map = {
     'mmm': 'MMM', 'ata': 'ATA', 'aah': 'AAH', 'uuh': 'UUH',
-    'oh': 'OH', 'shh': 'SHH', 'hmm': 'HMM', 'uff': 'UFF',
+    'oh': 'OH', 'shh': 'SHH', 'uff': 'UFF',
     'ay': 'AY', 'ana': 'ANA', 'bah': 'BAH', 'pff': 'PFF',
     'senala': 'SENALA', 'palma_arriba': 'PALMA_ARRIBA',
     'palma_abajo': 'PALMA_ABAJO', 'puno': 'PUNO',
     'mano_abierta': 'MANO_ABIERTA', 'toca': 'TOCA',
     'agita': 'AGITA', 'apunta_si': 'APUNTA_SI',
     'junta_dedos': 'JUNTA_DEDOS', 'separa_manos': 'SEPARA_MANOS',
-    'pulgar_arriba': 'PULGAR_ARRIBA', 'pulgar_abajo': 'PULGAR_ABAJO',
+    'dedoindice_boca': 'DEDOINDICE_BOCA', 'mueve_pulgares': 'MUEVE_PULGARES',
+    'mano_derecha_a_izquierda': 'MANO_DERECHA_A_IZQUIERDA',
+    'manos_palmas_hacia_arriba': 'MANOS_PALMAS_HACIA_ARRIBA',
     'sonido_largo': 'SONIDO_LARGO', 'sonido_corto': 'SONIDO_CORTO',
     'sonido_repetido': 'SONIDO_REPETIDO', 'sonido_agudo': 'SONIDO_AGUDO',
     'sonido_grave': 'SONIDO_GRAVE', 'sonido_suave': 'SONIDO_SUAVE',
+    'sonido_ronquido': 'SONIDO_RONQUIDO',
     'cabeza_si': 'CABEZA_SI', 'cabeza_no': 'CABEZA_NO',
     'cabeza_lado': 'CABEZA_LADO', 'inclina_cuerpo': 'INCLINA_CUERPO',
     'acerca_cuerpo': 'ACERCA_CUERPO', 'aleja_cuerpo': 'ALEJA_CUERPO',
@@ -132,7 +138,7 @@ def t_TOKEN(t):
     if sugs:
         print(f"  → ¿Quisiste decir: {' o '.join(sugs)}?")
     else:
-        print(f"  → Usa uno de los 55 tokens del alfabeto (ej. mmm, sonrie, palma_arriba).")
+        print(f"  → Usa uno de los 57 tokens del alfabeto (ej. mmm, sonrie, dedoindice_boca).")
 
 def t_error(t):
     col = _columna(t)

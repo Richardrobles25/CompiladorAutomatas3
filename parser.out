@@ -19,127 +19,131 @@ Rule 13    token_base -> AAH
 Rule 14    token_base -> UUH
 Rule 15    token_base -> OH
 Rule 16    token_base -> SHH
-Rule 17    token_base -> HMM
-Rule 18    token_base -> UFF
-Rule 19    token_base -> AY
-Rule 20    token_base -> ANA
-Rule 21    token_base -> BAH
-Rule 22    token_base -> PFF
-Rule 23    token_base -> SENALA
-Rule 24    token_base -> PALMA_ARRIBA
-Rule 25    token_base -> PALMA_ABAJO
-Rule 26    token_base -> PUNO
-Rule 27    token_base -> MANO_ABIERTA
-Rule 28    token_base -> TOCA
-Rule 29    token_base -> AGITA
-Rule 30    token_base -> APUNTA_SI
-Rule 31    token_base -> JUNTA_DEDOS
-Rule 32    token_base -> SEPARA_MANOS
-Rule 33    token_base -> PULGAR_ARRIBA
-Rule 34    token_base -> PULGAR_ABAJO
-Rule 35    token_base -> SONIDO_LARGO
-Rule 36    token_base -> SONIDO_CORTO
-Rule 37    token_base -> SONIDO_REPETIDO
-Rule 38    token_base -> SONIDO_AGUDO
-Rule 39    token_base -> SONIDO_GRAVE
-Rule 40    token_base -> SONIDO_SUAVE
-Rule 41    token_base -> CABEZA_SI
-Rule 42    token_base -> CABEZA_NO
-Rule 43    token_base -> CABEZA_LADO
-Rule 44    token_base -> INCLINA_CUERPO
-Rule 45    token_base -> ACERCA_CUERPO
-Rule 46    token_base -> ALEJA_CUERPO
-Rule 47    token_base -> SENALA_PROPIO
-Rule 48    token_base -> SENALA_EXTERNO
-Rule 49    token_base -> ENCOGE_HOMBROS
-Rule 50    token_base -> LEVANTA_BRAZO
-Rule 51    token_base -> CIERRA_OJOS
-Rule 52    token_base -> ABRE_OJOS
-Rule 53    token_base -> FRUNCE_CENO
-Rule 54    token_base -> SONRIE
-Rule 55    token_base -> LLANTO
-Rule 56    token_base -> BOCA_ABIERTA
-Rule 57    token_base -> MIRA_ARRIBA
-Rule 58    token_base -> MIRA_ABAJO
-Rule 59    token_base -> MIRA_OBJETO
-Rule 60    token_base -> PARPADEO_RAPIDO
-Rule 61    token_base -> RAPIDO
-Rule 62    token_base -> LENTO
-Rule 63    token_base -> DOBLE
-Rule 64    token_base -> TRIPLE
-Rule 65    token_base -> PAUSA
-Rule 66    secuencia -> secuencia MAS error
+Rule 17    token_base -> UFF
+Rule 18    token_base -> AY
+Rule 19    token_base -> ANA
+Rule 20    token_base -> BAH
+Rule 21    token_base -> PFF
+Rule 22    token_base -> SENALA
+Rule 23    token_base -> PALMA_ARRIBA
+Rule 24    token_base -> PALMA_ABAJO
+Rule 25    token_base -> PUNO
+Rule 26    token_base -> MANO_ABIERTA
+Rule 27    token_base -> TOCA
+Rule 28    token_base -> AGITA
+Rule 29    token_base -> APUNTA_SI
+Rule 30    token_base -> JUNTA_DEDOS
+Rule 31    token_base -> SEPARA_MANOS
+Rule 32    token_base -> DEDOINDICE_BOCA
+Rule 33    token_base -> MUEVE_PULGARES
+Rule 34    token_base -> MANO_DERECHA_A_IZQUIERDA
+Rule 35    token_base -> MANOS_PALMAS_HACIA_ARRIBA
+Rule 36    token_base -> SONIDO_LARGO
+Rule 37    token_base -> SONIDO_CORTO
+Rule 38    token_base -> SONIDO_REPETIDO
+Rule 39    token_base -> SONIDO_AGUDO
+Rule 40    token_base -> SONIDO_GRAVE
+Rule 41    token_base -> SONIDO_SUAVE
+Rule 42    token_base -> SONIDO_RONQUIDO
+Rule 43    token_base -> CABEZA_SI
+Rule 44    token_base -> CABEZA_NO
+Rule 45    token_base -> CABEZA_LADO
+Rule 46    token_base -> INCLINA_CUERPO
+Rule 47    token_base -> ACERCA_CUERPO
+Rule 48    token_base -> ALEJA_CUERPO
+Rule 49    token_base -> SENALA_PROPIO
+Rule 50    token_base -> SENALA_EXTERNO
+Rule 51    token_base -> ENCOGE_HOMBROS
+Rule 52    token_base -> LEVANTA_BRAZO
+Rule 53    token_base -> CIERRA_OJOS
+Rule 54    token_base -> ABRE_OJOS
+Rule 55    token_base -> FRUNCE_CENO
+Rule 56    token_base -> SONRIE
+Rule 57    token_base -> LLANTO
+Rule 58    token_base -> BOCA_ABIERTA
+Rule 59    token_base -> MIRA_ARRIBA
+Rule 60    token_base -> MIRA_ABAJO
+Rule 61    token_base -> MIRA_OBJETO
+Rule 62    token_base -> PARPADEO_RAPIDO
+Rule 63    token_base -> RAPIDO
+Rule 64    token_base -> LENTO
+Rule 65    token_base -> DOBLE
+Rule 66    token_base -> TRIPLE
+Rule 67    token_base -> PAUSA
+Rule 68    secuencia -> secuencia MAS error
 
 Terminals, with rules where they appear
 
 AAH                  : 13
-ABRE_OJOS            : 52
-ACERCA_CUERPO        : 45
-AGITA                : 29
-ALEJA_CUERPO         : 46
-ANA                  : 20
-APUNTA_SI            : 30
+ABRE_OJOS            : 54
+ACERCA_CUERPO        : 47
+AGITA                : 28
+ALEJA_CUERPO         : 48
+ANA                  : 19
+APUNTA_SI            : 29
 ATA                  : 12
-AY                   : 19
-BAH                  : 21
-BOCA_ABIERTA         : 56
-CABEZA_LADO          : 43
-CABEZA_NO            : 42
-CABEZA_SI            : 41
-CIERRA_OJOS          : 51
+AY                   : 18
+BAH                  : 20
+BOCA_ABIERTA         : 58
+CABEZA_LADO          : 45
+CABEZA_NO            : 44
+CABEZA_SI            : 43
+CIERRA_OJOS          : 53
 CONTEXTO             : 4
-DOBLE                : 63
-ENCOGE_HOMBROS       : 49
+DEDOINDICE_BOCA      : 32
+DOBLE                : 65
+ENCOGE_HOMBROS       : 51
 FIN_EXPR             : 2
-FRUNCE_CENO          : 53
-HMM                  : 17
-INCLINA_CUERPO       : 44
-JUNTA_DEDOS          : 31
-LENTO                : 62
-LEVANTA_BRAZO        : 50
-LLANTO               : 55
-MANO_ABIERTA         : 27
-MAS                  : 7 66
-MIRA_ABAJO           : 58
-MIRA_ARRIBA          : 57
-MIRA_OBJETO          : 59
+FRUNCE_CENO          : 55
+INCLINA_CUERPO       : 46
+JUNTA_DEDOS          : 30
+LENTO                : 64
+LEVANTA_BRAZO        : 52
+LLANTO               : 57
+MANOS_PALMAS_HACIA_ARRIBA : 35
+MANO_ABIERTA         : 26
+MANO_DERECHA_A_IZQUIERDA : 34
+MAS                  : 7 68
+MIRA_ABAJO           : 60
+MIRA_ARRIBA          : 59
+MIRA_OBJETO          : 61
 MMM                  : 11
+MUEVE_PULGARES       : 33
 NEG                  : 9
 O                    : 5
 OH                   : 15
-PALMA_ABAJO          : 25
-PALMA_ARRIBA         : 24
-PARPADEO_RAPIDO      : 60
-PAUSA                : 65
-PFF                  : 22
-PULGAR_ABAJO         : 34
-PULGAR_ARRIBA        : 33
-PUNO                 : 26
-RAPIDO               : 61
-SENALA               : 23
-SENALA_EXTERNO       : 48
-SENALA_PROPIO        : 47
-SEPARA_MANOS         : 32
+PALMA_ABAJO          : 24
+PALMA_ARRIBA         : 23
+PARPADEO_RAPIDO      : 62
+PAUSA                : 67
+PFF                  : 21
+PUNO                 : 25
+RAPIDO               : 63
+SENALA               : 22
+SENALA_EXTERNO       : 50
+SENALA_PROPIO        : 49
+SEPARA_MANOS         : 31
 SHH                  : 16
-SONIDO_AGUDO         : 38
-SONIDO_CORTO         : 36
-SONIDO_GRAVE         : 39
-SONIDO_LARGO         : 35
-SONIDO_REPETIDO      : 37
-SONIDO_SUAVE         : 40
-SONRIE               : 54
-TOCA                 : 28
-TRIPLE               : 64
-UFF                  : 18
+SONIDO_AGUDO         : 39
+SONIDO_CORTO         : 37
+SONIDO_GRAVE         : 40
+SONIDO_LARGO         : 36
+SONIDO_REPETIDO      : 38
+SONIDO_RONQUIDO      : 42
+SONIDO_SUAVE         : 41
+SONRIE               : 56
+TOCA                 : 27
+TRIPLE               : 66
+UFF                  : 17
 URGENTE              : 10
 UUH                  : 14
-error                : 66
+error                : 68
 
 Nonterminals, with rules where they appear
 
 expresion            : 1 2 5
 programa             : 2 0
-secuencia            : 3 4 5 7 66
+secuencia            : 3 4 5 7 68
 termino              : 6 7 9 10
 token_base           : 8
 
@@ -155,7 +159,7 @@ state 0
     (5) expresion -> . expresion O secuencia
     (6) secuencia -> . termino
     (7) secuencia -> . secuencia MAS termino
-    (66) secuencia -> . secuencia MAS error
+    (68) secuencia -> . secuencia MAS error
     (8) termino -> . token_base
     (9) termino -> . NEG termino
     (10) termino -> . termino URGENTE
@@ -165,55 +169,57 @@ state 0
     (14) token_base -> . UUH
     (15) token_base -> . OH
     (16) token_base -> . SHH
-    (17) token_base -> . HMM
-    (18) token_base -> . UFF
-    (19) token_base -> . AY
-    (20) token_base -> . ANA
-    (21) token_base -> . BAH
-    (22) token_base -> . PFF
-    (23) token_base -> . SENALA
-    (24) token_base -> . PALMA_ARRIBA
-    (25) token_base -> . PALMA_ABAJO
-    (26) token_base -> . PUNO
-    (27) token_base -> . MANO_ABIERTA
-    (28) token_base -> . TOCA
-    (29) token_base -> . AGITA
-    (30) token_base -> . APUNTA_SI
-    (31) token_base -> . JUNTA_DEDOS
-    (32) token_base -> . SEPARA_MANOS
-    (33) token_base -> . PULGAR_ARRIBA
-    (34) token_base -> . PULGAR_ABAJO
-    (35) token_base -> . SONIDO_LARGO
-    (36) token_base -> . SONIDO_CORTO
-    (37) token_base -> . SONIDO_REPETIDO
-    (38) token_base -> . SONIDO_AGUDO
-    (39) token_base -> . SONIDO_GRAVE
-    (40) token_base -> . SONIDO_SUAVE
-    (41) token_base -> . CABEZA_SI
-    (42) token_base -> . CABEZA_NO
-    (43) token_base -> . CABEZA_LADO
-    (44) token_base -> . INCLINA_CUERPO
-    (45) token_base -> . ACERCA_CUERPO
-    (46) token_base -> . ALEJA_CUERPO
-    (47) token_base -> . SENALA_PROPIO
-    (48) token_base -> . SENALA_EXTERNO
-    (49) token_base -> . ENCOGE_HOMBROS
-    (50) token_base -> . LEVANTA_BRAZO
-    (51) token_base -> . CIERRA_OJOS
-    (52) token_base -> . ABRE_OJOS
-    (53) token_base -> . FRUNCE_CENO
-    (54) token_base -> . SONRIE
-    (55) token_base -> . LLANTO
-    (56) token_base -> . BOCA_ABIERTA
-    (57) token_base -> . MIRA_ARRIBA
-    (58) token_base -> . MIRA_ABAJO
-    (59) token_base -> . MIRA_OBJETO
-    (60) token_base -> . PARPADEO_RAPIDO
-    (61) token_base -> . RAPIDO
-    (62) token_base -> . LENTO
-    (63) token_base -> . DOBLE
-    (64) token_base -> . TRIPLE
-    (65) token_base -> . PAUSA
+    (17) token_base -> . UFF
+    (18) token_base -> . AY
+    (19) token_base -> . ANA
+    (20) token_base -> . BAH
+    (21) token_base -> . PFF
+    (22) token_base -> . SENALA
+    (23) token_base -> . PALMA_ARRIBA
+    (24) token_base -> . PALMA_ABAJO
+    (25) token_base -> . PUNO
+    (26) token_base -> . MANO_ABIERTA
+    (27) token_base -> . TOCA
+    (28) token_base -> . AGITA
+    (29) token_base -> . APUNTA_SI
+    (30) token_base -> . JUNTA_DEDOS
+    (31) token_base -> . SEPARA_MANOS
+    (32) token_base -> . DEDOINDICE_BOCA
+    (33) token_base -> . MUEVE_PULGARES
+    (34) token_base -> . MANO_DERECHA_A_IZQUIERDA
+    (35) token_base -> . MANOS_PALMAS_HACIA_ARRIBA
+    (36) token_base -> . SONIDO_LARGO
+    (37) token_base -> . SONIDO_CORTO
+    (38) token_base -> . SONIDO_REPETIDO
+    (39) token_base -> . SONIDO_AGUDO
+    (40) token_base -> . SONIDO_GRAVE
+    (41) token_base -> . SONIDO_SUAVE
+    (42) token_base -> . SONIDO_RONQUIDO
+    (43) token_base -> . CABEZA_SI
+    (44) token_base -> . CABEZA_NO
+    (45) token_base -> . CABEZA_LADO
+    (46) token_base -> . INCLINA_CUERPO
+    (47) token_base -> . ACERCA_CUERPO
+    (48) token_base -> . ALEJA_CUERPO
+    (49) token_base -> . SENALA_PROPIO
+    (50) token_base -> . SENALA_EXTERNO
+    (51) token_base -> . ENCOGE_HOMBROS
+    (52) token_base -> . LEVANTA_BRAZO
+    (53) token_base -> . CIERRA_OJOS
+    (54) token_base -> . ABRE_OJOS
+    (55) token_base -> . FRUNCE_CENO
+    (56) token_base -> . SONRIE
+    (57) token_base -> . LLANTO
+    (58) token_base -> . BOCA_ABIERTA
+    (59) token_base -> . MIRA_ARRIBA
+    (60) token_base -> . MIRA_ABAJO
+    (61) token_base -> . MIRA_OBJETO
+    (62) token_base -> . PARPADEO_RAPIDO
+    (63) token_base -> . RAPIDO
+    (64) token_base -> . LENTO
+    (65) token_base -> . DOBLE
+    (66) token_base -> . TRIPLE
+    (67) token_base -> . PAUSA
 
     CONTEXTO        shift and go to state 4
     NEG             shift and go to state 7
@@ -223,55 +229,57 @@ state 0
     UUH             shift and go to state 11
     OH              shift and go to state 12
     SHH             shift and go to state 13
-    HMM             shift and go to state 14
-    UFF             shift and go to state 15
-    AY              shift and go to state 16
-    ANA             shift and go to state 17
-    BAH             shift and go to state 18
-    PFF             shift and go to state 19
-    SENALA          shift and go to state 20
-    PALMA_ARRIBA    shift and go to state 21
-    PALMA_ABAJO     shift and go to state 22
-    PUNO            shift and go to state 23
-    MANO_ABIERTA    shift and go to state 24
-    TOCA            shift and go to state 25
-    AGITA           shift and go to state 26
-    APUNTA_SI       shift and go to state 27
-    JUNTA_DEDOS     shift and go to state 28
-    SEPARA_MANOS    shift and go to state 29
-    PULGAR_ARRIBA   shift and go to state 30
-    PULGAR_ABAJO    shift and go to state 31
-    SONIDO_LARGO    shift and go to state 32
-    SONIDO_CORTO    shift and go to state 33
-    SONIDO_REPETIDO shift and go to state 34
-    SONIDO_AGUDO    shift and go to state 35
-    SONIDO_GRAVE    shift and go to state 36
-    SONIDO_SUAVE    shift and go to state 37
-    CABEZA_SI       shift and go to state 38
-    CABEZA_NO       shift and go to state 39
-    CABEZA_LADO     shift and go to state 40
-    INCLINA_CUERPO  shift and go to state 41
-    ACERCA_CUERPO   shift and go to state 42
-    ALEJA_CUERPO    shift and go to state 43
-    SENALA_PROPIO   shift and go to state 44
-    SENALA_EXTERNO  shift and go to state 45
-    ENCOGE_HOMBROS  shift and go to state 46
-    LEVANTA_BRAZO   shift and go to state 47
-    CIERRA_OJOS     shift and go to state 48
-    ABRE_OJOS       shift and go to state 49
-    FRUNCE_CENO     shift and go to state 50
-    SONRIE          shift and go to state 51
-    LLANTO          shift and go to state 52
-    BOCA_ABIERTA    shift and go to state 53
-    MIRA_ARRIBA     shift and go to state 54
-    MIRA_ABAJO      shift and go to state 55
-    MIRA_OBJETO     shift and go to state 56
-    PARPADEO_RAPIDO shift and go to state 57
-    RAPIDO          shift and go to state 58
-    LENTO           shift and go to state 59
-    DOBLE           shift and go to state 60
-    TRIPLE          shift and go to state 61
-    PAUSA           shift and go to state 62
+    UFF             shift and go to state 14
+    AY              shift and go to state 15
+    ANA             shift and go to state 16
+    BAH             shift and go to state 17
+    PFF             shift and go to state 18
+    SENALA          shift and go to state 19
+    PALMA_ARRIBA    shift and go to state 20
+    PALMA_ABAJO     shift and go to state 21
+    PUNO            shift and go to state 22
+    MANO_ABIERTA    shift and go to state 23
+    TOCA            shift and go to state 24
+    AGITA           shift and go to state 25
+    APUNTA_SI       shift and go to state 26
+    JUNTA_DEDOS     shift and go to state 27
+    SEPARA_MANOS    shift and go to state 28
+    DEDOINDICE_BOCA shift and go to state 29
+    MUEVE_PULGARES  shift and go to state 30
+    MANO_DERECHA_A_IZQUIERDA shift and go to state 31
+    MANOS_PALMAS_HACIA_ARRIBA shift and go to state 32
+    SONIDO_LARGO    shift and go to state 33
+    SONIDO_CORTO    shift and go to state 34
+    SONIDO_REPETIDO shift and go to state 35
+    SONIDO_AGUDO    shift and go to state 36
+    SONIDO_GRAVE    shift and go to state 37
+    SONIDO_SUAVE    shift and go to state 38
+    SONIDO_RONQUIDO shift and go to state 39
+    CABEZA_SI       shift and go to state 40
+    CABEZA_NO       shift and go to state 41
+    CABEZA_LADO     shift and go to state 42
+    INCLINA_CUERPO  shift and go to state 43
+    ACERCA_CUERPO   shift and go to state 44
+    ALEJA_CUERPO    shift and go to state 45
+    SENALA_PROPIO   shift and go to state 46
+    SENALA_EXTERNO  shift and go to state 47
+    ENCOGE_HOMBROS  shift and go to state 48
+    LEVANTA_BRAZO   shift and go to state 49
+    CIERRA_OJOS     shift and go to state 50
+    ABRE_OJOS       shift and go to state 51
+    FRUNCE_CENO     shift and go to state 52
+    SONRIE          shift and go to state 53
+    LLANTO          shift and go to state 54
+    BOCA_ABIERTA    shift and go to state 55
+    MIRA_ARRIBA     shift and go to state 56
+    MIRA_ABAJO      shift and go to state 57
+    MIRA_OBJETO     shift and go to state 58
+    PARPADEO_RAPIDO shift and go to state 59
+    RAPIDO          shift and go to state 60
+    LENTO           shift and go to state 61
+    DOBLE           shift and go to state 62
+    TRIPLE          shift and go to state 63
+    PAUSA           shift and go to state 64
 
     programa                       shift and go to state 1
     expresion                      shift and go to state 2
@@ -284,7 +292,7 @@ state 1
     (0) S' -> programa .
     (2) programa -> programa . FIN_EXPR expresion
 
-    FIN_EXPR        shift and go to state 63
+    FIN_EXPR        shift and go to state 65
 
 
 state 2
@@ -294,19 +302,19 @@ state 2
 
     FIN_EXPR        reduce using rule 1 (programa -> expresion .)
     $end            reduce using rule 1 (programa -> expresion .)
-    O               shift and go to state 64
+    O               shift and go to state 66
 
 
 state 3
 
     (3) expresion -> secuencia .
     (7) secuencia -> secuencia . MAS termino
-    (66) secuencia -> secuencia . MAS error
+    (68) secuencia -> secuencia . MAS error
 
     O               reduce using rule 3 (expresion -> secuencia .)
     FIN_EXPR        reduce using rule 3 (expresion -> secuencia .)
     $end            reduce using rule 3 (expresion -> secuencia .)
-    MAS             shift and go to state 65
+    MAS             shift and go to state 67
 
 
 state 4
@@ -314,7 +322,7 @@ state 4
     (4) expresion -> CONTEXTO . secuencia
     (6) secuencia -> . termino
     (7) secuencia -> . secuencia MAS termino
-    (66) secuencia -> . secuencia MAS error
+    (68) secuencia -> . secuencia MAS error
     (8) termino -> . token_base
     (9) termino -> . NEG termino
     (10) termino -> . termino URGENTE
@@ -324,55 +332,57 @@ state 4
     (14) token_base -> . UUH
     (15) token_base -> . OH
     (16) token_base -> . SHH
-    (17) token_base -> . HMM
-    (18) token_base -> . UFF
-    (19) token_base -> . AY
-    (20) token_base -> . ANA
-    (21) token_base -> . BAH
-    (22) token_base -> . PFF
-    (23) token_base -> . SENALA
-    (24) token_base -> . PALMA_ARRIBA
-    (25) token_base -> . PALMA_ABAJO
-    (26) token_base -> . PUNO
-    (27) token_base -> . MANO_ABIERTA
-    (28) token_base -> . TOCA
-    (29) token_base -> . AGITA
-    (30) token_base -> . APUNTA_SI
-    (31) token_base -> . JUNTA_DEDOS
-    (32) token_base -> . SEPARA_MANOS
-    (33) token_base -> . PULGAR_ARRIBA
-    (34) token_base -> . PULGAR_ABAJO
-    (35) token_base -> . SONIDO_LARGO
-    (36) token_base -> . SONIDO_CORTO
-    (37) token_base -> . SONIDO_REPETIDO
-    (38) token_base -> . SONIDO_AGUDO
-    (39) token_base -> . SONIDO_GRAVE
-    (40) token_base -> . SONIDO_SUAVE
-    (41) token_base -> . CABEZA_SI
-    (42) token_base -> . CABEZA_NO
-    (43) token_base -> . CABEZA_LADO
-    (44) token_base -> . INCLINA_CUERPO
-    (45) token_base -> . ACERCA_CUERPO
-    (46) token_base -> . ALEJA_CUERPO
-    (47) token_base -> . SENALA_PROPIO
-    (48) token_base -> . SENALA_EXTERNO
-    (49) token_base -> . ENCOGE_HOMBROS
-    (50) token_base -> . LEVANTA_BRAZO
-    (51) token_base -> . CIERRA_OJOS
-    (52) token_base -> . ABRE_OJOS
-    (53) token_base -> . FRUNCE_CENO
-    (54) token_base -> . SONRIE
-    (55) token_base -> . LLANTO
-    (56) token_base -> . BOCA_ABIERTA
-    (57) token_base -> . MIRA_ARRIBA
-    (58) token_base -> . MIRA_ABAJO
-    (59) token_base -> . MIRA_OBJETO
-    (60) token_base -> . PARPADEO_RAPIDO
-    (61) token_base -> . RAPIDO
-    (62) token_base -> . LENTO
-    (63) token_base -> . DOBLE
-    (64) token_base -> . TRIPLE
-    (65) token_base -> . PAUSA
+    (17) token_base -> . UFF
+    (18) token_base -> . AY
+    (19) token_base -> . ANA
+    (20) token_base -> . BAH
+    (21) token_base -> . PFF
+    (22) token_base -> . SENALA
+    (23) token_base -> . PALMA_ARRIBA
+    (24) token_base -> . PALMA_ABAJO
+    (25) token_base -> . PUNO
+    (26) token_base -> . MANO_ABIERTA
+    (27) token_base -> . TOCA
+    (28) token_base -> . AGITA
+    (29) token_base -> . APUNTA_SI
+    (30) token_base -> . JUNTA_DEDOS
+    (31) token_base -> . SEPARA_MANOS
+    (32) token_base -> . DEDOINDICE_BOCA
+    (33) token_base -> . MUEVE_PULGARES
+    (34) token_base -> . MANO_DERECHA_A_IZQUIERDA
+    (35) token_base -> . MANOS_PALMAS_HACIA_ARRIBA
+    (36) token_base -> . SONIDO_LARGO
+    (37) token_base -> . SONIDO_CORTO
+    (38) token_base -> . SONIDO_REPETIDO
+    (39) token_base -> . SONIDO_AGUDO
+    (40) token_base -> . SONIDO_GRAVE
+    (41) token_base -> . SONIDO_SUAVE
+    (42) token_base -> . SONIDO_RONQUIDO
+    (43) token_base -> . CABEZA_SI
+    (44) token_base -> . CABEZA_NO
+    (45) token_base -> . CABEZA_LADO
+    (46) token_base -> . INCLINA_CUERPO
+    (47) token_base -> . ACERCA_CUERPO
+    (48) token_base -> . ALEJA_CUERPO
+    (49) token_base -> . SENALA_PROPIO
+    (50) token_base -> . SENALA_EXTERNO
+    (51) token_base -> . ENCOGE_HOMBROS
+    (52) token_base -> . LEVANTA_BRAZO
+    (53) token_base -> . CIERRA_OJOS
+    (54) token_base -> . ABRE_OJOS
+    (55) token_base -> . FRUNCE_CENO
+    (56) token_base -> . SONRIE
+    (57) token_base -> . LLANTO
+    (58) token_base -> . BOCA_ABIERTA
+    (59) token_base -> . MIRA_ARRIBA
+    (60) token_base -> . MIRA_ABAJO
+    (61) token_base -> . MIRA_OBJETO
+    (62) token_base -> . PARPADEO_RAPIDO
+    (63) token_base -> . RAPIDO
+    (64) token_base -> . LENTO
+    (65) token_base -> . DOBLE
+    (66) token_base -> . TRIPLE
+    (67) token_base -> . PAUSA
 
     NEG             shift and go to state 7
     MMM             shift and go to state 8
@@ -381,57 +391,59 @@ state 4
     UUH             shift and go to state 11
     OH              shift and go to state 12
     SHH             shift and go to state 13
-    HMM             shift and go to state 14
-    UFF             shift and go to state 15
-    AY              shift and go to state 16
-    ANA             shift and go to state 17
-    BAH             shift and go to state 18
-    PFF             shift and go to state 19
-    SENALA          shift and go to state 20
-    PALMA_ARRIBA    shift and go to state 21
-    PALMA_ABAJO     shift and go to state 22
-    PUNO            shift and go to state 23
-    MANO_ABIERTA    shift and go to state 24
-    TOCA            shift and go to state 25
-    AGITA           shift and go to state 26
-    APUNTA_SI       shift and go to state 27
-    JUNTA_DEDOS     shift and go to state 28
-    SEPARA_MANOS    shift and go to state 29
-    PULGAR_ARRIBA   shift and go to state 30
-    PULGAR_ABAJO    shift and go to state 31
-    SONIDO_LARGO    shift and go to state 32
-    SONIDO_CORTO    shift and go to state 33
-    SONIDO_REPETIDO shift and go to state 34
-    SONIDO_AGUDO    shift and go to state 35
-    SONIDO_GRAVE    shift and go to state 36
-    SONIDO_SUAVE    shift and go to state 37
-    CABEZA_SI       shift and go to state 38
-    CABEZA_NO       shift and go to state 39
-    CABEZA_LADO     shift and go to state 40
-    INCLINA_CUERPO  shift and go to state 41
-    ACERCA_CUERPO   shift and go to state 42
-    ALEJA_CUERPO    shift and go to state 43
-    SENALA_PROPIO   shift and go to state 44
-    SENALA_EXTERNO  shift and go to state 45
-    ENCOGE_HOMBROS  shift and go to state 46
-    LEVANTA_BRAZO   shift and go to state 47
-    CIERRA_OJOS     shift and go to state 48
-    ABRE_OJOS       shift and go to state 49
-    FRUNCE_CENO     shift and go to state 50
-    SONRIE          shift and go to state 51
-    LLANTO          shift and go to state 52
-    BOCA_ABIERTA    shift and go to state 53
-    MIRA_ARRIBA     shift and go to state 54
-    MIRA_ABAJO      shift and go to state 55
-    MIRA_OBJETO     shift and go to state 56
-    PARPADEO_RAPIDO shift and go to state 57
-    RAPIDO          shift and go to state 58
-    LENTO           shift and go to state 59
-    DOBLE           shift and go to state 60
-    TRIPLE          shift and go to state 61
-    PAUSA           shift and go to state 62
+    UFF             shift and go to state 14
+    AY              shift and go to state 15
+    ANA             shift and go to state 16
+    BAH             shift and go to state 17
+    PFF             shift and go to state 18
+    SENALA          shift and go to state 19
+    PALMA_ARRIBA    shift and go to state 20
+    PALMA_ABAJO     shift and go to state 21
+    PUNO            shift and go to state 22
+    MANO_ABIERTA    shift and go to state 23
+    TOCA            shift and go to state 24
+    AGITA           shift and go to state 25
+    APUNTA_SI       shift and go to state 26
+    JUNTA_DEDOS     shift and go to state 27
+    SEPARA_MANOS    shift and go to state 28
+    DEDOINDICE_BOCA shift and go to state 29
+    MUEVE_PULGARES  shift and go to state 30
+    MANO_DERECHA_A_IZQUIERDA shift and go to state 31
+    MANOS_PALMAS_HACIA_ARRIBA shift and go to state 32
+    SONIDO_LARGO    shift and go to state 33
+    SONIDO_CORTO    shift and go to state 34
+    SONIDO_REPETIDO shift and go to state 35
+    SONIDO_AGUDO    shift and go to state 36
+    SONIDO_GRAVE    shift and go to state 37
+    SONIDO_SUAVE    shift and go to state 38
+    SONIDO_RONQUIDO shift and go to state 39
+    CABEZA_SI       shift and go to state 40
+    CABEZA_NO       shift and go to state 41
+    CABEZA_LADO     shift and go to state 42
+    INCLINA_CUERPO  shift and go to state 43
+    ACERCA_CUERPO   shift and go to state 44
+    ALEJA_CUERPO    shift and go to state 45
+    SENALA_PROPIO   shift and go to state 46
+    SENALA_EXTERNO  shift and go to state 47
+    ENCOGE_HOMBROS  shift and go to state 48
+    LEVANTA_BRAZO   shift and go to state 49
+    CIERRA_OJOS     shift and go to state 50
+    ABRE_OJOS       shift and go to state 51
+    FRUNCE_CENO     shift and go to state 52
+    SONRIE          shift and go to state 53
+    LLANTO          shift and go to state 54
+    BOCA_ABIERTA    shift and go to state 55
+    MIRA_ARRIBA     shift and go to state 56
+    MIRA_ABAJO      shift and go to state 57
+    MIRA_OBJETO     shift and go to state 58
+    PARPADEO_RAPIDO shift and go to state 59
+    RAPIDO          shift and go to state 60
+    LENTO           shift and go to state 61
+    DOBLE           shift and go to state 62
+    TRIPLE          shift and go to state 63
+    PAUSA           shift and go to state 64
 
-    secuencia                      shift and go to state 66
+    secuencia                      shift and go to state 68
     termino                        shift and go to state 5
     token_base                     shift and go to state 6
 
@@ -444,7 +456,7 @@ state 5
     O               reduce using rule 6 (secuencia -> termino .)
     FIN_EXPR        reduce using rule 6 (secuencia -> termino .)
     $end            reduce using rule 6 (secuencia -> termino .)
-    URGENTE         shift and go to state 67
+    URGENTE         shift and go to state 69
 
 
 state 6
@@ -470,55 +482,57 @@ state 7
     (14) token_base -> . UUH
     (15) token_base -> . OH
     (16) token_base -> . SHH
-    (17) token_base -> . HMM
-    (18) token_base -> . UFF
-    (19) token_base -> . AY
-    (20) token_base -> . ANA
-    (21) token_base -> . BAH
-    (22) token_base -> . PFF
-    (23) token_base -> . SENALA
-    (24) token_base -> . PALMA_ARRIBA
-    (25) token_base -> . PALMA_ABAJO
-    (26) token_base -> . PUNO
-    (27) token_base -> . MANO_ABIERTA
-    (28) token_base -> . TOCA
-    (29) token_base -> . AGITA
-    (30) token_base -> . APUNTA_SI
-    (31) token_base -> . JUNTA_DEDOS
-    (32) token_base -> . SEPARA_MANOS
-    (33) token_base -> . PULGAR_ARRIBA
-    (34) token_base -> . PULGAR_ABAJO
-    (35) token_base -> . SONIDO_LARGO
-    (36) token_base -> . SONIDO_CORTO
-    (37) token_base -> . SONIDO_REPETIDO
-    (38) token_base -> . SONIDO_AGUDO
-    (39) token_base -> . SONIDO_GRAVE
-    (40) token_base -> . SONIDO_SUAVE
-    (41) token_base -> . CABEZA_SI
-    (42) token_base -> . CABEZA_NO
-    (43) token_base -> . CABEZA_LADO
-    (44) token_base -> . INCLINA_CUERPO
-    (45) token_base -> . ACERCA_CUERPO
-    (46) token_base -> . ALEJA_CUERPO
-    (47) token_base -> . SENALA_PROPIO
-    (48) token_base -> . SENALA_EXTERNO
-    (49) token_base -> . ENCOGE_HOMBROS
-    (50) token_base -> . LEVANTA_BRAZO
-    (51) token_base -> . CIERRA_OJOS
-    (52) token_base -> . ABRE_OJOS
-    (53) token_base -> . FRUNCE_CENO
-    (54) token_base -> . SONRIE
-    (55) token_base -> . LLANTO
-    (56) token_base -> . BOCA_ABIERTA
-    (57) token_base -> . MIRA_ARRIBA
-    (58) token_base -> . MIRA_ABAJO
-    (59) token_base -> . MIRA_OBJETO
-    (60) token_base -> . PARPADEO_RAPIDO
-    (61) token_base -> . RAPIDO
-    (62) token_base -> . LENTO
-    (63) token_base -> . DOBLE
-    (64) token_base -> . TRIPLE
-    (65) token_base -> . PAUSA
+    (17) token_base -> . UFF
+    (18) token_base -> . AY
+    (19) token_base -> . ANA
+    (20) token_base -> . BAH
+    (21) token_base -> . PFF
+    (22) token_base -> . SENALA
+    (23) token_base -> . PALMA_ARRIBA
+    (24) token_base -> . PALMA_ABAJO
+    (25) token_base -> . PUNO
+    (26) token_base -> . MANO_ABIERTA
+    (27) token_base -> . TOCA
+    (28) token_base -> . AGITA
+    (29) token_base -> . APUNTA_SI
+    (30) token_base -> . JUNTA_DEDOS
+    (31) token_base -> . SEPARA_MANOS
+    (32) token_base -> . DEDOINDICE_BOCA
+    (33) token_base -> . MUEVE_PULGARES
+    (34) token_base -> . MANO_DERECHA_A_IZQUIERDA
+    (35) token_base -> . MANOS_PALMAS_HACIA_ARRIBA
+    (36) token_base -> . SONIDO_LARGO
+    (37) token_base -> . SONIDO_CORTO
+    (38) token_base -> . SONIDO_REPETIDO
+    (39) token_base -> . SONIDO_AGUDO
+    (40) token_base -> . SONIDO_GRAVE
+    (41) token_base -> . SONIDO_SUAVE
+    (42) token_base -> . SONIDO_RONQUIDO
+    (43) token_base -> . CABEZA_SI
+    (44) token_base -> . CABEZA_NO
+    (45) token_base -> . CABEZA_LADO
+    (46) token_base -> . INCLINA_CUERPO
+    (47) token_base -> . ACERCA_CUERPO
+    (48) token_base -> . ALEJA_CUERPO
+    (49) token_base -> . SENALA_PROPIO
+    (50) token_base -> . SENALA_EXTERNO
+    (51) token_base -> . ENCOGE_HOMBROS
+    (52) token_base -> . LEVANTA_BRAZO
+    (53) token_base -> . CIERRA_OJOS
+    (54) token_base -> . ABRE_OJOS
+    (55) token_base -> . FRUNCE_CENO
+    (56) token_base -> . SONRIE
+    (57) token_base -> . LLANTO
+    (58) token_base -> . BOCA_ABIERTA
+    (59) token_base -> . MIRA_ARRIBA
+    (60) token_base -> . MIRA_ABAJO
+    (61) token_base -> . MIRA_OBJETO
+    (62) token_base -> . PARPADEO_RAPIDO
+    (63) token_base -> . RAPIDO
+    (64) token_base -> . LENTO
+    (65) token_base -> . DOBLE
+    (66) token_base -> . TRIPLE
+    (67) token_base -> . PAUSA
 
     NEG             shift and go to state 7
     MMM             shift and go to state 8
@@ -527,57 +541,59 @@ state 7
     UUH             shift and go to state 11
     OH              shift and go to state 12
     SHH             shift and go to state 13
-    HMM             shift and go to state 14
-    UFF             shift and go to state 15
-    AY              shift and go to state 16
-    ANA             shift and go to state 17
-    BAH             shift and go to state 18
-    PFF             shift and go to state 19
-    SENALA          shift and go to state 20
-    PALMA_ARRIBA    shift and go to state 21
-    PALMA_ABAJO     shift and go to state 22
-    PUNO            shift and go to state 23
-    MANO_ABIERTA    shift and go to state 24
-    TOCA            shift and go to state 25
-    AGITA           shift and go to state 26
-    APUNTA_SI       shift and go to state 27
-    JUNTA_DEDOS     shift and go to state 28
-    SEPARA_MANOS    shift and go to state 29
-    PULGAR_ARRIBA   shift and go to state 30
-    PULGAR_ABAJO    shift and go to state 31
-    SONIDO_LARGO    shift and go to state 32
-    SONIDO_CORTO    shift and go to state 33
-    SONIDO_REPETIDO shift and go to state 34
-    SONIDO_AGUDO    shift and go to state 35
-    SONIDO_GRAVE    shift and go to state 36
-    SONIDO_SUAVE    shift and go to state 37
-    CABEZA_SI       shift and go to state 38
-    CABEZA_NO       shift and go to state 39
-    CABEZA_LADO     shift and go to state 40
-    INCLINA_CUERPO  shift and go to state 41
-    ACERCA_CUERPO   shift and go to state 42
-    ALEJA_CUERPO    shift and go to state 43
-    SENALA_PROPIO   shift and go to state 44
-    SENALA_EXTERNO  shift and go to state 45
-    ENCOGE_HOMBROS  shift and go to state 46
-    LEVANTA_BRAZO   shift and go to state 47
-    CIERRA_OJOS     shift and go to state 48
-    ABRE_OJOS       shift and go to state 49
-    FRUNCE_CENO     shift and go to state 50
-    SONRIE          shift and go to state 51
-    LLANTO          shift and go to state 52
-    BOCA_ABIERTA    shift and go to state 53
-    MIRA_ARRIBA     shift and go to state 54
-    MIRA_ABAJO      shift and go to state 55
-    MIRA_OBJETO     shift and go to state 56
-    PARPADEO_RAPIDO shift and go to state 57
-    RAPIDO          shift and go to state 58
-    LENTO           shift and go to state 59
-    DOBLE           shift and go to state 60
-    TRIPLE          shift and go to state 61
-    PAUSA           shift and go to state 62
+    UFF             shift and go to state 14
+    AY              shift and go to state 15
+    ANA             shift and go to state 16
+    BAH             shift and go to state 17
+    PFF             shift and go to state 18
+    SENALA          shift and go to state 19
+    PALMA_ARRIBA    shift and go to state 20
+    PALMA_ABAJO     shift and go to state 21
+    PUNO            shift and go to state 22
+    MANO_ABIERTA    shift and go to state 23
+    TOCA            shift and go to state 24
+    AGITA           shift and go to state 25
+    APUNTA_SI       shift and go to state 26
+    JUNTA_DEDOS     shift and go to state 27
+    SEPARA_MANOS    shift and go to state 28
+    DEDOINDICE_BOCA shift and go to state 29
+    MUEVE_PULGARES  shift and go to state 30
+    MANO_DERECHA_A_IZQUIERDA shift and go to state 31
+    MANOS_PALMAS_HACIA_ARRIBA shift and go to state 32
+    SONIDO_LARGO    shift and go to state 33
+    SONIDO_CORTO    shift and go to state 34
+    SONIDO_REPETIDO shift and go to state 35
+    SONIDO_AGUDO    shift and go to state 36
+    SONIDO_GRAVE    shift and go to state 37
+    SONIDO_SUAVE    shift and go to state 38
+    SONIDO_RONQUIDO shift and go to state 39
+    CABEZA_SI       shift and go to state 40
+    CABEZA_NO       shift and go to state 41
+    CABEZA_LADO     shift and go to state 42
+    INCLINA_CUERPO  shift and go to state 43
+    ACERCA_CUERPO   shift and go to state 44
+    ALEJA_CUERPO    shift and go to state 45
+    SENALA_PROPIO   shift and go to state 46
+    SENALA_EXTERNO  shift and go to state 47
+    ENCOGE_HOMBROS  shift and go to state 48
+    LEVANTA_BRAZO   shift and go to state 49
+    CIERRA_OJOS     shift and go to state 50
+    ABRE_OJOS       shift and go to state 51
+    FRUNCE_CENO     shift and go to state 52
+    SONRIE          shift and go to state 53
+    LLANTO          shift and go to state 54
+    BOCA_ABIERTA    shift and go to state 55
+    MIRA_ARRIBA     shift and go to state 56
+    MIRA_ABAJO      shift and go to state 57
+    MIRA_OBJETO     shift and go to state 58
+    PARPADEO_RAPIDO shift and go to state 59
+    RAPIDO          shift and go to state 60
+    LENTO           shift and go to state 61
+    DOBLE           shift and go to state 62
+    TRIPLE          shift and go to state 63
+    PAUSA           shift and go to state 64
 
-    termino                        shift and go to state 68
+    termino                        shift and go to state 70
     token_base                     shift and go to state 6
 
 state 8
@@ -648,544 +664,566 @@ state 13
 
 state 14
 
-    (17) token_base -> HMM .
+    (17) token_base -> UFF .
 
-    URGENTE         reduce using rule 17 (token_base -> HMM .)
-    MAS             reduce using rule 17 (token_base -> HMM .)
-    O               reduce using rule 17 (token_base -> HMM .)
-    FIN_EXPR        reduce using rule 17 (token_base -> HMM .)
-    $end            reduce using rule 17 (token_base -> HMM .)
+    URGENTE         reduce using rule 17 (token_base -> UFF .)
+    MAS             reduce using rule 17 (token_base -> UFF .)
+    O               reduce using rule 17 (token_base -> UFF .)
+    FIN_EXPR        reduce using rule 17 (token_base -> UFF .)
+    $end            reduce using rule 17 (token_base -> UFF .)
 
 
 state 15
 
-    (18) token_base -> UFF .
+    (18) token_base -> AY .
 
-    URGENTE         reduce using rule 18 (token_base -> UFF .)
-    MAS             reduce using rule 18 (token_base -> UFF .)
-    O               reduce using rule 18 (token_base -> UFF .)
-    FIN_EXPR        reduce using rule 18 (token_base -> UFF .)
-    $end            reduce using rule 18 (token_base -> UFF .)
+    URGENTE         reduce using rule 18 (token_base -> AY .)
+    MAS             reduce using rule 18 (token_base -> AY .)
+    O               reduce using rule 18 (token_base -> AY .)
+    FIN_EXPR        reduce using rule 18 (token_base -> AY .)
+    $end            reduce using rule 18 (token_base -> AY .)
 
 
 state 16
 
-    (19) token_base -> AY .
+    (19) token_base -> ANA .
 
-    URGENTE         reduce using rule 19 (token_base -> AY .)
-    MAS             reduce using rule 19 (token_base -> AY .)
-    O               reduce using rule 19 (token_base -> AY .)
-    FIN_EXPR        reduce using rule 19 (token_base -> AY .)
-    $end            reduce using rule 19 (token_base -> AY .)
+    URGENTE         reduce using rule 19 (token_base -> ANA .)
+    MAS             reduce using rule 19 (token_base -> ANA .)
+    O               reduce using rule 19 (token_base -> ANA .)
+    FIN_EXPR        reduce using rule 19 (token_base -> ANA .)
+    $end            reduce using rule 19 (token_base -> ANA .)
 
 
 state 17
 
-    (20) token_base -> ANA .
+    (20) token_base -> BAH .
 
-    URGENTE         reduce using rule 20 (token_base -> ANA .)
-    MAS             reduce using rule 20 (token_base -> ANA .)
-    O               reduce using rule 20 (token_base -> ANA .)
-    FIN_EXPR        reduce using rule 20 (token_base -> ANA .)
-    $end            reduce using rule 20 (token_base -> ANA .)
+    URGENTE         reduce using rule 20 (token_base -> BAH .)
+    MAS             reduce using rule 20 (token_base -> BAH .)
+    O               reduce using rule 20 (token_base -> BAH .)
+    FIN_EXPR        reduce using rule 20 (token_base -> BAH .)
+    $end            reduce using rule 20 (token_base -> BAH .)
 
 
 state 18
 
-    (21) token_base -> BAH .
+    (21) token_base -> PFF .
 
-    URGENTE         reduce using rule 21 (token_base -> BAH .)
-    MAS             reduce using rule 21 (token_base -> BAH .)
-    O               reduce using rule 21 (token_base -> BAH .)
-    FIN_EXPR        reduce using rule 21 (token_base -> BAH .)
-    $end            reduce using rule 21 (token_base -> BAH .)
+    URGENTE         reduce using rule 21 (token_base -> PFF .)
+    MAS             reduce using rule 21 (token_base -> PFF .)
+    O               reduce using rule 21 (token_base -> PFF .)
+    FIN_EXPR        reduce using rule 21 (token_base -> PFF .)
+    $end            reduce using rule 21 (token_base -> PFF .)
 
 
 state 19
 
-    (22) token_base -> PFF .
+    (22) token_base -> SENALA .
 
-    URGENTE         reduce using rule 22 (token_base -> PFF .)
-    MAS             reduce using rule 22 (token_base -> PFF .)
-    O               reduce using rule 22 (token_base -> PFF .)
-    FIN_EXPR        reduce using rule 22 (token_base -> PFF .)
-    $end            reduce using rule 22 (token_base -> PFF .)
+    URGENTE         reduce using rule 22 (token_base -> SENALA .)
+    MAS             reduce using rule 22 (token_base -> SENALA .)
+    O               reduce using rule 22 (token_base -> SENALA .)
+    FIN_EXPR        reduce using rule 22 (token_base -> SENALA .)
+    $end            reduce using rule 22 (token_base -> SENALA .)
 
 
 state 20
 
-    (23) token_base -> SENALA .
+    (23) token_base -> PALMA_ARRIBA .
 
-    URGENTE         reduce using rule 23 (token_base -> SENALA .)
-    MAS             reduce using rule 23 (token_base -> SENALA .)
-    O               reduce using rule 23 (token_base -> SENALA .)
-    FIN_EXPR        reduce using rule 23 (token_base -> SENALA .)
-    $end            reduce using rule 23 (token_base -> SENALA .)
+    URGENTE         reduce using rule 23 (token_base -> PALMA_ARRIBA .)
+    MAS             reduce using rule 23 (token_base -> PALMA_ARRIBA .)
+    O               reduce using rule 23 (token_base -> PALMA_ARRIBA .)
+    FIN_EXPR        reduce using rule 23 (token_base -> PALMA_ARRIBA .)
+    $end            reduce using rule 23 (token_base -> PALMA_ARRIBA .)
 
 
 state 21
 
-    (24) token_base -> PALMA_ARRIBA .
+    (24) token_base -> PALMA_ABAJO .
 
-    URGENTE         reduce using rule 24 (token_base -> PALMA_ARRIBA .)
-    MAS             reduce using rule 24 (token_base -> PALMA_ARRIBA .)
-    O               reduce using rule 24 (token_base -> PALMA_ARRIBA .)
-    FIN_EXPR        reduce using rule 24 (token_base -> PALMA_ARRIBA .)
-    $end            reduce using rule 24 (token_base -> PALMA_ARRIBA .)
+    URGENTE         reduce using rule 24 (token_base -> PALMA_ABAJO .)
+    MAS             reduce using rule 24 (token_base -> PALMA_ABAJO .)
+    O               reduce using rule 24 (token_base -> PALMA_ABAJO .)
+    FIN_EXPR        reduce using rule 24 (token_base -> PALMA_ABAJO .)
+    $end            reduce using rule 24 (token_base -> PALMA_ABAJO .)
 
 
 state 22
 
-    (25) token_base -> PALMA_ABAJO .
+    (25) token_base -> PUNO .
 
-    URGENTE         reduce using rule 25 (token_base -> PALMA_ABAJO .)
-    MAS             reduce using rule 25 (token_base -> PALMA_ABAJO .)
-    O               reduce using rule 25 (token_base -> PALMA_ABAJO .)
-    FIN_EXPR        reduce using rule 25 (token_base -> PALMA_ABAJO .)
-    $end            reduce using rule 25 (token_base -> PALMA_ABAJO .)
+    URGENTE         reduce using rule 25 (token_base -> PUNO .)
+    MAS             reduce using rule 25 (token_base -> PUNO .)
+    O               reduce using rule 25 (token_base -> PUNO .)
+    FIN_EXPR        reduce using rule 25 (token_base -> PUNO .)
+    $end            reduce using rule 25 (token_base -> PUNO .)
 
 
 state 23
 
-    (26) token_base -> PUNO .
+    (26) token_base -> MANO_ABIERTA .
 
-    URGENTE         reduce using rule 26 (token_base -> PUNO .)
-    MAS             reduce using rule 26 (token_base -> PUNO .)
-    O               reduce using rule 26 (token_base -> PUNO .)
-    FIN_EXPR        reduce using rule 26 (token_base -> PUNO .)
-    $end            reduce using rule 26 (token_base -> PUNO .)
+    URGENTE         reduce using rule 26 (token_base -> MANO_ABIERTA .)
+    MAS             reduce using rule 26 (token_base -> MANO_ABIERTA .)
+    O               reduce using rule 26 (token_base -> MANO_ABIERTA .)
+    FIN_EXPR        reduce using rule 26 (token_base -> MANO_ABIERTA .)
+    $end            reduce using rule 26 (token_base -> MANO_ABIERTA .)
 
 
 state 24
 
-    (27) token_base -> MANO_ABIERTA .
+    (27) token_base -> TOCA .
 
-    URGENTE         reduce using rule 27 (token_base -> MANO_ABIERTA .)
-    MAS             reduce using rule 27 (token_base -> MANO_ABIERTA .)
-    O               reduce using rule 27 (token_base -> MANO_ABIERTA .)
-    FIN_EXPR        reduce using rule 27 (token_base -> MANO_ABIERTA .)
-    $end            reduce using rule 27 (token_base -> MANO_ABIERTA .)
+    URGENTE         reduce using rule 27 (token_base -> TOCA .)
+    MAS             reduce using rule 27 (token_base -> TOCA .)
+    O               reduce using rule 27 (token_base -> TOCA .)
+    FIN_EXPR        reduce using rule 27 (token_base -> TOCA .)
+    $end            reduce using rule 27 (token_base -> TOCA .)
 
 
 state 25
 
-    (28) token_base -> TOCA .
+    (28) token_base -> AGITA .
 
-    URGENTE         reduce using rule 28 (token_base -> TOCA .)
-    MAS             reduce using rule 28 (token_base -> TOCA .)
-    O               reduce using rule 28 (token_base -> TOCA .)
-    FIN_EXPR        reduce using rule 28 (token_base -> TOCA .)
-    $end            reduce using rule 28 (token_base -> TOCA .)
+    URGENTE         reduce using rule 28 (token_base -> AGITA .)
+    MAS             reduce using rule 28 (token_base -> AGITA .)
+    O               reduce using rule 28 (token_base -> AGITA .)
+    FIN_EXPR        reduce using rule 28 (token_base -> AGITA .)
+    $end            reduce using rule 28 (token_base -> AGITA .)
 
 
 state 26
 
-    (29) token_base -> AGITA .
+    (29) token_base -> APUNTA_SI .
 
-    URGENTE         reduce using rule 29 (token_base -> AGITA .)
-    MAS             reduce using rule 29 (token_base -> AGITA .)
-    O               reduce using rule 29 (token_base -> AGITA .)
-    FIN_EXPR        reduce using rule 29 (token_base -> AGITA .)
-    $end            reduce using rule 29 (token_base -> AGITA .)
+    URGENTE         reduce using rule 29 (token_base -> APUNTA_SI .)
+    MAS             reduce using rule 29 (token_base -> APUNTA_SI .)
+    O               reduce using rule 29 (token_base -> APUNTA_SI .)
+    FIN_EXPR        reduce using rule 29 (token_base -> APUNTA_SI .)
+    $end            reduce using rule 29 (token_base -> APUNTA_SI .)
 
 
 state 27
 
-    (30) token_base -> APUNTA_SI .
+    (30) token_base -> JUNTA_DEDOS .
 
-    URGENTE         reduce using rule 30 (token_base -> APUNTA_SI .)
-    MAS             reduce using rule 30 (token_base -> APUNTA_SI .)
-    O               reduce using rule 30 (token_base -> APUNTA_SI .)
-    FIN_EXPR        reduce using rule 30 (token_base -> APUNTA_SI .)
-    $end            reduce using rule 30 (token_base -> APUNTA_SI .)
+    URGENTE         reduce using rule 30 (token_base -> JUNTA_DEDOS .)
+    MAS             reduce using rule 30 (token_base -> JUNTA_DEDOS .)
+    O               reduce using rule 30 (token_base -> JUNTA_DEDOS .)
+    FIN_EXPR        reduce using rule 30 (token_base -> JUNTA_DEDOS .)
+    $end            reduce using rule 30 (token_base -> JUNTA_DEDOS .)
 
 
 state 28
 
-    (31) token_base -> JUNTA_DEDOS .
+    (31) token_base -> SEPARA_MANOS .
 
-    URGENTE         reduce using rule 31 (token_base -> JUNTA_DEDOS .)
-    MAS             reduce using rule 31 (token_base -> JUNTA_DEDOS .)
-    O               reduce using rule 31 (token_base -> JUNTA_DEDOS .)
-    FIN_EXPR        reduce using rule 31 (token_base -> JUNTA_DEDOS .)
-    $end            reduce using rule 31 (token_base -> JUNTA_DEDOS .)
+    URGENTE         reduce using rule 31 (token_base -> SEPARA_MANOS .)
+    MAS             reduce using rule 31 (token_base -> SEPARA_MANOS .)
+    O               reduce using rule 31 (token_base -> SEPARA_MANOS .)
+    FIN_EXPR        reduce using rule 31 (token_base -> SEPARA_MANOS .)
+    $end            reduce using rule 31 (token_base -> SEPARA_MANOS .)
 
 
 state 29
 
-    (32) token_base -> SEPARA_MANOS .
+    (32) token_base -> DEDOINDICE_BOCA .
 
-    URGENTE         reduce using rule 32 (token_base -> SEPARA_MANOS .)
-    MAS             reduce using rule 32 (token_base -> SEPARA_MANOS .)
-    O               reduce using rule 32 (token_base -> SEPARA_MANOS .)
-    FIN_EXPR        reduce using rule 32 (token_base -> SEPARA_MANOS .)
-    $end            reduce using rule 32 (token_base -> SEPARA_MANOS .)
+    URGENTE         reduce using rule 32 (token_base -> DEDOINDICE_BOCA .)
+    MAS             reduce using rule 32 (token_base -> DEDOINDICE_BOCA .)
+    O               reduce using rule 32 (token_base -> DEDOINDICE_BOCA .)
+    FIN_EXPR        reduce using rule 32 (token_base -> DEDOINDICE_BOCA .)
+    $end            reduce using rule 32 (token_base -> DEDOINDICE_BOCA .)
 
 
 state 30
 
-    (33) token_base -> PULGAR_ARRIBA .
+    (33) token_base -> MUEVE_PULGARES .
 
-    URGENTE         reduce using rule 33 (token_base -> PULGAR_ARRIBA .)
-    MAS             reduce using rule 33 (token_base -> PULGAR_ARRIBA .)
-    O               reduce using rule 33 (token_base -> PULGAR_ARRIBA .)
-    FIN_EXPR        reduce using rule 33 (token_base -> PULGAR_ARRIBA .)
-    $end            reduce using rule 33 (token_base -> PULGAR_ARRIBA .)
+    URGENTE         reduce using rule 33 (token_base -> MUEVE_PULGARES .)
+    MAS             reduce using rule 33 (token_base -> MUEVE_PULGARES .)
+    O               reduce using rule 33 (token_base -> MUEVE_PULGARES .)
+    FIN_EXPR        reduce using rule 33 (token_base -> MUEVE_PULGARES .)
+    $end            reduce using rule 33 (token_base -> MUEVE_PULGARES .)
 
 
 state 31
 
-    (34) token_base -> PULGAR_ABAJO .
+    (34) token_base -> MANO_DERECHA_A_IZQUIERDA .
 
-    URGENTE         reduce using rule 34 (token_base -> PULGAR_ABAJO .)
-    MAS             reduce using rule 34 (token_base -> PULGAR_ABAJO .)
-    O               reduce using rule 34 (token_base -> PULGAR_ABAJO .)
-    FIN_EXPR        reduce using rule 34 (token_base -> PULGAR_ABAJO .)
-    $end            reduce using rule 34 (token_base -> PULGAR_ABAJO .)
+    URGENTE         reduce using rule 34 (token_base -> MANO_DERECHA_A_IZQUIERDA .)
+    MAS             reduce using rule 34 (token_base -> MANO_DERECHA_A_IZQUIERDA .)
+    O               reduce using rule 34 (token_base -> MANO_DERECHA_A_IZQUIERDA .)
+    FIN_EXPR        reduce using rule 34 (token_base -> MANO_DERECHA_A_IZQUIERDA .)
+    $end            reduce using rule 34 (token_base -> MANO_DERECHA_A_IZQUIERDA .)
 
 
 state 32
 
-    (35) token_base -> SONIDO_LARGO .
+    (35) token_base -> MANOS_PALMAS_HACIA_ARRIBA .
 
-    URGENTE         reduce using rule 35 (token_base -> SONIDO_LARGO .)
-    MAS             reduce using rule 35 (token_base -> SONIDO_LARGO .)
-    O               reduce using rule 35 (token_base -> SONIDO_LARGO .)
-    FIN_EXPR        reduce using rule 35 (token_base -> SONIDO_LARGO .)
-    $end            reduce using rule 35 (token_base -> SONIDO_LARGO .)
+    URGENTE         reduce using rule 35 (token_base -> MANOS_PALMAS_HACIA_ARRIBA .)
+    MAS             reduce using rule 35 (token_base -> MANOS_PALMAS_HACIA_ARRIBA .)
+    O               reduce using rule 35 (token_base -> MANOS_PALMAS_HACIA_ARRIBA .)
+    FIN_EXPR        reduce using rule 35 (token_base -> MANOS_PALMAS_HACIA_ARRIBA .)
+    $end            reduce using rule 35 (token_base -> MANOS_PALMAS_HACIA_ARRIBA .)
 
 
 state 33
 
-    (36) token_base -> SONIDO_CORTO .
+    (36) token_base -> SONIDO_LARGO .
 
-    URGENTE         reduce using rule 36 (token_base -> SONIDO_CORTO .)
-    MAS             reduce using rule 36 (token_base -> SONIDO_CORTO .)
-    O               reduce using rule 36 (token_base -> SONIDO_CORTO .)
-    FIN_EXPR        reduce using rule 36 (token_base -> SONIDO_CORTO .)
-    $end            reduce using rule 36 (token_base -> SONIDO_CORTO .)
+    URGENTE         reduce using rule 36 (token_base -> SONIDO_LARGO .)
+    MAS             reduce using rule 36 (token_base -> SONIDO_LARGO .)
+    O               reduce using rule 36 (token_base -> SONIDO_LARGO .)
+    FIN_EXPR        reduce using rule 36 (token_base -> SONIDO_LARGO .)
+    $end            reduce using rule 36 (token_base -> SONIDO_LARGO .)
 
 
 state 34
 
-    (37) token_base -> SONIDO_REPETIDO .
+    (37) token_base -> SONIDO_CORTO .
 
-    URGENTE         reduce using rule 37 (token_base -> SONIDO_REPETIDO .)
-    MAS             reduce using rule 37 (token_base -> SONIDO_REPETIDO .)
-    O               reduce using rule 37 (token_base -> SONIDO_REPETIDO .)
-    FIN_EXPR        reduce using rule 37 (token_base -> SONIDO_REPETIDO .)
-    $end            reduce using rule 37 (token_base -> SONIDO_REPETIDO .)
+    URGENTE         reduce using rule 37 (token_base -> SONIDO_CORTO .)
+    MAS             reduce using rule 37 (token_base -> SONIDO_CORTO .)
+    O               reduce using rule 37 (token_base -> SONIDO_CORTO .)
+    FIN_EXPR        reduce using rule 37 (token_base -> SONIDO_CORTO .)
+    $end            reduce using rule 37 (token_base -> SONIDO_CORTO .)
 
 
 state 35
 
-    (38) token_base -> SONIDO_AGUDO .
+    (38) token_base -> SONIDO_REPETIDO .
 
-    URGENTE         reduce using rule 38 (token_base -> SONIDO_AGUDO .)
-    MAS             reduce using rule 38 (token_base -> SONIDO_AGUDO .)
-    O               reduce using rule 38 (token_base -> SONIDO_AGUDO .)
-    FIN_EXPR        reduce using rule 38 (token_base -> SONIDO_AGUDO .)
-    $end            reduce using rule 38 (token_base -> SONIDO_AGUDO .)
+    URGENTE         reduce using rule 38 (token_base -> SONIDO_REPETIDO .)
+    MAS             reduce using rule 38 (token_base -> SONIDO_REPETIDO .)
+    O               reduce using rule 38 (token_base -> SONIDO_REPETIDO .)
+    FIN_EXPR        reduce using rule 38 (token_base -> SONIDO_REPETIDO .)
+    $end            reduce using rule 38 (token_base -> SONIDO_REPETIDO .)
 
 
 state 36
 
-    (39) token_base -> SONIDO_GRAVE .
+    (39) token_base -> SONIDO_AGUDO .
 
-    URGENTE         reduce using rule 39 (token_base -> SONIDO_GRAVE .)
-    MAS             reduce using rule 39 (token_base -> SONIDO_GRAVE .)
-    O               reduce using rule 39 (token_base -> SONIDO_GRAVE .)
-    FIN_EXPR        reduce using rule 39 (token_base -> SONIDO_GRAVE .)
-    $end            reduce using rule 39 (token_base -> SONIDO_GRAVE .)
+    URGENTE         reduce using rule 39 (token_base -> SONIDO_AGUDO .)
+    MAS             reduce using rule 39 (token_base -> SONIDO_AGUDO .)
+    O               reduce using rule 39 (token_base -> SONIDO_AGUDO .)
+    FIN_EXPR        reduce using rule 39 (token_base -> SONIDO_AGUDO .)
+    $end            reduce using rule 39 (token_base -> SONIDO_AGUDO .)
 
 
 state 37
 
-    (40) token_base -> SONIDO_SUAVE .
+    (40) token_base -> SONIDO_GRAVE .
 
-    URGENTE         reduce using rule 40 (token_base -> SONIDO_SUAVE .)
-    MAS             reduce using rule 40 (token_base -> SONIDO_SUAVE .)
-    O               reduce using rule 40 (token_base -> SONIDO_SUAVE .)
-    FIN_EXPR        reduce using rule 40 (token_base -> SONIDO_SUAVE .)
-    $end            reduce using rule 40 (token_base -> SONIDO_SUAVE .)
+    URGENTE         reduce using rule 40 (token_base -> SONIDO_GRAVE .)
+    MAS             reduce using rule 40 (token_base -> SONIDO_GRAVE .)
+    O               reduce using rule 40 (token_base -> SONIDO_GRAVE .)
+    FIN_EXPR        reduce using rule 40 (token_base -> SONIDO_GRAVE .)
+    $end            reduce using rule 40 (token_base -> SONIDO_GRAVE .)
 
 
 state 38
 
-    (41) token_base -> CABEZA_SI .
+    (41) token_base -> SONIDO_SUAVE .
 
-    URGENTE         reduce using rule 41 (token_base -> CABEZA_SI .)
-    MAS             reduce using rule 41 (token_base -> CABEZA_SI .)
-    O               reduce using rule 41 (token_base -> CABEZA_SI .)
-    FIN_EXPR        reduce using rule 41 (token_base -> CABEZA_SI .)
-    $end            reduce using rule 41 (token_base -> CABEZA_SI .)
+    URGENTE         reduce using rule 41 (token_base -> SONIDO_SUAVE .)
+    MAS             reduce using rule 41 (token_base -> SONIDO_SUAVE .)
+    O               reduce using rule 41 (token_base -> SONIDO_SUAVE .)
+    FIN_EXPR        reduce using rule 41 (token_base -> SONIDO_SUAVE .)
+    $end            reduce using rule 41 (token_base -> SONIDO_SUAVE .)
 
 
 state 39
 
-    (42) token_base -> CABEZA_NO .
+    (42) token_base -> SONIDO_RONQUIDO .
 
-    URGENTE         reduce using rule 42 (token_base -> CABEZA_NO .)
-    MAS             reduce using rule 42 (token_base -> CABEZA_NO .)
-    O               reduce using rule 42 (token_base -> CABEZA_NO .)
-    FIN_EXPR        reduce using rule 42 (token_base -> CABEZA_NO .)
-    $end            reduce using rule 42 (token_base -> CABEZA_NO .)
+    URGENTE         reduce using rule 42 (token_base -> SONIDO_RONQUIDO .)
+    MAS             reduce using rule 42 (token_base -> SONIDO_RONQUIDO .)
+    O               reduce using rule 42 (token_base -> SONIDO_RONQUIDO .)
+    FIN_EXPR        reduce using rule 42 (token_base -> SONIDO_RONQUIDO .)
+    $end            reduce using rule 42 (token_base -> SONIDO_RONQUIDO .)
 
 
 state 40
 
-    (43) token_base -> CABEZA_LADO .
+    (43) token_base -> CABEZA_SI .
 
-    URGENTE         reduce using rule 43 (token_base -> CABEZA_LADO .)
-    MAS             reduce using rule 43 (token_base -> CABEZA_LADO .)
-    O               reduce using rule 43 (token_base -> CABEZA_LADO .)
-    FIN_EXPR        reduce using rule 43 (token_base -> CABEZA_LADO .)
-    $end            reduce using rule 43 (token_base -> CABEZA_LADO .)
+    URGENTE         reduce using rule 43 (token_base -> CABEZA_SI .)
+    MAS             reduce using rule 43 (token_base -> CABEZA_SI .)
+    O               reduce using rule 43 (token_base -> CABEZA_SI .)
+    FIN_EXPR        reduce using rule 43 (token_base -> CABEZA_SI .)
+    $end            reduce using rule 43 (token_base -> CABEZA_SI .)
 
 
 state 41
 
-    (44) token_base -> INCLINA_CUERPO .
+    (44) token_base -> CABEZA_NO .
 
-    URGENTE         reduce using rule 44 (token_base -> INCLINA_CUERPO .)
-    MAS             reduce using rule 44 (token_base -> INCLINA_CUERPO .)
-    O               reduce using rule 44 (token_base -> INCLINA_CUERPO .)
-    FIN_EXPR        reduce using rule 44 (token_base -> INCLINA_CUERPO .)
-    $end            reduce using rule 44 (token_base -> INCLINA_CUERPO .)
+    URGENTE         reduce using rule 44 (token_base -> CABEZA_NO .)
+    MAS             reduce using rule 44 (token_base -> CABEZA_NO .)
+    O               reduce using rule 44 (token_base -> CABEZA_NO .)
+    FIN_EXPR        reduce using rule 44 (token_base -> CABEZA_NO .)
+    $end            reduce using rule 44 (token_base -> CABEZA_NO .)
 
 
 state 42
 
-    (45) token_base -> ACERCA_CUERPO .
+    (45) token_base -> CABEZA_LADO .
 
-    URGENTE         reduce using rule 45 (token_base -> ACERCA_CUERPO .)
-    MAS             reduce using rule 45 (token_base -> ACERCA_CUERPO .)
-    O               reduce using rule 45 (token_base -> ACERCA_CUERPO .)
-    FIN_EXPR        reduce using rule 45 (token_base -> ACERCA_CUERPO .)
-    $end            reduce using rule 45 (token_base -> ACERCA_CUERPO .)
+    URGENTE         reduce using rule 45 (token_base -> CABEZA_LADO .)
+    MAS             reduce using rule 45 (token_base -> CABEZA_LADO .)
+    O               reduce using rule 45 (token_base -> CABEZA_LADO .)
+    FIN_EXPR        reduce using rule 45 (token_base -> CABEZA_LADO .)
+    $end            reduce using rule 45 (token_base -> CABEZA_LADO .)
 
 
 state 43
 
-    (46) token_base -> ALEJA_CUERPO .
+    (46) token_base -> INCLINA_CUERPO .
 
-    URGENTE         reduce using rule 46 (token_base -> ALEJA_CUERPO .)
-    MAS             reduce using rule 46 (token_base -> ALEJA_CUERPO .)
-    O               reduce using rule 46 (token_base -> ALEJA_CUERPO .)
-    FIN_EXPR        reduce using rule 46 (token_base -> ALEJA_CUERPO .)
-    $end            reduce using rule 46 (token_base -> ALEJA_CUERPO .)
+    URGENTE         reduce using rule 46 (token_base -> INCLINA_CUERPO .)
+    MAS             reduce using rule 46 (token_base -> INCLINA_CUERPO .)
+    O               reduce using rule 46 (token_base -> INCLINA_CUERPO .)
+    FIN_EXPR        reduce using rule 46 (token_base -> INCLINA_CUERPO .)
+    $end            reduce using rule 46 (token_base -> INCLINA_CUERPO .)
 
 
 state 44
 
-    (47) token_base -> SENALA_PROPIO .
+    (47) token_base -> ACERCA_CUERPO .
 
-    URGENTE         reduce using rule 47 (token_base -> SENALA_PROPIO .)
-    MAS             reduce using rule 47 (token_base -> SENALA_PROPIO .)
-    O               reduce using rule 47 (token_base -> SENALA_PROPIO .)
-    FIN_EXPR        reduce using rule 47 (token_base -> SENALA_PROPIO .)
-    $end            reduce using rule 47 (token_base -> SENALA_PROPIO .)
+    URGENTE         reduce using rule 47 (token_base -> ACERCA_CUERPO .)
+    MAS             reduce using rule 47 (token_base -> ACERCA_CUERPO .)
+    O               reduce using rule 47 (token_base -> ACERCA_CUERPO .)
+    FIN_EXPR        reduce using rule 47 (token_base -> ACERCA_CUERPO .)
+    $end            reduce using rule 47 (token_base -> ACERCA_CUERPO .)
 
 
 state 45
 
-    (48) token_base -> SENALA_EXTERNO .
+    (48) token_base -> ALEJA_CUERPO .
 
-    URGENTE         reduce using rule 48 (token_base -> SENALA_EXTERNO .)
-    MAS             reduce using rule 48 (token_base -> SENALA_EXTERNO .)
-    O               reduce using rule 48 (token_base -> SENALA_EXTERNO .)
-    FIN_EXPR        reduce using rule 48 (token_base -> SENALA_EXTERNO .)
-    $end            reduce using rule 48 (token_base -> SENALA_EXTERNO .)
+    URGENTE         reduce using rule 48 (token_base -> ALEJA_CUERPO .)
+    MAS             reduce using rule 48 (token_base -> ALEJA_CUERPO .)
+    O               reduce using rule 48 (token_base -> ALEJA_CUERPO .)
+    FIN_EXPR        reduce using rule 48 (token_base -> ALEJA_CUERPO .)
+    $end            reduce using rule 48 (token_base -> ALEJA_CUERPO .)
 
 
 state 46
 
-    (49) token_base -> ENCOGE_HOMBROS .
+    (49) token_base -> SENALA_PROPIO .
 
-    URGENTE         reduce using rule 49 (token_base -> ENCOGE_HOMBROS .)
-    MAS             reduce using rule 49 (token_base -> ENCOGE_HOMBROS .)
-    O               reduce using rule 49 (token_base -> ENCOGE_HOMBROS .)
-    FIN_EXPR        reduce using rule 49 (token_base -> ENCOGE_HOMBROS .)
-    $end            reduce using rule 49 (token_base -> ENCOGE_HOMBROS .)
+    URGENTE         reduce using rule 49 (token_base -> SENALA_PROPIO .)
+    MAS             reduce using rule 49 (token_base -> SENALA_PROPIO .)
+    O               reduce using rule 49 (token_base -> SENALA_PROPIO .)
+    FIN_EXPR        reduce using rule 49 (token_base -> SENALA_PROPIO .)
+    $end            reduce using rule 49 (token_base -> SENALA_PROPIO .)
 
 
 state 47
 
-    (50) token_base -> LEVANTA_BRAZO .
+    (50) token_base -> SENALA_EXTERNO .
 
-    URGENTE         reduce using rule 50 (token_base -> LEVANTA_BRAZO .)
-    MAS             reduce using rule 50 (token_base -> LEVANTA_BRAZO .)
-    O               reduce using rule 50 (token_base -> LEVANTA_BRAZO .)
-    FIN_EXPR        reduce using rule 50 (token_base -> LEVANTA_BRAZO .)
-    $end            reduce using rule 50 (token_base -> LEVANTA_BRAZO .)
+    URGENTE         reduce using rule 50 (token_base -> SENALA_EXTERNO .)
+    MAS             reduce using rule 50 (token_base -> SENALA_EXTERNO .)
+    O               reduce using rule 50 (token_base -> SENALA_EXTERNO .)
+    FIN_EXPR        reduce using rule 50 (token_base -> SENALA_EXTERNO .)
+    $end            reduce using rule 50 (token_base -> SENALA_EXTERNO .)
 
 
 state 48
 
-    (51) token_base -> CIERRA_OJOS .
+    (51) token_base -> ENCOGE_HOMBROS .
 
-    URGENTE         reduce using rule 51 (token_base -> CIERRA_OJOS .)
-    MAS             reduce using rule 51 (token_base -> CIERRA_OJOS .)
-    O               reduce using rule 51 (token_base -> CIERRA_OJOS .)
-    FIN_EXPR        reduce using rule 51 (token_base -> CIERRA_OJOS .)
-    $end            reduce using rule 51 (token_base -> CIERRA_OJOS .)
+    URGENTE         reduce using rule 51 (token_base -> ENCOGE_HOMBROS .)
+    MAS             reduce using rule 51 (token_base -> ENCOGE_HOMBROS .)
+    O               reduce using rule 51 (token_base -> ENCOGE_HOMBROS .)
+    FIN_EXPR        reduce using rule 51 (token_base -> ENCOGE_HOMBROS .)
+    $end            reduce using rule 51 (token_base -> ENCOGE_HOMBROS .)
 
 
 state 49
 
-    (52) token_base -> ABRE_OJOS .
+    (52) token_base -> LEVANTA_BRAZO .
 
-    URGENTE         reduce using rule 52 (token_base -> ABRE_OJOS .)
-    MAS             reduce using rule 52 (token_base -> ABRE_OJOS .)
-    O               reduce using rule 52 (token_base -> ABRE_OJOS .)
-    FIN_EXPR        reduce using rule 52 (token_base -> ABRE_OJOS .)
-    $end            reduce using rule 52 (token_base -> ABRE_OJOS .)
+    URGENTE         reduce using rule 52 (token_base -> LEVANTA_BRAZO .)
+    MAS             reduce using rule 52 (token_base -> LEVANTA_BRAZO .)
+    O               reduce using rule 52 (token_base -> LEVANTA_BRAZO .)
+    FIN_EXPR        reduce using rule 52 (token_base -> LEVANTA_BRAZO .)
+    $end            reduce using rule 52 (token_base -> LEVANTA_BRAZO .)
 
 
 state 50
 
-    (53) token_base -> FRUNCE_CENO .
+    (53) token_base -> CIERRA_OJOS .
 
-    URGENTE         reduce using rule 53 (token_base -> FRUNCE_CENO .)
-    MAS             reduce using rule 53 (token_base -> FRUNCE_CENO .)
-    O               reduce using rule 53 (token_base -> FRUNCE_CENO .)
-    FIN_EXPR        reduce using rule 53 (token_base -> FRUNCE_CENO .)
-    $end            reduce using rule 53 (token_base -> FRUNCE_CENO .)
+    URGENTE         reduce using rule 53 (token_base -> CIERRA_OJOS .)
+    MAS             reduce using rule 53 (token_base -> CIERRA_OJOS .)
+    O               reduce using rule 53 (token_base -> CIERRA_OJOS .)
+    FIN_EXPR        reduce using rule 53 (token_base -> CIERRA_OJOS .)
+    $end            reduce using rule 53 (token_base -> CIERRA_OJOS .)
 
 
 state 51
 
-    (54) token_base -> SONRIE .
+    (54) token_base -> ABRE_OJOS .
 
-    URGENTE         reduce using rule 54 (token_base -> SONRIE .)
-    MAS             reduce using rule 54 (token_base -> SONRIE .)
-    O               reduce using rule 54 (token_base -> SONRIE .)
-    FIN_EXPR        reduce using rule 54 (token_base -> SONRIE .)
-    $end            reduce using rule 54 (token_base -> SONRIE .)
+    URGENTE         reduce using rule 54 (token_base -> ABRE_OJOS .)
+    MAS             reduce using rule 54 (token_base -> ABRE_OJOS .)
+    O               reduce using rule 54 (token_base -> ABRE_OJOS .)
+    FIN_EXPR        reduce using rule 54 (token_base -> ABRE_OJOS .)
+    $end            reduce using rule 54 (token_base -> ABRE_OJOS .)
 
 
 state 52
 
-    (55) token_base -> LLANTO .
+    (55) token_base -> FRUNCE_CENO .
 
-    URGENTE         reduce using rule 55 (token_base -> LLANTO .)
-    MAS             reduce using rule 55 (token_base -> LLANTO .)
-    O               reduce using rule 55 (token_base -> LLANTO .)
-    FIN_EXPR        reduce using rule 55 (token_base -> LLANTO .)
-    $end            reduce using rule 55 (token_base -> LLANTO .)
+    URGENTE         reduce using rule 55 (token_base -> FRUNCE_CENO .)
+    MAS             reduce using rule 55 (token_base -> FRUNCE_CENO .)
+    O               reduce using rule 55 (token_base -> FRUNCE_CENO .)
+    FIN_EXPR        reduce using rule 55 (token_base -> FRUNCE_CENO .)
+    $end            reduce using rule 55 (token_base -> FRUNCE_CENO .)
 
 
 state 53
 
-    (56) token_base -> BOCA_ABIERTA .
+    (56) token_base -> SONRIE .
 
-    URGENTE         reduce using rule 56 (token_base -> BOCA_ABIERTA .)
-    MAS             reduce using rule 56 (token_base -> BOCA_ABIERTA .)
-    O               reduce using rule 56 (token_base -> BOCA_ABIERTA .)
-    FIN_EXPR        reduce using rule 56 (token_base -> BOCA_ABIERTA .)
-    $end            reduce using rule 56 (token_base -> BOCA_ABIERTA .)
+    URGENTE         reduce using rule 56 (token_base -> SONRIE .)
+    MAS             reduce using rule 56 (token_base -> SONRIE .)
+    O               reduce using rule 56 (token_base -> SONRIE .)
+    FIN_EXPR        reduce using rule 56 (token_base -> SONRIE .)
+    $end            reduce using rule 56 (token_base -> SONRIE .)
 
 
 state 54
 
-    (57) token_base -> MIRA_ARRIBA .
+    (57) token_base -> LLANTO .
 
-    URGENTE         reduce using rule 57 (token_base -> MIRA_ARRIBA .)
-    MAS             reduce using rule 57 (token_base -> MIRA_ARRIBA .)
-    O               reduce using rule 57 (token_base -> MIRA_ARRIBA .)
-    FIN_EXPR        reduce using rule 57 (token_base -> MIRA_ARRIBA .)
-    $end            reduce using rule 57 (token_base -> MIRA_ARRIBA .)
+    URGENTE         reduce using rule 57 (token_base -> LLANTO .)
+    MAS             reduce using rule 57 (token_base -> LLANTO .)
+    O               reduce using rule 57 (token_base -> LLANTO .)
+    FIN_EXPR        reduce using rule 57 (token_base -> LLANTO .)
+    $end            reduce using rule 57 (token_base -> LLANTO .)
 
 
 state 55
 
-    (58) token_base -> MIRA_ABAJO .
+    (58) token_base -> BOCA_ABIERTA .
 
-    URGENTE         reduce using rule 58 (token_base -> MIRA_ABAJO .)
-    MAS             reduce using rule 58 (token_base -> MIRA_ABAJO .)
-    O               reduce using rule 58 (token_base -> MIRA_ABAJO .)
-    FIN_EXPR        reduce using rule 58 (token_base -> MIRA_ABAJO .)
-    $end            reduce using rule 58 (token_base -> MIRA_ABAJO .)
+    URGENTE         reduce using rule 58 (token_base -> BOCA_ABIERTA .)
+    MAS             reduce using rule 58 (token_base -> BOCA_ABIERTA .)
+    O               reduce using rule 58 (token_base -> BOCA_ABIERTA .)
+    FIN_EXPR        reduce using rule 58 (token_base -> BOCA_ABIERTA .)
+    $end            reduce using rule 58 (token_base -> BOCA_ABIERTA .)
 
 
 state 56
 
-    (59) token_base -> MIRA_OBJETO .
+    (59) token_base -> MIRA_ARRIBA .
 
-    URGENTE         reduce using rule 59 (token_base -> MIRA_OBJETO .)
-    MAS             reduce using rule 59 (token_base -> MIRA_OBJETO .)
-    O               reduce using rule 59 (token_base -> MIRA_OBJETO .)
-    FIN_EXPR        reduce using rule 59 (token_base -> MIRA_OBJETO .)
-    $end            reduce using rule 59 (token_base -> MIRA_OBJETO .)
+    URGENTE         reduce using rule 59 (token_base -> MIRA_ARRIBA .)
+    MAS             reduce using rule 59 (token_base -> MIRA_ARRIBA .)
+    O               reduce using rule 59 (token_base -> MIRA_ARRIBA .)
+    FIN_EXPR        reduce using rule 59 (token_base -> MIRA_ARRIBA .)
+    $end            reduce using rule 59 (token_base -> MIRA_ARRIBA .)
 
 
 state 57
 
-    (60) token_base -> PARPADEO_RAPIDO .
+    (60) token_base -> MIRA_ABAJO .
 
-    URGENTE         reduce using rule 60 (token_base -> PARPADEO_RAPIDO .)
-    MAS             reduce using rule 60 (token_base -> PARPADEO_RAPIDO .)
-    O               reduce using rule 60 (token_base -> PARPADEO_RAPIDO .)
-    FIN_EXPR        reduce using rule 60 (token_base -> PARPADEO_RAPIDO .)
-    $end            reduce using rule 60 (token_base -> PARPADEO_RAPIDO .)
+    URGENTE         reduce using rule 60 (token_base -> MIRA_ABAJO .)
+    MAS             reduce using rule 60 (token_base -> MIRA_ABAJO .)
+    O               reduce using rule 60 (token_base -> MIRA_ABAJO .)
+    FIN_EXPR        reduce using rule 60 (token_base -> MIRA_ABAJO .)
+    $end            reduce using rule 60 (token_base -> MIRA_ABAJO .)
 
 
 state 58
 
-    (61) token_base -> RAPIDO .
+    (61) token_base -> MIRA_OBJETO .
 
-    URGENTE         reduce using rule 61 (token_base -> RAPIDO .)
-    MAS             reduce using rule 61 (token_base -> RAPIDO .)
-    O               reduce using rule 61 (token_base -> RAPIDO .)
-    FIN_EXPR        reduce using rule 61 (token_base -> RAPIDO .)
-    $end            reduce using rule 61 (token_base -> RAPIDO .)
+    URGENTE         reduce using rule 61 (token_base -> MIRA_OBJETO .)
+    MAS             reduce using rule 61 (token_base -> MIRA_OBJETO .)
+    O               reduce using rule 61 (token_base -> MIRA_OBJETO .)
+    FIN_EXPR        reduce using rule 61 (token_base -> MIRA_OBJETO .)
+    $end            reduce using rule 61 (token_base -> MIRA_OBJETO .)
 
 
 state 59
 
-    (62) token_base -> LENTO .
+    (62) token_base -> PARPADEO_RAPIDO .
 
-    URGENTE         reduce using rule 62 (token_base -> LENTO .)
-    MAS             reduce using rule 62 (token_base -> LENTO .)
-    O               reduce using rule 62 (token_base -> LENTO .)
-    FIN_EXPR        reduce using rule 62 (token_base -> LENTO .)
-    $end            reduce using rule 62 (token_base -> LENTO .)
+    URGENTE         reduce using rule 62 (token_base -> PARPADEO_RAPIDO .)
+    MAS             reduce using rule 62 (token_base -> PARPADEO_RAPIDO .)
+    O               reduce using rule 62 (token_base -> PARPADEO_RAPIDO .)
+    FIN_EXPR        reduce using rule 62 (token_base -> PARPADEO_RAPIDO .)
+    $end            reduce using rule 62 (token_base -> PARPADEO_RAPIDO .)
 
 
 state 60
 
-    (63) token_base -> DOBLE .
+    (63) token_base -> RAPIDO .
 
-    URGENTE         reduce using rule 63 (token_base -> DOBLE .)
-    MAS             reduce using rule 63 (token_base -> DOBLE .)
-    O               reduce using rule 63 (token_base -> DOBLE .)
-    FIN_EXPR        reduce using rule 63 (token_base -> DOBLE .)
-    $end            reduce using rule 63 (token_base -> DOBLE .)
+    URGENTE         reduce using rule 63 (token_base -> RAPIDO .)
+    MAS             reduce using rule 63 (token_base -> RAPIDO .)
+    O               reduce using rule 63 (token_base -> RAPIDO .)
+    FIN_EXPR        reduce using rule 63 (token_base -> RAPIDO .)
+    $end            reduce using rule 63 (token_base -> RAPIDO .)
 
 
 state 61
 
-    (64) token_base -> TRIPLE .
+    (64) token_base -> LENTO .
 
-    URGENTE         reduce using rule 64 (token_base -> TRIPLE .)
-    MAS             reduce using rule 64 (token_base -> TRIPLE .)
-    O               reduce using rule 64 (token_base -> TRIPLE .)
-    FIN_EXPR        reduce using rule 64 (token_base -> TRIPLE .)
-    $end            reduce using rule 64 (token_base -> TRIPLE .)
+    URGENTE         reduce using rule 64 (token_base -> LENTO .)
+    MAS             reduce using rule 64 (token_base -> LENTO .)
+    O               reduce using rule 64 (token_base -> LENTO .)
+    FIN_EXPR        reduce using rule 64 (token_base -> LENTO .)
+    $end            reduce using rule 64 (token_base -> LENTO .)
 
 
 state 62
 
-    (65) token_base -> PAUSA .
+    (65) token_base -> DOBLE .
 
-    URGENTE         reduce using rule 65 (token_base -> PAUSA .)
-    MAS             reduce using rule 65 (token_base -> PAUSA .)
-    O               reduce using rule 65 (token_base -> PAUSA .)
-    FIN_EXPR        reduce using rule 65 (token_base -> PAUSA .)
-    $end            reduce using rule 65 (token_base -> PAUSA .)
+    URGENTE         reduce using rule 65 (token_base -> DOBLE .)
+    MAS             reduce using rule 65 (token_base -> DOBLE .)
+    O               reduce using rule 65 (token_base -> DOBLE .)
+    FIN_EXPR        reduce using rule 65 (token_base -> DOBLE .)
+    $end            reduce using rule 65 (token_base -> DOBLE .)
 
 
 state 63
+
+    (66) token_base -> TRIPLE .
+
+    URGENTE         reduce using rule 66 (token_base -> TRIPLE .)
+    MAS             reduce using rule 66 (token_base -> TRIPLE .)
+    O               reduce using rule 66 (token_base -> TRIPLE .)
+    FIN_EXPR        reduce using rule 66 (token_base -> TRIPLE .)
+    $end            reduce using rule 66 (token_base -> TRIPLE .)
+
+
+state 64
+
+    (67) token_base -> PAUSA .
+
+    URGENTE         reduce using rule 67 (token_base -> PAUSA .)
+    MAS             reduce using rule 67 (token_base -> PAUSA .)
+    O               reduce using rule 67 (token_base -> PAUSA .)
+    FIN_EXPR        reduce using rule 67 (token_base -> PAUSA .)
+    $end            reduce using rule 67 (token_base -> PAUSA .)
+
+
+state 65
 
     (2) programa -> programa FIN_EXPR . expresion
     (3) expresion -> . secuencia
@@ -1193,7 +1231,7 @@ state 63
     (5) expresion -> . expresion O secuencia
     (6) secuencia -> . termino
     (7) secuencia -> . secuencia MAS termino
-    (66) secuencia -> . secuencia MAS error
+    (68) secuencia -> . secuencia MAS error
     (8) termino -> . token_base
     (9) termino -> . NEG termino
     (10) termino -> . termino URGENTE
@@ -1203,55 +1241,57 @@ state 63
     (14) token_base -> . UUH
     (15) token_base -> . OH
     (16) token_base -> . SHH
-    (17) token_base -> . HMM
-    (18) token_base -> . UFF
-    (19) token_base -> . AY
-    (20) token_base -> . ANA
-    (21) token_base -> . BAH
-    (22) token_base -> . PFF
-    (23) token_base -> . SENALA
-    (24) token_base -> . PALMA_ARRIBA
-    (25) token_base -> . PALMA_ABAJO
-    (26) token_base -> . PUNO
-    (27) token_base -> . MANO_ABIERTA
-    (28) token_base -> . TOCA
-    (29) token_base -> . AGITA
-    (30) token_base -> . APUNTA_SI
-    (31) token_base -> . JUNTA_DEDOS
-    (32) token_base -> . SEPARA_MANOS
-    (33) token_base -> . PULGAR_ARRIBA
-    (34) token_base -> . PULGAR_ABAJO
-    (35) token_base -> . SONIDO_LARGO
-    (36) token_base -> . SONIDO_CORTO
-    (37) token_base -> . SONIDO_REPETIDO
-    (38) token_base -> . SONIDO_AGUDO
-    (39) token_base -> . SONIDO_GRAVE
-    (40) token_base -> . SONIDO_SUAVE
-    (41) token_base -> . CABEZA_SI
-    (42) token_base -> . CABEZA_NO
-    (43) token_base -> . CABEZA_LADO
-    (44) token_base -> . INCLINA_CUERPO
-    (45) token_base -> . ACERCA_CUERPO
-    (46) token_base -> . ALEJA_CUERPO
-    (47) token_base -> . SENALA_PROPIO
-    (48) token_base -> . SENALA_EXTERNO
-    (49) token_base -> . ENCOGE_HOMBROS
-    (50) token_base -> . LEVANTA_BRAZO
-    (51) token_base -> . CIERRA_OJOS
-    (52) token_base -> . ABRE_OJOS
-    (53) token_base -> . FRUNCE_CENO
-    (54) token_base -> . SONRIE
-    (55) token_base -> . LLANTO
-    (56) token_base -> . BOCA_ABIERTA
-    (57) token_base -> . MIRA_ARRIBA
-    (58) token_base -> . MIRA_ABAJO
-    (59) token_base -> . MIRA_OBJETO
-    (60) token_base -> . PARPADEO_RAPIDO
-    (61) token_base -> . RAPIDO
-    (62) token_base -> . LENTO
-    (63) token_base -> . DOBLE
-    (64) token_base -> . TRIPLE
-    (65) token_base -> . PAUSA
+    (17) token_base -> . UFF
+    (18) token_base -> . AY
+    (19) token_base -> . ANA
+    (20) token_base -> . BAH
+    (21) token_base -> . PFF
+    (22) token_base -> . SENALA
+    (23) token_base -> . PALMA_ARRIBA
+    (24) token_base -> . PALMA_ABAJO
+    (25) token_base -> . PUNO
+    (26) token_base -> . MANO_ABIERTA
+    (27) token_base -> . TOCA
+    (28) token_base -> . AGITA
+    (29) token_base -> . APUNTA_SI
+    (30) token_base -> . JUNTA_DEDOS
+    (31) token_base -> . SEPARA_MANOS
+    (32) token_base -> . DEDOINDICE_BOCA
+    (33) token_base -> . MUEVE_PULGARES
+    (34) token_base -> . MANO_DERECHA_A_IZQUIERDA
+    (35) token_base -> . MANOS_PALMAS_HACIA_ARRIBA
+    (36) token_base -> . SONIDO_LARGO
+    (37) token_base -> . SONIDO_CORTO
+    (38) token_base -> . SONIDO_REPETIDO
+    (39) token_base -> . SONIDO_AGUDO
+    (40) token_base -> . SONIDO_GRAVE
+    (41) token_base -> . SONIDO_SUAVE
+    (42) token_base -> . SONIDO_RONQUIDO
+    (43) token_base -> . CABEZA_SI
+    (44) token_base -> . CABEZA_NO
+    (45) token_base -> . CABEZA_LADO
+    (46) token_base -> . INCLINA_CUERPO
+    (47) token_base -> . ACERCA_CUERPO
+    (48) token_base -> . ALEJA_CUERPO
+    (49) token_base -> . SENALA_PROPIO
+    (50) token_base -> . SENALA_EXTERNO
+    (51) token_base -> . ENCOGE_HOMBROS
+    (52) token_base -> . LEVANTA_BRAZO
+    (53) token_base -> . CIERRA_OJOS
+    (54) token_base -> . ABRE_OJOS
+    (55) token_base -> . FRUNCE_CENO
+    (56) token_base -> . SONRIE
+    (57) token_base -> . LLANTO
+    (58) token_base -> . BOCA_ABIERTA
+    (59) token_base -> . MIRA_ARRIBA
+    (60) token_base -> . MIRA_ABAJO
+    (61) token_base -> . MIRA_OBJETO
+    (62) token_base -> . PARPADEO_RAPIDO
+    (63) token_base -> . RAPIDO
+    (64) token_base -> . LENTO
+    (65) token_base -> . DOBLE
+    (66) token_base -> . TRIPLE
+    (67) token_base -> . PAUSA
 
     CONTEXTO        shift and go to state 4
     NEG             shift and go to state 7
@@ -1261,67 +1301,69 @@ state 63
     UUH             shift and go to state 11
     OH              shift and go to state 12
     SHH             shift and go to state 13
-    HMM             shift and go to state 14
-    UFF             shift and go to state 15
-    AY              shift and go to state 16
-    ANA             shift and go to state 17
-    BAH             shift and go to state 18
-    PFF             shift and go to state 19
-    SENALA          shift and go to state 20
-    PALMA_ARRIBA    shift and go to state 21
-    PALMA_ABAJO     shift and go to state 22
-    PUNO            shift and go to state 23
-    MANO_ABIERTA    shift and go to state 24
-    TOCA            shift and go to state 25
-    AGITA           shift and go to state 26
-    APUNTA_SI       shift and go to state 27
-    JUNTA_DEDOS     shift and go to state 28
-    SEPARA_MANOS    shift and go to state 29
-    PULGAR_ARRIBA   shift and go to state 30
-    PULGAR_ABAJO    shift and go to state 31
-    SONIDO_LARGO    shift and go to state 32
-    SONIDO_CORTO    shift and go to state 33
-    SONIDO_REPETIDO shift and go to state 34
-    SONIDO_AGUDO    shift and go to state 35
-    SONIDO_GRAVE    shift and go to state 36
-    SONIDO_SUAVE    shift and go to state 37
-    CABEZA_SI       shift and go to state 38
-    CABEZA_NO       shift and go to state 39
-    CABEZA_LADO     shift and go to state 40
-    INCLINA_CUERPO  shift and go to state 41
-    ACERCA_CUERPO   shift and go to state 42
-    ALEJA_CUERPO    shift and go to state 43
-    SENALA_PROPIO   shift and go to state 44
-    SENALA_EXTERNO  shift and go to state 45
-    ENCOGE_HOMBROS  shift and go to state 46
-    LEVANTA_BRAZO   shift and go to state 47
-    CIERRA_OJOS     shift and go to state 48
-    ABRE_OJOS       shift and go to state 49
-    FRUNCE_CENO     shift and go to state 50
-    SONRIE          shift and go to state 51
-    LLANTO          shift and go to state 52
-    BOCA_ABIERTA    shift and go to state 53
-    MIRA_ARRIBA     shift and go to state 54
-    MIRA_ABAJO      shift and go to state 55
-    MIRA_OBJETO     shift and go to state 56
-    PARPADEO_RAPIDO shift and go to state 57
-    RAPIDO          shift and go to state 58
-    LENTO           shift and go to state 59
-    DOBLE           shift and go to state 60
-    TRIPLE          shift and go to state 61
-    PAUSA           shift and go to state 62
+    UFF             shift and go to state 14
+    AY              shift and go to state 15
+    ANA             shift and go to state 16
+    BAH             shift and go to state 17
+    PFF             shift and go to state 18
+    SENALA          shift and go to state 19
+    PALMA_ARRIBA    shift and go to state 20
+    PALMA_ABAJO     shift and go to state 21
+    PUNO            shift and go to state 22
+    MANO_ABIERTA    shift and go to state 23
+    TOCA            shift and go to state 24
+    AGITA           shift and go to state 25
+    APUNTA_SI       shift and go to state 26
+    JUNTA_DEDOS     shift and go to state 27
+    SEPARA_MANOS    shift and go to state 28
+    DEDOINDICE_BOCA shift and go to state 29
+    MUEVE_PULGARES  shift and go to state 30
+    MANO_DERECHA_A_IZQUIERDA shift and go to state 31
+    MANOS_PALMAS_HACIA_ARRIBA shift and go to state 32
+    SONIDO_LARGO    shift and go to state 33
+    SONIDO_CORTO    shift and go to state 34
+    SONIDO_REPETIDO shift and go to state 35
+    SONIDO_AGUDO    shift and go to state 36
+    SONIDO_GRAVE    shift and go to state 37
+    SONIDO_SUAVE    shift and go to state 38
+    SONIDO_RONQUIDO shift and go to state 39
+    CABEZA_SI       shift and go to state 40
+    CABEZA_NO       shift and go to state 41
+    CABEZA_LADO     shift and go to state 42
+    INCLINA_CUERPO  shift and go to state 43
+    ACERCA_CUERPO   shift and go to state 44
+    ALEJA_CUERPO    shift and go to state 45
+    SENALA_PROPIO   shift and go to state 46
+    SENALA_EXTERNO  shift and go to state 47
+    ENCOGE_HOMBROS  shift and go to state 48
+    LEVANTA_BRAZO   shift and go to state 49
+    CIERRA_OJOS     shift and go to state 50
+    ABRE_OJOS       shift and go to state 51
+    FRUNCE_CENO     shift and go to state 52
+    SONRIE          shift and go to state 53
+    LLANTO          shift and go to state 54
+    BOCA_ABIERTA    shift and go to state 55
+    MIRA_ARRIBA     shift and go to state 56
+    MIRA_ABAJO      shift and go to state 57
+    MIRA_OBJETO     shift and go to state 58
+    PARPADEO_RAPIDO shift and go to state 59
+    RAPIDO          shift and go to state 60
+    LENTO           shift and go to state 61
+    DOBLE           shift and go to state 62
+    TRIPLE          shift and go to state 63
+    PAUSA           shift and go to state 64
 
-    expresion                      shift and go to state 69
+    expresion                      shift and go to state 71
     secuencia                      shift and go to state 3
     termino                        shift and go to state 5
     token_base                     shift and go to state 6
 
-state 64
+state 66
 
     (5) expresion -> expresion O . secuencia
     (6) secuencia -> . termino
     (7) secuencia -> . secuencia MAS termino
-    (66) secuencia -> . secuencia MAS error
+    (68) secuencia -> . secuencia MAS error
     (8) termino -> . token_base
     (9) termino -> . NEG termino
     (10) termino -> . termino URGENTE
@@ -1331,55 +1373,57 @@ state 64
     (14) token_base -> . UUH
     (15) token_base -> . OH
     (16) token_base -> . SHH
-    (17) token_base -> . HMM
-    (18) token_base -> . UFF
-    (19) token_base -> . AY
-    (20) token_base -> . ANA
-    (21) token_base -> . BAH
-    (22) token_base -> . PFF
-    (23) token_base -> . SENALA
-    (24) token_base -> . PALMA_ARRIBA
-    (25) token_base -> . PALMA_ABAJO
-    (26) token_base -> . PUNO
-    (27) token_base -> . MANO_ABIERTA
-    (28) token_base -> . TOCA
-    (29) token_base -> . AGITA
-    (30) token_base -> . APUNTA_SI
-    (31) token_base -> . JUNTA_DEDOS
-    (32) token_base -> . SEPARA_MANOS
-    (33) token_base -> . PULGAR_ARRIBA
-    (34) token_base -> . PULGAR_ABAJO
-    (35) token_base -> . SONIDO_LARGO
-    (36) token_base -> . SONIDO_CORTO
-    (37) token_base -> . SONIDO_REPETIDO
-    (38) token_base -> . SONIDO_AGUDO
-    (39) token_base -> . SONIDO_GRAVE
-    (40) token_base -> . SONIDO_SUAVE
-    (41) token_base -> . CABEZA_SI
-    (42) token_base -> . CABEZA_NO
-    (43) token_base -> . CABEZA_LADO
-    (44) token_base -> . INCLINA_CUERPO
-    (45) token_base -> . ACERCA_CUERPO
-    (46) token_base -> . ALEJA_CUERPO
-    (47) token_base -> . SENALA_PROPIO
-    (48) token_base -> . SENALA_EXTERNO
-    (49) token_base -> . ENCOGE_HOMBROS
-    (50) token_base -> . LEVANTA_BRAZO
-    (51) token_base -> . CIERRA_OJOS
-    (52) token_base -> . ABRE_OJOS
-    (53) token_base -> . FRUNCE_CENO
-    (54) token_base -> . SONRIE
-    (55) token_base -> . LLANTO
-    (56) token_base -> . BOCA_ABIERTA
-    (57) token_base -> . MIRA_ARRIBA
-    (58) token_base -> . MIRA_ABAJO
-    (59) token_base -> . MIRA_OBJETO
-    (60) token_base -> . PARPADEO_RAPIDO
-    (61) token_base -> . RAPIDO
-    (62) token_base -> . LENTO
-    (63) token_base -> . DOBLE
-    (64) token_base -> . TRIPLE
-    (65) token_base -> . PAUSA
+    (17) token_base -> . UFF
+    (18) token_base -> . AY
+    (19) token_base -> . ANA
+    (20) token_base -> . BAH
+    (21) token_base -> . PFF
+    (22) token_base -> . SENALA
+    (23) token_base -> . PALMA_ARRIBA
+    (24) token_base -> . PALMA_ABAJO
+    (25) token_base -> . PUNO
+    (26) token_base -> . MANO_ABIERTA
+    (27) token_base -> . TOCA
+    (28) token_base -> . AGITA
+    (29) token_base -> . APUNTA_SI
+    (30) token_base -> . JUNTA_DEDOS
+    (31) token_base -> . SEPARA_MANOS
+    (32) token_base -> . DEDOINDICE_BOCA
+    (33) token_base -> . MUEVE_PULGARES
+    (34) token_base -> . MANO_DERECHA_A_IZQUIERDA
+    (35) token_base -> . MANOS_PALMAS_HACIA_ARRIBA
+    (36) token_base -> . SONIDO_LARGO
+    (37) token_base -> . SONIDO_CORTO
+    (38) token_base -> . SONIDO_REPETIDO
+    (39) token_base -> . SONIDO_AGUDO
+    (40) token_base -> . SONIDO_GRAVE
+    (41) token_base -> . SONIDO_SUAVE
+    (42) token_base -> . SONIDO_RONQUIDO
+    (43) token_base -> . CABEZA_SI
+    (44) token_base -> . CABEZA_NO
+    (45) token_base -> . CABEZA_LADO
+    (46) token_base -> . INCLINA_CUERPO
+    (47) token_base -> . ACERCA_CUERPO
+    (48) token_base -> . ALEJA_CUERPO
+    (49) token_base -> . SENALA_PROPIO
+    (50) token_base -> . SENALA_EXTERNO
+    (51) token_base -> . ENCOGE_HOMBROS
+    (52) token_base -> . LEVANTA_BRAZO
+    (53) token_base -> . CIERRA_OJOS
+    (54) token_base -> . ABRE_OJOS
+    (55) token_base -> . FRUNCE_CENO
+    (56) token_base -> . SONRIE
+    (57) token_base -> . LLANTO
+    (58) token_base -> . BOCA_ABIERTA
+    (59) token_base -> . MIRA_ARRIBA
+    (60) token_base -> . MIRA_ABAJO
+    (61) token_base -> . MIRA_OBJETO
+    (62) token_base -> . PARPADEO_RAPIDO
+    (63) token_base -> . RAPIDO
+    (64) token_base -> . LENTO
+    (65) token_base -> . DOBLE
+    (66) token_base -> . TRIPLE
+    (67) token_base -> . PAUSA
 
     NEG             shift and go to state 7
     MMM             shift and go to state 8
@@ -1388,64 +1432,66 @@ state 64
     UUH             shift and go to state 11
     OH              shift and go to state 12
     SHH             shift and go to state 13
-    HMM             shift and go to state 14
-    UFF             shift and go to state 15
-    AY              shift and go to state 16
-    ANA             shift and go to state 17
-    BAH             shift and go to state 18
-    PFF             shift and go to state 19
-    SENALA          shift and go to state 20
-    PALMA_ARRIBA    shift and go to state 21
-    PALMA_ABAJO     shift and go to state 22
-    PUNO            shift and go to state 23
-    MANO_ABIERTA    shift and go to state 24
-    TOCA            shift and go to state 25
-    AGITA           shift and go to state 26
-    APUNTA_SI       shift and go to state 27
-    JUNTA_DEDOS     shift and go to state 28
-    SEPARA_MANOS    shift and go to state 29
-    PULGAR_ARRIBA   shift and go to state 30
-    PULGAR_ABAJO    shift and go to state 31
-    SONIDO_LARGO    shift and go to state 32
-    SONIDO_CORTO    shift and go to state 33
-    SONIDO_REPETIDO shift and go to state 34
-    SONIDO_AGUDO    shift and go to state 35
-    SONIDO_GRAVE    shift and go to state 36
-    SONIDO_SUAVE    shift and go to state 37
-    CABEZA_SI       shift and go to state 38
-    CABEZA_NO       shift and go to state 39
-    CABEZA_LADO     shift and go to state 40
-    INCLINA_CUERPO  shift and go to state 41
-    ACERCA_CUERPO   shift and go to state 42
-    ALEJA_CUERPO    shift and go to state 43
-    SENALA_PROPIO   shift and go to state 44
-    SENALA_EXTERNO  shift and go to state 45
-    ENCOGE_HOMBROS  shift and go to state 46
-    LEVANTA_BRAZO   shift and go to state 47
-    CIERRA_OJOS     shift and go to state 48
-    ABRE_OJOS       shift and go to state 49
-    FRUNCE_CENO     shift and go to state 50
-    SONRIE          shift and go to state 51
-    LLANTO          shift and go to state 52
-    BOCA_ABIERTA    shift and go to state 53
-    MIRA_ARRIBA     shift and go to state 54
-    MIRA_ABAJO      shift and go to state 55
-    MIRA_OBJETO     shift and go to state 56
-    PARPADEO_RAPIDO shift and go to state 57
-    RAPIDO          shift and go to state 58
-    LENTO           shift and go to state 59
-    DOBLE           shift and go to state 60
-    TRIPLE          shift and go to state 61
-    PAUSA           shift and go to state 62
+    UFF             shift and go to state 14
+    AY              shift and go to state 15
+    ANA             shift and go to state 16
+    BAH             shift and go to state 17
+    PFF             shift and go to state 18
+    SENALA          shift and go to state 19
+    PALMA_ARRIBA    shift and go to state 20
+    PALMA_ABAJO     shift and go to state 21
+    PUNO            shift and go to state 22
+    MANO_ABIERTA    shift and go to state 23
+    TOCA            shift and go to state 24
+    AGITA           shift and go to state 25
+    APUNTA_SI       shift and go to state 26
+    JUNTA_DEDOS     shift and go to state 27
+    SEPARA_MANOS    shift and go to state 28
+    DEDOINDICE_BOCA shift and go to state 29
+    MUEVE_PULGARES  shift and go to state 30
+    MANO_DERECHA_A_IZQUIERDA shift and go to state 31
+    MANOS_PALMAS_HACIA_ARRIBA shift and go to state 32
+    SONIDO_LARGO    shift and go to state 33
+    SONIDO_CORTO    shift and go to state 34
+    SONIDO_REPETIDO shift and go to state 35
+    SONIDO_AGUDO    shift and go to state 36
+    SONIDO_GRAVE    shift and go to state 37
+    SONIDO_SUAVE    shift and go to state 38
+    SONIDO_RONQUIDO shift and go to state 39
+    CABEZA_SI       shift and go to state 40
+    CABEZA_NO       shift and go to state 41
+    CABEZA_LADO     shift and go to state 42
+    INCLINA_CUERPO  shift and go to state 43
+    ACERCA_CUERPO   shift and go to state 44
+    ALEJA_CUERPO    shift and go to state 45
+    SENALA_PROPIO   shift and go to state 46
+    SENALA_EXTERNO  shift and go to state 47
+    ENCOGE_HOMBROS  shift and go to state 48
+    LEVANTA_BRAZO   shift and go to state 49
+    CIERRA_OJOS     shift and go to state 50
+    ABRE_OJOS       shift and go to state 51
+    FRUNCE_CENO     shift and go to state 52
+    SONRIE          shift and go to state 53
+    LLANTO          shift and go to state 54
+    BOCA_ABIERTA    shift and go to state 55
+    MIRA_ARRIBA     shift and go to state 56
+    MIRA_ABAJO      shift and go to state 57
+    MIRA_OBJETO     shift and go to state 58
+    PARPADEO_RAPIDO shift and go to state 59
+    RAPIDO          shift and go to state 60
+    LENTO           shift and go to state 61
+    DOBLE           shift and go to state 62
+    TRIPLE          shift and go to state 63
+    PAUSA           shift and go to state 64
 
-    secuencia                      shift and go to state 70
+    secuencia                      shift and go to state 72
     termino                        shift and go to state 5
     token_base                     shift and go to state 6
 
-state 65
+state 67
 
     (7) secuencia -> secuencia MAS . termino
-    (66) secuencia -> secuencia MAS . error
+    (68) secuencia -> secuencia MAS . error
     (8) termino -> . token_base
     (9) termino -> . NEG termino
     (10) termino -> . termino URGENTE
@@ -1455,57 +1501,59 @@ state 65
     (14) token_base -> . UUH
     (15) token_base -> . OH
     (16) token_base -> . SHH
-    (17) token_base -> . HMM
-    (18) token_base -> . UFF
-    (19) token_base -> . AY
-    (20) token_base -> . ANA
-    (21) token_base -> . BAH
-    (22) token_base -> . PFF
-    (23) token_base -> . SENALA
-    (24) token_base -> . PALMA_ARRIBA
-    (25) token_base -> . PALMA_ABAJO
-    (26) token_base -> . PUNO
-    (27) token_base -> . MANO_ABIERTA
-    (28) token_base -> . TOCA
-    (29) token_base -> . AGITA
-    (30) token_base -> . APUNTA_SI
-    (31) token_base -> . JUNTA_DEDOS
-    (32) token_base -> . SEPARA_MANOS
-    (33) token_base -> . PULGAR_ARRIBA
-    (34) token_base -> . PULGAR_ABAJO
-    (35) token_base -> . SONIDO_LARGO
-    (36) token_base -> . SONIDO_CORTO
-    (37) token_base -> . SONIDO_REPETIDO
-    (38) token_base -> . SONIDO_AGUDO
-    (39) token_base -> . SONIDO_GRAVE
-    (40) token_base -> . SONIDO_SUAVE
-    (41) token_base -> . CABEZA_SI
-    (42) token_base -> . CABEZA_NO
-    (43) token_base -> . CABEZA_LADO
-    (44) token_base -> . INCLINA_CUERPO
-    (45) token_base -> . ACERCA_CUERPO
-    (46) token_base -> . ALEJA_CUERPO
-    (47) token_base -> . SENALA_PROPIO
-    (48) token_base -> . SENALA_EXTERNO
-    (49) token_base -> . ENCOGE_HOMBROS
-    (50) token_base -> . LEVANTA_BRAZO
-    (51) token_base -> . CIERRA_OJOS
-    (52) token_base -> . ABRE_OJOS
-    (53) token_base -> . FRUNCE_CENO
-    (54) token_base -> . SONRIE
-    (55) token_base -> . LLANTO
-    (56) token_base -> . BOCA_ABIERTA
-    (57) token_base -> . MIRA_ARRIBA
-    (58) token_base -> . MIRA_ABAJO
-    (59) token_base -> . MIRA_OBJETO
-    (60) token_base -> . PARPADEO_RAPIDO
-    (61) token_base -> . RAPIDO
-    (62) token_base -> . LENTO
-    (63) token_base -> . DOBLE
-    (64) token_base -> . TRIPLE
-    (65) token_base -> . PAUSA
+    (17) token_base -> . UFF
+    (18) token_base -> . AY
+    (19) token_base -> . ANA
+    (20) token_base -> . BAH
+    (21) token_base -> . PFF
+    (22) token_base -> . SENALA
+    (23) token_base -> . PALMA_ARRIBA
+    (24) token_base -> . PALMA_ABAJO
+    (25) token_base -> . PUNO
+    (26) token_base -> . MANO_ABIERTA
+    (27) token_base -> . TOCA
+    (28) token_base -> . AGITA
+    (29) token_base -> . APUNTA_SI
+    (30) token_base -> . JUNTA_DEDOS
+    (31) token_base -> . SEPARA_MANOS
+    (32) token_base -> . DEDOINDICE_BOCA
+    (33) token_base -> . MUEVE_PULGARES
+    (34) token_base -> . MANO_DERECHA_A_IZQUIERDA
+    (35) token_base -> . MANOS_PALMAS_HACIA_ARRIBA
+    (36) token_base -> . SONIDO_LARGO
+    (37) token_base -> . SONIDO_CORTO
+    (38) token_base -> . SONIDO_REPETIDO
+    (39) token_base -> . SONIDO_AGUDO
+    (40) token_base -> . SONIDO_GRAVE
+    (41) token_base -> . SONIDO_SUAVE
+    (42) token_base -> . SONIDO_RONQUIDO
+    (43) token_base -> . CABEZA_SI
+    (44) token_base -> . CABEZA_NO
+    (45) token_base -> . CABEZA_LADO
+    (46) token_base -> . INCLINA_CUERPO
+    (47) token_base -> . ACERCA_CUERPO
+    (48) token_base -> . ALEJA_CUERPO
+    (49) token_base -> . SENALA_PROPIO
+    (50) token_base -> . SENALA_EXTERNO
+    (51) token_base -> . ENCOGE_HOMBROS
+    (52) token_base -> . LEVANTA_BRAZO
+    (53) token_base -> . CIERRA_OJOS
+    (54) token_base -> . ABRE_OJOS
+    (55) token_base -> . FRUNCE_CENO
+    (56) token_base -> . SONRIE
+    (57) token_base -> . LLANTO
+    (58) token_base -> . BOCA_ABIERTA
+    (59) token_base -> . MIRA_ARRIBA
+    (60) token_base -> . MIRA_ABAJO
+    (61) token_base -> . MIRA_OBJETO
+    (62) token_base -> . PARPADEO_RAPIDO
+    (63) token_base -> . RAPIDO
+    (64) token_base -> . LENTO
+    (65) token_base -> . DOBLE
+    (66) token_base -> . TRIPLE
+    (67) token_base -> . PAUSA
 
-    error           shift and go to state 72
+    error           shift and go to state 74
     NEG             shift and go to state 7
     MMM             shift and go to state 8
     ATA             shift and go to state 9
@@ -1513,72 +1561,74 @@ state 65
     UUH             shift and go to state 11
     OH              shift and go to state 12
     SHH             shift and go to state 13
-    HMM             shift and go to state 14
-    UFF             shift and go to state 15
-    AY              shift and go to state 16
-    ANA             shift and go to state 17
-    BAH             shift and go to state 18
-    PFF             shift and go to state 19
-    SENALA          shift and go to state 20
-    PALMA_ARRIBA    shift and go to state 21
-    PALMA_ABAJO     shift and go to state 22
-    PUNO            shift and go to state 23
-    MANO_ABIERTA    shift and go to state 24
-    TOCA            shift and go to state 25
-    AGITA           shift and go to state 26
-    APUNTA_SI       shift and go to state 27
-    JUNTA_DEDOS     shift and go to state 28
-    SEPARA_MANOS    shift and go to state 29
-    PULGAR_ARRIBA   shift and go to state 30
-    PULGAR_ABAJO    shift and go to state 31
-    SONIDO_LARGO    shift and go to state 32
-    SONIDO_CORTO    shift and go to state 33
-    SONIDO_REPETIDO shift and go to state 34
-    SONIDO_AGUDO    shift and go to state 35
-    SONIDO_GRAVE    shift and go to state 36
-    SONIDO_SUAVE    shift and go to state 37
-    CABEZA_SI       shift and go to state 38
-    CABEZA_NO       shift and go to state 39
-    CABEZA_LADO     shift and go to state 40
-    INCLINA_CUERPO  shift and go to state 41
-    ACERCA_CUERPO   shift and go to state 42
-    ALEJA_CUERPO    shift and go to state 43
-    SENALA_PROPIO   shift and go to state 44
-    SENALA_EXTERNO  shift and go to state 45
-    ENCOGE_HOMBROS  shift and go to state 46
-    LEVANTA_BRAZO   shift and go to state 47
-    CIERRA_OJOS     shift and go to state 48
-    ABRE_OJOS       shift and go to state 49
-    FRUNCE_CENO     shift and go to state 50
-    SONRIE          shift and go to state 51
-    LLANTO          shift and go to state 52
-    BOCA_ABIERTA    shift and go to state 53
-    MIRA_ARRIBA     shift and go to state 54
-    MIRA_ABAJO      shift and go to state 55
-    MIRA_OBJETO     shift and go to state 56
-    PARPADEO_RAPIDO shift and go to state 57
-    RAPIDO          shift and go to state 58
-    LENTO           shift and go to state 59
-    DOBLE           shift and go to state 60
-    TRIPLE          shift and go to state 61
-    PAUSA           shift and go to state 62
+    UFF             shift and go to state 14
+    AY              shift and go to state 15
+    ANA             shift and go to state 16
+    BAH             shift and go to state 17
+    PFF             shift and go to state 18
+    SENALA          shift and go to state 19
+    PALMA_ARRIBA    shift and go to state 20
+    PALMA_ABAJO     shift and go to state 21
+    PUNO            shift and go to state 22
+    MANO_ABIERTA    shift and go to state 23
+    TOCA            shift and go to state 24
+    AGITA           shift and go to state 25
+    APUNTA_SI       shift and go to state 26
+    JUNTA_DEDOS     shift and go to state 27
+    SEPARA_MANOS    shift and go to state 28
+    DEDOINDICE_BOCA shift and go to state 29
+    MUEVE_PULGARES  shift and go to state 30
+    MANO_DERECHA_A_IZQUIERDA shift and go to state 31
+    MANOS_PALMAS_HACIA_ARRIBA shift and go to state 32
+    SONIDO_LARGO    shift and go to state 33
+    SONIDO_CORTO    shift and go to state 34
+    SONIDO_REPETIDO shift and go to state 35
+    SONIDO_AGUDO    shift and go to state 36
+    SONIDO_GRAVE    shift and go to state 37
+    SONIDO_SUAVE    shift and go to state 38
+    SONIDO_RONQUIDO shift and go to state 39
+    CABEZA_SI       shift and go to state 40
+    CABEZA_NO       shift and go to state 41
+    CABEZA_LADO     shift and go to state 42
+    INCLINA_CUERPO  shift and go to state 43
+    ACERCA_CUERPO   shift and go to state 44
+    ALEJA_CUERPO    shift and go to state 45
+    SENALA_PROPIO   shift and go to state 46
+    SENALA_EXTERNO  shift and go to state 47
+    ENCOGE_HOMBROS  shift and go to state 48
+    LEVANTA_BRAZO   shift and go to state 49
+    CIERRA_OJOS     shift and go to state 50
+    ABRE_OJOS       shift and go to state 51
+    FRUNCE_CENO     shift and go to state 52
+    SONRIE          shift and go to state 53
+    LLANTO          shift and go to state 54
+    BOCA_ABIERTA    shift and go to state 55
+    MIRA_ARRIBA     shift and go to state 56
+    MIRA_ABAJO      shift and go to state 57
+    MIRA_OBJETO     shift and go to state 58
+    PARPADEO_RAPIDO shift and go to state 59
+    RAPIDO          shift and go to state 60
+    LENTO           shift and go to state 61
+    DOBLE           shift and go to state 62
+    TRIPLE          shift and go to state 63
+    PAUSA           shift and go to state 64
 
-    termino                        shift and go to state 71
+    termino                        shift and go to state 73
     token_base                     shift and go to state 6
 
-state 66
+state 68
 
     (4) expresion -> CONTEXTO secuencia .
     (7) secuencia -> secuencia . MAS termino
-    (66) secuencia -> secuencia . MAS error
+    (68) secuencia -> secuencia . MAS error
 
     O               reduce using rule 4 (expresion -> CONTEXTO secuencia .)
     FIN_EXPR        reduce using rule 4 (expresion -> CONTEXTO secuencia .)
     $end            reduce using rule 4 (expresion -> CONTEXTO secuencia .)
-    MAS             shift and go to state 65
+    MAS             shift and go to state 67
 
 
-state 67
+state 69
 
     (10) termino -> termino URGENTE .
 
@@ -1589,7 +1639,7 @@ state 67
     $end            reduce using rule 10 (termino -> termino URGENTE .)
 
 
-state 68
+state 70
 
     (9) termino -> NEG termino .
     (10) termino -> termino . URGENTE
@@ -1600,32 +1650,32 @@ state 68
     FIN_EXPR        reduce using rule 9 (termino -> NEG termino .)
     $end            reduce using rule 9 (termino -> NEG termino .)
 
-  ! URGENTE         [ shift and go to state 67 ]
+  ! URGENTE         [ shift and go to state 69 ]
 
 
-state 69
+state 71
 
     (2) programa -> programa FIN_EXPR expresion .
     (5) expresion -> expresion . O secuencia
 
     FIN_EXPR        reduce using rule 2 (programa -> programa FIN_EXPR expresion .)
     $end            reduce using rule 2 (programa -> programa FIN_EXPR expresion .)
-    O               shift and go to state 64
+    O               shift and go to state 66
 
 
-state 70
+state 72
 
     (5) expresion -> expresion O secuencia .
     (7) secuencia -> secuencia . MAS termino
-    (66) secuencia -> secuencia . MAS error
+    (68) secuencia -> secuencia . MAS error
 
     O               reduce using rule 5 (expresion -> expresion O secuencia .)
     FIN_EXPR        reduce using rule 5 (expresion -> expresion O secuencia .)
     $end            reduce using rule 5 (expresion -> expresion O secuencia .)
-    MAS             shift and go to state 65
+    MAS             shift and go to state 67
 
 
-state 71
+state 73
 
     (7) secuencia -> secuencia MAS termino .
     (10) termino -> termino . URGENTE
@@ -1634,15 +1684,15 @@ state 71
     O               reduce using rule 7 (secuencia -> secuencia MAS termino .)
     FIN_EXPR        reduce using rule 7 (secuencia -> secuencia MAS termino .)
     $end            reduce using rule 7 (secuencia -> secuencia MAS termino .)
-    URGENTE         shift and go to state 67
+    URGENTE         shift and go to state 69
 
 
-state 72
+state 74
 
-    (66) secuencia -> secuencia MAS error .
+    (68) secuencia -> secuencia MAS error .
 
-    MAS             reduce using rule 66 (secuencia -> secuencia MAS error .)
-    O               reduce using rule 66 (secuencia -> secuencia MAS error .)
-    FIN_EXPR        reduce using rule 66 (secuencia -> secuencia MAS error .)
-    $end            reduce using rule 66 (secuencia -> secuencia MAS error .)
+    MAS             reduce using rule 68 (secuencia -> secuencia MAS error .)
+    O               reduce using rule 68 (secuencia -> secuencia MAS error .)
+    FIN_EXPR        reduce using rule 68 (secuencia -> secuencia MAS error .)
+    $end            reduce using rule 68 (secuencia -> secuencia MAS error .)
 

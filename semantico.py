@@ -5,6 +5,15 @@ from sintactico import (
     NodoPrograma, NodoExpresion, NodoSecuencia, NodoTermino, analizar
 )
 
+# ── Importar intérprete de IA (opcional: funciona sin él) ───────────────────
+try:
+    from interpretador_ia import interpretar_con_ia, ia_disponible
+    _IA_IMPORTADA = True
+except ImportError:
+    _IA_IMPORTADA = False
+    def interpretar_con_ia(*args, **kwargs): return None
+    def ia_disponible(): return False
+
 # ── Tabla de símbolos ────────────────────────────────────────────────────────
 
 class TablaSimbolos:
@@ -21,12 +30,15 @@ tabla = TablaSimbolos()
 
 CATEGORIA = {
     'MMM':'E1','ATA':'E1','AAH':'E1','UUH':'E1','OH':'E1','SHH':'E1',
-    'HMM':'E1','UFF':'E1','AY':'E1','ANA':'E1','BAH':'E1','PFF':'E1',
+    'UFF':'E1','AY':'E1','ANA':'E1','BAH':'E1','PFF':'E1',
     'SENALA':'E2','PALMA_ARRIBA':'E2','PALMA_ABAJO':'E2','PUNO':'E2',
     'MANO_ABIERTA':'E2','TOCA':'E2','AGITA':'E2','APUNTA_SI':'E2',
-    'JUNTA_DEDOS':'E2','SEPARA_MANOS':'E2','PULGAR_ARRIBA':'E2','PULGAR_ABAJO':'E2',
+    'JUNTA_DEDOS':'E2','SEPARA_MANOS':'E2',
+    'DEDOINDICE_BOCA':'E2','MUEVE_PULGARES':'E2',
+    'MANO_DERECHA_A_IZQUIERDA':'E2','MANOS_PALMAS_HACIA_ARRIBA':'E2',
     'SONIDO_LARGO':'E3','SONIDO_CORTO':'E3','SONIDO_REPETIDO':'E3',
     'SONIDO_AGUDO':'E3','SONIDO_GRAVE':'E3','SONIDO_SUAVE':'E3',
+    'SONIDO_RONQUIDO':'E3',
     'CABEZA_SI':'E4','CABEZA_NO':'E4','CABEZA_LADO':'E4','INCLINA_CUERPO':'E4',
     'ACERCA_CUERPO':'E4','ALEJA_CUERPO':'E4','SENALA_PROPIO':'E4',
     'SENALA_EXTERNO':'E4','ENCOGE_HOMBROS':'E4','LEVANTA_BRAZO':'E4',
@@ -45,26 +57,27 @@ BASE = {
     'aah':             'siente alivio o satisfacción',
     'uuh':             'siente incomodidad o molestia',
     'oh':              'está sorprendido',
-    'shh':             'pide silencio o quiere esperar',
-    'hmm':             'está indeciso',
+    'shh':             'tiene ganas de ir al baño',
     'uff':             'está cansado o frustrado',
     'ay':              'siente dolor agudo o se asustó',
     'ana':             'llama a una persona específica',
     'bah':             'rechaza algo',
     'pff':             'no le importa o está en desacuerdo',
     # E2
-    'senala':          'quiere algo en esa dirección',
-    'palma_arriba':    'está pidiendo algo',
-    'palma_abajo':     'pide calma o que paren',
-    'puno':            'quiere algo con mucha determinación',
-    'mano_abierta':    'pide que esperen o se detengan',
-    'toca':            'quiere ese objeto o ese contacto',
-    'agita':           'llama la atención urgentemente',
-    'apunta_si':       'confirma que eso es correcto',
-    'junta_dedos':     'es exactamente eso',
-    'separa_manos':    'no sabe o no tiene idea',
-    'pulgar_arriba':   'está de acuerdo o se siente bien',
-    'pulgar_abajo':    'no está de acuerdo o algo está mal',
+    'senala':                    'quiere algo en esa dirección',
+    'palma_arriba':              'está pidiendo algo',
+    'palma_abajo':               'pide calma o que paren',
+    'puno':                      'quiere algo con mucha determinación',
+    'mano_abierta':              'pide que esperen o se detengan',
+    'toca':                      'quiere ese objeto o ese contacto',
+    'agita':                     'llama la atención urgentemente',
+    'apunta_si':                 'confirma que eso es correcto',
+    'junta_dedos':               'es poquito o quiere poco',
+    'separa_manos':              'no sabe o no tiene idea',
+    'dedoindice_boca':           'pide silencio',
+    'mueve_pulgares':            'quiere jugar videojuegos',
+    'mano_derecha_a_izquierda':  'indica que algo se acabó',
+    'manos_palmas_hacia_arriba': 'quiere que le den la razón',
     # E3
     'sonido_largo':    'necesita atención',
     'sonido_corto':    'hace una petición simple',
@@ -72,6 +85,7 @@ BASE = {
     'sonido_agudo':    'alerta o dolor agudo',
     'sonido_grave':    'está cansado o somnoliento',
     'sonido_suave':    'está tranquilo y bien',
+    'sonido_ronquido': 'quiere irse a dormir',
     # E4
     'cabeza_si':       'afirma o está de acuerdo',
     'cabeza_no':       'niega o no quiere',
@@ -162,11 +176,11 @@ OVERRIDE = {
 
 TOKENS_DOLOR     = {'UFF','AY','UUH','FRUNCE_CENO','SONIDO_AGUDO'}
 TOKENS_URGENCIA  = {'AGITA','LEVANTA_BRAZO','SONIDO_LARGO','SONIDO_REPETIDO','ATA'}
-TOKENS_PETICION  = {'PALMA_ARRIBA','SENALA','TOCA','MIRA_OBJETO','SONIDO_CORTO','PUNO'}
-TOKENS_POSITIVO  = {'SONRIE','AAH','PULGAR_ARRIBA','APUNTA_SI'}
-TOKENS_NEGATIVO  = {'LLANTO','MIRA_ABAJO','BAH','PFF','PULGAR_ABAJO','ALEJA_CUERPO'}
-TOKENS_CONFIRM   = {'CABEZA_SI','CABEZA_NO','CABEZA_LADO','PULGAR_ARRIBA','PULGAR_ABAJO','APUNTA_SI','JUNTA_DEDOS'}
-TOKENS_CANSANCIO = {'CIERRA_OJOS','SONIDO_GRAVE','MIRA_ABAJO'}
+TOKENS_PETICION  = {'PALMA_ARRIBA','SENALA','TOCA','MIRA_OBJETO','SONIDO_CORTO','PUNO','MUEVE_PULGARES','SHH'}
+TOKENS_POSITIVO  = {'SONRIE','AAH','APUNTA_SI'}
+TOKENS_NEGATIVO  = {'LLANTO','MIRA_ABAJO','BAH','PFF','ALEJA_CUERPO','MANO_DERECHA_A_IZQUIERDA'}
+TOKENS_CONFIRM   = {'CABEZA_SI','CABEZA_NO','CABEZA_LADO','APUNTA_SI','JUNTA_DEDOS','MANOS_PALMAS_HACIA_ARRIBA'}
+TOKENS_CANSANCIO = {'CIERRA_OJOS','SONIDO_GRAVE','MIRA_ABAJO','SONIDO_RONQUIDO'}
 TOKENS_HAMBRE    = {'BOCA_ABIERTA'}
 
 # ── Obtener significado de un token (con override de contexto) ───────────────
@@ -324,11 +338,11 @@ def _frase_confirmacion(infos):
     tipos = [i['tipo'] for i in infos]
     negados = [i['negado'] for i in infos]
 
-    if 'CABEZA_SI' in tipos and not negados[tipos.index('CABEZA_SI') if 'CABEZA_SI' in tipos else 0]:
-        if 'PULGAR_ARRIBA' in tipos:
-            return 'Confirma con mucho énfasis que sí, está completamente de acuerdo'
+    if 'CABEZA_SI' in tipos and not negados[tipos.index('CABEZA_SI')]:
         if 'APUNTA_SI' in tipos:
             return 'Confirma que sí, eso es exactamente lo correcto'
+        if 'MANOS_PALMAS_HACIA_ARRIBA' in tipos:
+            return 'Confirma que sí y quiere que le den la razón'
         return 'Está de acuerdo, dice que sí'
 
     if 'CABEZA_NO' in tipos:
@@ -341,26 +355,24 @@ def _frase_confirmacion(infos):
     if 'CABEZA_LADO' in tipos:
         if 'ENCOGE_HOMBROS' in tipos:
             return 'Está indeciso, no tiene claro qué quiere'
-        if 'HMM' in tipos:
+        if 'MMM' in tipos:
             return 'Está dudando, necesita pensarlo'
         return 'No está seguro'
 
-    if 'PULGAR_ARRIBA' in tipos:
-        return 'Está bien y de acuerdo'
-    if 'PULGAR_ABAJO' in tipos:
-        return 'No está de acuerdo o algo está mal'
+    if 'MANOS_PALMAS_HACIA_ARRIBA' in tipos:
+        return 'Quiere que le den la razón'
 
     return 'Está respondiendo algo'
 
 def _frase_positiva(infos):
     tipos = [i['tipo'] for i in infos]
-    if 'SONRIE' in tipos and 'PULGAR_ARRIBA' in tipos:
-        return 'Está muy contento y feliz'
     if 'SONRIE' in tipos and 'CABEZA_SI' in tipos:
         return 'Está contento y de acuerdo'
+    if 'SONRIE' in tipos and 'APUNTA_SI' in tipos:
+        return 'Está muy contento y confirma que sí'
     if 'AAH' in tipos and 'SONRIE' in tipos:
         return 'Siente alivio y está contento'
-    if 'AAH' in tipos and 'PULGAR_ARRIBA' in tipos:
+    if 'AAH' in tipos and 'APUNTA_SI' in tipos:
         return 'Se siente bien y está satisfecho'
     if 'SONRIE' in tipos:
         return 'Está contento'
@@ -458,6 +470,12 @@ def interpretar_secuencia(secuencia, contexto):
         print(f"[SEM-004] Advertencia semántica: secuencia larga ({len(tipos)} tokens).")
         print("  → Considera dividir con ';' para dos mensajes más claros.")
 
+    # ── Intentar interpretación con IA ──────────────────────────────────────
+    frase_ia = interpretar_con_ia(infos, contexto, hay_urgente)
+    if frase_ia:
+        return frase_ia
+
+    # ── Interpretación basada en reglas (respaldo) ───────────────────────────
     return generar_frase(infos, patron, contexto, hay_urgente)
 
 # ── Interpretar una expresión completa ───────────────────────────────────────
@@ -499,6 +517,15 @@ def compilar(entrada):
     return frases
 
 
+def modo_interpretacion() -> str:
+    """Retorna una cadena que describe el motor de interpretación activo."""
+    if _IA_IMPORTADA and ia_disponible():
+        return "IA (Claude)"
+    if _IA_IMPORTADA:
+        return "Reglas (ANTHROPIC_API_KEY no configurada)"
+    return "Reglas (módulo IA no disponible)"
+
+
 # ── Pruebas ──────────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
@@ -510,8 +537,8 @@ if __name__ == '__main__':
         "sonido_repetido + agita",
         # Emociones positivas
         "sonrie + cabeza_si",
-        "aah + pulgar_arriba",
-        "sonrie + pulgar_arriba",
+        "aah + apunta_si",
+        "sonrie + apunta_si",
         # Emociones negativas
         "llanto + mira_abajo",
         "bah + aleja_cuerpo",
@@ -534,7 +561,7 @@ if __name__ == '__main__':
         "[tarde] sonrie + acerca_cuerpo",
         # Negación
         "~sonrie + frunce_ceno",
-        "~cabeza_no + pulgar_arriba",
+        "~cabeza_no + apunta_si",
         # Alternativa
         "palma_arriba | mira_objeto",
         "sonrie | cabeza_si",
@@ -546,7 +573,7 @@ if __name__ == '__main__':
         # Dos ideas con ;
         "[manana] sonrie + cabeza_si ; [dolor] ay + senala_propio",
         # Confirmación
-        "cabeza_si + pulgar_arriba",
+        "cabeza_si + apunta_si",
         "cabeza_no + palma_abajo",
         "cabeza_lado + encoge_hombros",
         # Complejo

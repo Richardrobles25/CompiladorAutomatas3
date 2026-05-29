@@ -8,7 +8,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 from lexer    import lexer, CONTEXTOS_VALIDOS
 from sintactico import analizar, imprimir_ast
-from semantico  import compilar
+from semantico  import compilar, modo_interpretacion
 
 # ── Síntesis de voz (PowerShell + System.Speech) ─────────────────────────────
 # Se usa PowerShell en lugar de pyttsx3 porque pyttsx3 deja el motor COM de
@@ -61,19 +61,21 @@ CATEGORIA_TOKEN = {
     # E1 — Sonidos vocales
     'MMM':'E1 · Vocal', 'ATA':'E1 · Vocal', 'AAH':'E1 · Vocal',
     'UUH':'E1 · Vocal', 'OH':'E1 · Vocal',  'SHH':'E1 · Vocal',
-    'HMM':'E1 · Vocal', 'UFF':'E1 · Vocal', 'AY':'E1 · Vocal',
-    'ANA':'E1 · Vocal', 'BAH':'E1 · Vocal', 'PFF':'E1 · Vocal',
+    'UFF':'E1 · Vocal', 'AY':'E1 · Vocal',  'ANA':'E1 · Vocal',
+    'BAH':'E1 · Vocal', 'PFF':'E1 · Vocal',
     # E2 — Gestos de manos
-    'SENALA':'E2 · Manos',       'PALMA_ARRIBA':'E2 · Manos',
-    'PALMA_ABAJO':'E2 · Manos',  'PUNO':'E2 · Manos',
-    'MANO_ABIERTA':'E2 · Manos', 'TOCA':'E2 · Manos',
-    'AGITA':'E2 · Manos',        'APUNTA_SI':'E2 · Manos',
-    'JUNTA_DEDOS':'E2 · Manos',  'SEPARA_MANOS':'E2 · Manos',
-    'PULGAR_ARRIBA':'E2 · Manos','PULGAR_ABAJO':'E2 · Manos',
+    'SENALA':'E2 · Manos',                    'PALMA_ARRIBA':'E2 · Manos',
+    'PALMA_ABAJO':'E2 · Manos',               'PUNO':'E2 · Manos',
+    'MANO_ABIERTA':'E2 · Manos',              'TOCA':'E2 · Manos',
+    'AGITA':'E2 · Manos',                     'APUNTA_SI':'E2 · Manos',
+    'JUNTA_DEDOS':'E2 · Manos',               'SEPARA_MANOS':'E2 · Manos',
+    'DEDOINDICE_BOCA':'E2 · Manos',           'MUEVE_PULGARES':'E2 · Manos',
+    'MANO_DERECHA_A_IZQUIERDA':'E2 · Manos',  'MANOS_PALMAS_HACIA_ARRIBA':'E2 · Manos',
     # E3 — Vocalizaciones
-    'SONIDO_LARGO':'E3 · Vocaliz.', 'SONIDO_CORTO':'E3 · Vocaliz.',
+    'SONIDO_LARGO':'E3 · Vocaliz.',    'SONIDO_CORTO':'E3 · Vocaliz.',
     'SONIDO_REPETIDO':'E3 · Vocaliz.', 'SONIDO_AGUDO':'E3 · Vocaliz.',
     'SONIDO_GRAVE':'E3 · Vocaliz.',    'SONIDO_SUAVE':'E3 · Vocaliz.',
+    'SONIDO_RONQUIDO':'E3 · Vocaliz.',
     # E4 — Movimientos corporales
     'CABEZA_SI':'E4 · Corporal',    'CABEZA_NO':'E4 · Corporal',
     'CABEZA_LADO':'E4 · Corporal',  'INCLINA_CUERPO':'E4 · Corporal',
@@ -102,14 +104,15 @@ CATEGORIA_TOKEN = {
 CATEGORIAS = [
     ("E1 · Sonidos vocales", "#3A86FF",
      ["mmm", "ata", "aah", "uuh", "oh", "shh",
-      "hmm", "uff", "ay", "ana", "bah", "pff"]),
+      "uff", "ay", "ana", "bah", "pff"]),
     ("E2 · Gestos de manos", "#8338EC",
      ["senala", "palma_arriba", "palma_abajo", "puno",
       "mano_abierta", "toca", "agita", "apunta_si",
-      "junta_dedos", "separa_manos", "pulgar_arriba", "pulgar_abajo"]),
+      "junta_dedos", "separa_manos", "dedoindice_boca", "mueve_pulgares",
+      "mano_derecha_a_izquierda", "manos_palmas_hacia_arriba"]),
     ("E3 · Vocalizaciones", "#06D6A0",
      ["sonido_largo", "sonido_corto", "sonido_repetido",
-      "sonido_agudo", "sonido_grave", "sonido_suave"]),
+      "sonido_agudo", "sonido_grave", "sonido_suave", "sonido_ronquido"]),
     ("E4 · Movimientos corporales", "#FB5607",
      ["cabeza_si", "cabeza_no", "cabeza_lado", "inclina_cuerpo",
       "acerca_cuerpo", "aleja_cuerpo", "senala_propio",
@@ -291,11 +294,13 @@ class Interfaz:
                   relief="flat", padx=8, pady=4, cursor="hand2",
                   command=self._borrar
                   ).pack(side="left", padx=(0, 6))
-        tk.Button(f_acc, text="▶  Compilar",
+        self.btn_compilar = tk.Button(
+                  f_acc, text="▶  Compilar",
                   font=("Segoe UI", 9, "bold"), bg="#3A86FF", fg="white",
                   relief="flat", padx=12, pady=4, cursor="hand2",
                   command=self._compilar
-                  ).pack(side="left")
+                  )
+        self.btn_compilar.pack(side="left")
 
         # ── Frase traducida (prominente) ──────────────────────────
         f_frase = tk.Frame(marco, bg="#0F3460", pady=5)
@@ -310,6 +315,17 @@ class Interfaz:
                  font=("Segoe UI", 7, "bold"), bg="#0F3460", fg="#A0A8D0"
                  ).grid(row=0, column=0, sticky="w")
 
+        # Indicador de modo de interpretación (IA o Reglas)
+        _modo = modo_interpretacion()
+        _ia_activa = "IA" in _modo and "no" not in _modo.lower()
+        _modo_color = "#06D6A0" if _ia_activa else "#888AAA"
+        _modo_icono = "✦ IA" if _ia_activa else "⚙ Reglas"
+        self.lbl_modo_ia = tk.Label(
+            f_frase_hdr, text=_modo_icono,
+            font=("Segoe UI", 7, "bold"), bg="#0F3460", fg=_modo_color
+        )
+        self.lbl_modo_ia.grid(row=0, column=1, sticky="e", padx=(0, 4))
+
         tip_voz = "Leer en voz alta" if _VOZ_DISPONIBLE else "Voz no disponible"
         self.btn_voz = tk.Button(
             f_frase_hdr,
@@ -321,7 +337,7 @@ class Interfaz:
             state="normal" if _VOZ_DISPONIBLE else "disabled",
             command=self._hablar
         )
-        self.btn_voz.grid(row=0, column=1, sticky="e")
+        self.btn_voz.grid(row=0, column=2, sticky="e")
 
         self.lbl_frase = tk.Label(f_frase, text="— escribe una expresión y presiona Compilar —",
                                   font=("Segoe UI", 10), bg="#0F3460", fg="#FFD166",
@@ -553,13 +569,30 @@ class Interfaz:
             lineas_sint.append(("No se pudo construir el AST.\n", "error"))
         self._escribir(self.tab_sintactico, lineas_sint)
 
-        # ── FASE 3: Semántico ─────────────────────────────────────
-        with contextlib.redirect_stdout(buf):
-            frases = compilar(entrada)
-        errores_sem = buf.getvalue()
+        # ── FASE 3: Semántico (puede llamar a la IA — corre en hilo) ─────────
+        self.btn_compilar.configure(state="disabled", text="⏳ Interpretando...")
+        self.lbl_frase.config(text="⏳ Interpretando señales...")
+
+        def _fase3_hilo():
+            buf3 = io.StringIO()
+            with contextlib.redirect_stdout(buf3):
+                frases = compilar(entrada)
+            errores_sem = buf3.getvalue()
+            self.root.after(0, lambda: self._mostrar_semantico(entrada, frases, errores_sem))
+
+        threading.Thread(target=_fase3_hilo, daemon=True).start()
+
+    def _mostrar_semantico(self, entrada, frases, errores_sem):
+        """Actualiza la UI con el resultado de la fase semántica (llamado desde el hilo principal)."""
+        # Re-habilitar botón
+        self.btn_compilar.configure(state="normal", text="▶  Compilar")
 
         lineas_sem = []
         lineas_sem.append((f"Entrada: {entrada}\n", "titulo"))
+        # Mostrar modo de interpretación
+        _modo = modo_interpretacion()
+        _ia_ok = "IA" in _modo and "no" not in _modo.lower()
+        lineas_sem.append((f"Motor: {_modo}\n", "dim"))
         lineas_sem.append(("─" * 48 + "\n", "dim"))
         if errores_sem.strip():
             lineas_sem.extend(_clasificar_lineas(errores_sem, ocultar_lex=True))
@@ -570,11 +603,9 @@ class Interfaz:
                 if len(frases) > 1:
                     lineas_sem.append((f"Expresión {i}:\n", "dim"))
                 lineas_sem.append((f"{f}\n", "frase_tab"))
-            # Actualizar label prominente y guardar frase para voz
             texto_label = "\n".join(frases)
             self.frase_actual = texto_label
             self.lbl_frase.config(text=texto_label)
-            # Registrar en historial
             self._agregar_a_historial(entrada, frases)
         else:
             lineas_sem.append(("No se pudo generar la frase.\n", "error"))

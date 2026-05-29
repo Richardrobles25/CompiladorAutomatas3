@@ -118,7 +118,6 @@ def p_token_base(p):
                   | UUH
                   | OH
                   | SHH
-                  | HMM
                   | UFF
                   | AY
                   | ANA
@@ -134,14 +133,17 @@ def p_token_base(p):
                   | APUNTA_SI
                   | JUNTA_DEDOS
                   | SEPARA_MANOS
-                  | PULGAR_ARRIBA
-                  | PULGAR_ABAJO
+                  | DEDOINDICE_BOCA
+                  | MUEVE_PULGARES
+                  | MANO_DERECHA_A_IZQUIERDA
+                  | MANOS_PALMAS_HACIA_ARRIBA
                   | SONIDO_LARGO
                   | SONIDO_CORTO
                   | SONIDO_REPETIDO
                   | SONIDO_AGUDO
                   | SONIDO_GRAVE
                   | SONIDO_SUAVE
+                  | SONIDO_RONQUIDO
                   | CABEZA_SI
                   | CABEZA_NO
                   | CABEZA_LADO
