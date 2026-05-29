@@ -38,6 +38,10 @@ tokens = (
     'NEG',       # ~  negación (prefijo)
     'FIN_EXPR',  # ;  nueva idea
 
+    # Agrupación
+    'LPAREN',    # (  abre grupo / alternativa explícita
+    'RPAREN',    # )  cierra grupo
+
     # Contexto temporal/situacional
     'CONTEXTO',
 )
@@ -118,6 +122,14 @@ def t_FIN_EXPR(t):
     r'\;'
     return t
 
+def t_LPAREN(t):
+    r'\('
+    return t
+
+def t_RPAREN(t):
+    r'\)'
+    return t
+
 # Contador de líneas para rastrear posición en errores
 def t_newline(t):
     r'\n+'
@@ -147,10 +159,8 @@ def t_error(t):
           f"carácter '{c}' no válido.")
     sugs_char = {
         '@': "los tokens solo usan letras minúsculas, números y '_'.",
-        '(': "el lenguaje no usa paréntesis.",
-        ')': "el lenguaje no usa paréntesis.",
-        '{': "el lenguaje no usa llaves.",
-        '}': "el lenguaje no usa llaves.",
+        '{': "el lenguaje no usa llaves; usa ( ) para agrupar alternativas.",
+        '}': "el lenguaje no usa llaves; usa ( ) para agrupar alternativas.",
         ',': "usa '+' para separar tokens en secuencia.",
         '.': "los tokens no llevan punto.",
     }

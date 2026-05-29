@@ -33,15 +33,38 @@ class NodoSecuencia:
 
 
 class NodoTermino:
-    def __init__(self, token_valor, token_tipo, negado=False, urgente=False):
-        self.token_valor = token_valor  # 'mmm', 'sonrie', etc.
-        self.token_tipo  = token_tipo   # 'MMM', 'SONRIE', etc.
-        self.negado      = negado       # True si fue precedido por ~
-        self.urgente     = urgente      # True si fue seguido por !
+    def __init__(self, token_valor, token_tipo, negado=False, urgente=False,
+                 es_modificador=False):
+        self.token_valor    = token_valor    # 'mmm', 'sonrie', etc.
+        self.token_tipo     = token_tipo     # 'MMM', 'SONRIE', etc.
+        self.negado         = negado         # True si fue precedido por ~
+        self.urgente        = urgente        # True si fue seguido por !
+        self.es_modificador = es_modificador # True si es E6 (rapido/lento/doble/triple/pausa)
 
     def __repr__(self):
-        mod = ("~" if self.negado else "") + ("!" if self.urgente else "")
-        return f"Termino({mod}{self.token_valor})"
+        mod  = ("~" if self.negado else "") + ("!" if self.urgente else "")
+        cat  = "[E6]" if self.es_modificador else ""
+        return f"Termino({mod}{self.token_valor}{cat})"
+
+
+class NodoGrupo:
+    """Representa una sub-expresión agrupada entre paréntesis: (A | B)"""
+    def __init__(self, expresion):
+        self.expresion      = expresion   # NodoExpresion interior
+        self.negado         = False
+        self.urgente        = False
+        self.es_modificador = False       # un grupo nunca es solo un modificador
+        self.token_valor    = '(grupo)'
+        self.token_tipo     = 'GRUPO'
+
+    def __repr__(self):
+        alts = len(self.expresion.alternativas)
+        urg  = "!" if self.urgente else ""
+        return f"Grupo{urg}({alts} alternativa(s))"
+
+
+# ── Tokens E6 (modificadores de intensidad) ──────────────────────────────────
+_MODIFICADORES_E6 = frozenset({'RAPIDO', 'LENTO', 'DOBLE', 'TRIPLE', 'PAUSA'})
 
 
 # ── Precedencia de operadores ────────────────────────────────────────────────
@@ -51,7 +74,8 @@ precedence = (
     ('left',  'O'),        # |  alternativa        — menor prioridad
     ('left',  'MAS'),      # +  secuencia
     ('left',  'URGENTE'),  # !  urgencia (postfijo)
-    ('right', 'NEG'),      # ~  negación (prefijo)  — mayor prioridad
+    ('right', 'NEG'),      # ~  negación (prefijo)
+    ('left',  'LPAREN', 'RPAREN'),  # ( )  agrupación — mayor prioridad
 )
 
 
@@ -86,6 +110,12 @@ def p_expresion_alternativa(p):
 # secuencia : uno o varios términos unidos por +
 def p_secuencia_simple(p):
     'secuencia : termino'
+    if p[1].es_modificador:
+        print(f"[SIN-009] Error sintáctico — línea {p.lineno(1)}: "
+              f"'{p[1].token_valor}' es un modificador E6 sin token expresivo.")
+        print(f"  → Los modificadores (rapido, lento, doble, triple, pausa) solo pueden")
+        print(f"    ir después de un token expresivo (E1–E5).")
+        print(f"  → Ejemplo correcto: sonrie + rapido   (no: rapido solo)")
     p[0] = NodoSecuencia([p[1]])
 
 def p_secuencia_mas(p):
@@ -101,16 +131,58 @@ def p_termino_base(p):
 
 def p_termino_negado(p):
     'termino : NEG termino'
-    p[2].negado = True
+    if p[2].es_modificador:
+        print(f"[SIN-007] Error sintáctico — línea {p.lineno(1)}: "
+              f"no se puede negar el modificador E6 '{p[2].token_valor}'.")
+        print(f"  → Los modificadores (rapido, lento, doble, triple, pausa) indican")
+        print(f"    intensidad y no tienen opuesto lógico.")
+        print(f"  → Ejemplo correcto: ~sonrie + lento  (niega el gesto, no el modificador)")
+    else:
+        p[2].negado = True
     p[0] = p[2]
 
 def p_termino_urgente(p):
     'termino : termino URGENTE'
-    p[1].urgente = True
+    if p[1].es_modificador:
+        print(f"[SIN-008] Error sintáctico — línea {p.lineno(2)}: "
+              f"'!' no puede aplicarse al modificador E6 '{p[1].token_valor}'.")
+        print(f"  → '!' expresa urgencia en un gesto o emoción expresiva, no en")
+        print(f"    un modificador de intensidad.")
+        print(f"  → Ejemplo correcto: sonrie !   (no: rapido !)")
+    else:
+        p[1].urgente = True
     p[0] = p[1]
 
 
-# token_base : cualquiera de los 55 tokens del alfabeto
+# termino agrupado con paréntesis: (expresion)  permite (A | B) + C
+def p_termino_grupo(p):
+    'termino : LPAREN expresion RPAREN'
+    p[0] = NodoGrupo(p[2])
+
+def p_termino_grupo_urgente(p):
+    'termino : LPAREN expresion RPAREN URGENTE'
+    nodo = NodoGrupo(p[2])
+    nodo.urgente = True
+    p[0] = nodo
+
+def p_termino_grupo_sin_cerrar(p):
+    'termino : LPAREN expresion error'
+    print(f"[SIN-010] Error sintáctico — línea {p.lineno(3)}: "
+          f"paréntesis sin cerrar '('.")
+    print(f"  → Agrega ')' para cerrar el grupo.")
+    print(f"  → Ejemplo correcto: (mmm | uff) + sonrie")
+    p[0] = NodoGrupo(p[2])
+
+def p_termino_paren_vacio(p):
+    'termino : LPAREN RPAREN'
+    print(f"[SIN-010] Error sintáctico — línea {p.lineno(1)}: "
+          f"paréntesis vacíos '()'.")
+    print(f"  → Escribe al menos un token dentro del grupo.")
+    print(f"  → Ejemplo: (mmm | uff)")
+    p[0] = NodoTermino(token_valor='(vacío)', token_tipo='ERROR')
+
+
+# token_base : cualquiera de los 57 tokens del alfabeto
 def p_token_base(p):
     '''token_base : MMM
                   | ATA
@@ -169,7 +241,9 @@ def p_token_base(p):
                   | DOBLE
                   | TRIPLE
                   | PAUSA'''
-    p[0] = NodoTermino(token_valor=p[1], token_tipo=p.slice[1].type)
+    tipo = p.slice[1].type
+    p[0] = NodoTermino(token_valor=p[1], token_tipo=tipo,
+                       es_modificador=(tipo in _MODIFICADORES_E6))
 
 
 # ── Recuperación de errores ──────────────────────────────────────────────────
@@ -251,6 +325,9 @@ def imprimir_ast(nodo, prefijo="", es_ultimo=True):
     elif isinstance(nodo, NodoSecuencia):
         for i, term in enumerate(nodo.terminos):
             imprimir_ast(term, prefijo_hijo, i == len(nodo.terminos) - 1)
+
+    elif isinstance(nodo, NodoGrupo):
+        imprimir_ast(nodo.expresion, prefijo_hijo, True)
 
 
 def analizar(entrada):

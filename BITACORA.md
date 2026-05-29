@@ -18,8 +18,10 @@ El compilador está diseñado para asistir la comunicación de una persona con d
 
 | Archivo | Descripción |
 |---------|-------------|
-| `lexer.py` | Analizador léxico — reconoce los 55 tokens del alfabeto |
+| `lexer.py` | Analizador léxico — reconoce los 57 tokens del alfabeto |
 | `sintactico.py` | Analizador sintáctico — valida gramática y construye el AST |
+| `semantico.py` | Analizador semántico — detecta patrones y genera frases en español |
+| `interpretador_ia.py` | Módulo de interpretación con IA (Claude) — capa semántica avanzada |
 | `interfaz.py` | Interfaz gráfica Tkinter para el cuidador |
 | `probar_lexer.py` | Herramienta interactiva para probar el lexer en terminal |
 | `MANUAL_COMPILADOR.md` | Manual interno: tokens, operadores, gramática, ejemplos |
@@ -536,13 +538,558 @@ Los tabs de Fase 2 y Fase 3 filtran los `[LEX-*]` para no duplicar mensajes que 
 
 ---
 
+---
+
+### ETAPA 9 — Actualización del alfabeto de tokens ✅
+**Archivos:** `lexer.py`, `sintactico.py`, `semantico.py`, `interfaz.py`
+**Estado:** Completo
+**Fecha:** Mayo 2026
+
+#### ¿Por qué se hizo?
+Al revisar el `MANUAL_COMPILADOR.md` se detectó que el alfabeto de tokens había evolucionado respecto al código. Se eliminaron 3 tokens obsoletos y se agregaron 5 tokens nuevos para reflejar mejor las señales reales de comunicación de la persona.
+
+#### Tokens eliminados
+
+| Token eliminado | Categoría | Razón |
+|----------------|-----------|-------|
+| `hmm` | E1 — Sonidos vocales | Redundante con `mmm` — la persona no produce este sonido distintamente |
+| `pulgar_arriba` | E2 — Gestos de manos | La persona no realiza este gesto — se reemplazó por `apunta_si` |
+| `pulgar_abajo` | E2 — Gestos de manos | La persona no realiza este gesto — el rechazo se expresa con `cabeza_no` o `bah` |
+
+#### Tokens agregados
+
+| Token nuevo | Categoría | Significado base |
+|-------------|-----------|-----------------|
+| `dedoindice_boca` | E2 — Gestos de manos | Pide silencio |
+| `mueve_pulgares` | E2 — Gestos de manos | Quiere jugar videojuegos |
+| `mano_derecha_a_izquierda` | E2 — Gestos de manos | Indica que algo se acabó |
+| `manos_palmas_hacia_arriba` | E2 — Gestos de manos | Quiere que le den la razón |
+| `sonido_ronquido` | E3 — Vocalizaciones | Quiere irse a dormir |
+
+El total pasó de **55 tokens** a **57 tokens** (3 eliminados + 5 agregados = +2 netos).
+
+#### Cambios en `lexer.py`
+
+**Tuple `tokens` — sección E1 y E2:**
+```python
+# ANTES (E1 tenía 12, E2 tenía 12):
+'MMM', 'ATA', 'AAH', 'UUH', 'OH', 'SHH',
+'UFF', 'AY', 'ANA', 'BAH', 'PFF', 'HMM',  # ← HMM eliminado
+
+'SENALA', 'PALMA_ARRIBA', 'PALMA_ABAJO', 'PUNO',
+'MANO_ABIERTA', 'TOCA', 'AGITA', 'APUNTA_SI',
+'JUNTA_DEDOS', 'SEPARA_MANOS',
+'PULGAR_ARRIBA', 'PULGAR_ABAJO',            # ← estos dos eliminados
+
+# AHORA (E1 tiene 11, E2 tiene 14, E3 tiene 7):
+'MMM', 'ATA', 'AAH', 'UUH', 'OH', 'SHH',
+'UFF', 'AY', 'ANA', 'BAH', 'PFF',
+
+'SENALA', 'PALMA_ARRIBA', 'PALMA_ABAJO', 'PUNO',
+'MANO_ABIERTA', 'TOCA', 'AGITA', 'APUNTA_SI',
+'JUNTA_DEDOS', 'SEPARA_MANOS',
+'DEDOINDICE_BOCA', 'MUEVE_PULGARES',        # ← nuevos
+'MANO_DERECHA_A_IZQUIERDA', 'MANOS_PALMAS_HACIA_ARRIBA',  # ← nuevos
+
+'SONIDO_LARGO', 'SONIDO_CORTO', 'SONIDO_REPETIDO',
+'SONIDO_AGUDO', 'SONIDO_GRAVE', 'SONIDO_SUAVE',
+'SONIDO_RONQUIDO',                          # ← nuevo
+```
+
+**Diccionario `token_map`:**
+```python
+# Entradas eliminadas:
+'hmm': 'HMM',
+'pulgar_arriba': 'PULGAR_ARRIBA',
+'pulgar_abajo': 'PULGAR_ABAJO',
+
+# Entradas agregadas:
+'dedoindice_boca':           'DEDOINDICE_BOCA',
+'mueve_pulgares':            'MUEVE_PULGARES',
+'mano_derecha_a_izquierda':  'MANO_DERECHA_A_IZQUIERDA',
+'manos_palmas_hacia_arriba': 'MANOS_PALMAS_HACIA_ARRIBA',
+'sonido_ronquido':           'SONIDO_RONQUIDO',
+```
+
+**Mensaje de error actualizado:**
+```python
+# ANTES:
+print(f"  → Usa uno de los 55 tokens del alfabeto ...")
+# AHORA:
+print(f"  → Usa uno de los 57 tokens del alfabeto ...")
+```
+
+#### Cambios en `sintactico.py`
+
+La regla `p_token_base` lista explícitamente todos los tokens válidos. Se actualizó para reflejar el nuevo alfabeto:
+
+```python
+def p_token_base(p):
+    '''token_base : MMM
+                  | ...
+                  | DEDOINDICE_BOCA        ← agregado
+                  | MUEVE_PULGARES         ← agregado
+                  | MANO_DERECHA_A_IZQUIERDA  ← agregado
+                  | MANOS_PALMAS_HACIA_ARRIBA ← agregado
+                  | SONIDO_RONQUIDO        ← agregado
+                  | ...'''
+    # (también se eliminaron HMM, PULGAR_ARRIBA, PULGAR_ABAJO)
+```
+
+#### Cambios en `semantico.py`
+
+**Diccionario `CATEGORIA`** — mapeo token → categoría E1-E6:
+```python
+# Eliminados:
+'HMM':'E1', 'PULGAR_ARRIBA':'E2', 'PULGAR_ABAJO':'E2'
+
+# Agregados:
+'DEDOINDICE_BOCA':'E2',
+'MUEVE_PULGARES':'E2',
+'MANO_DERECHA_A_IZQUIERDA':'E2',
+'MANOS_PALMAS_HACIA_ARRIBA':'E2',
+'SONIDO_RONQUIDO':'E3',
+```
+
+**Diccionario `BASE`** — significados base de cada token:
+```python
+# Eliminados:
+'hmm': 'está pensando en silencio',
+'pulgar_arriba': 'está de acuerdo o satisfecho',
+'pulgar_abajo': 'no está de acuerdo o rechaza',
+
+# Modificado (cambio de significado):
+# ANTES: 'shh': 'pide silencio o quiere esperar'
+# AHORA: 'shh': 'tiene ganas de ir al baño'
+# (la persona usa este sonido específicamente para indicar necesidad de baño)
+
+# Agregados:
+'dedoindice_boca':           'pide silencio',
+'mueve_pulgares':            'quiere jugar videojuegos',
+'mano_derecha_a_izquierda':  'indica que algo se acabó',
+'manos_palmas_hacia_arriba': 'quiere que le den la razón',
+'sonido_ronquido':           'quiere irse a dormir',
+```
+
+**Grupos de patrones actualizados:**
+```python
+# TOKENS_PETICION: se agregaron MUEVE_PULGARES y SHH
+TOKENS_PETICION = {'PALMA_ARRIBA','SENALA','TOCA','MIRA_OBJETO',
+                   'SONIDO_CORTO','PUNO','MUEVE_PULGARES','SHH'}
+
+# TOKENS_POSITIVO: PULGAR_ARRIBA reemplazado por APUNTA_SI
+TOKENS_POSITIVO = {'SONRIE','AAH','APUNTA_SI'}
+
+# TOKENS_NEGATIVO: se agregó MANO_DERECHA_A_IZQUIERDA
+TOKENS_NEGATIVO = {'LLANTO','MIRA_ABAJO','BAH','PFF',
+                   'ALEJA_CUERPO','MANO_DERECHA_A_IZQUIERDA'}
+
+# TOKENS_CONFIRM: se agregó MANOS_PALMAS_HACIA_ARRIBA
+TOKENS_CONFIRM = {'CABEZA_SI','CABEZA_NO','CABEZA_LADO',
+                  'APUNTA_SI','JUNTA_DEDOS','MANOS_PALMAS_HACIA_ARRIBA'}
+
+# TOKENS_CANSANCIO: se agregó SONIDO_RONQUIDO
+TOKENS_CANSANCIO = {'CIERRA_OJOS','SONIDO_GRAVE','MIRA_ABAJO','SONIDO_RONQUIDO'}
+```
+
+**Función `_frase_confirmacion` actualizada** — se reemplazaron referencias a `PULGAR_ARRIBA` y `HMM`:
+```python
+def _frase_confirmacion(infos):
+    tipos = [i['tipo'] for i in infos]
+    if 'CABEZA_SI' in tipos:
+        if 'APUNTA_SI' in tipos:
+            return 'Confirma que sí, eso es exactamente lo correcto'
+        if 'MANOS_PALMAS_HACIA_ARRIBA' in tipos:   # ← nuevo caso
+            return 'Confirma que sí y quiere que le den la razón'
+        return 'Está de acuerdo, dice que sí'
+    ...
+```
+
+#### Cambios en `interfaz.py`
+
+**Diccionario `CATEGORIA_TOKEN`** — mismas 3 eliminaciones y 5 adiciones que en el semántico.
+
+**Lista `CATEGORIAS`** — actualizada la sublista de E1, E2 y E3:
+```python
+("E2 · Gestos de manos", "#8338EC",
+ ["senala", "palma_arriba", "palma_abajo", "puno",
+  "mano_abierta", "toca", "agita", "apunta_si",
+  "junta_dedos", "separa_manos",
+  "dedoindice_boca", "mueve_pulgares",          # ← nuevos
+  "mano_derecha_a_izquierda",                   # ← nuevo
+  "manos_palmas_hacia_arriba"]),                 # ← nuevo
+
+("E3 · Vocalizaciones", "#06D6A0",
+ ["sonido_largo", "sonido_corto", "sonido_repetido",
+  "sonido_agudo", "sonido_grave", "sonido_suave",
+  "sonido_ronquido"]),                           # ← nuevo
+```
+
+---
+
+### ETAPA 10 — Intérprete semántico con IA (Claude) ✅
+**Archivo nuevo:** `interpretador_ia.py`
+**Archivos modificados:** `semantico.py`, `interfaz.py`
+**Estado:** Completo
+**Fecha:** Mayo 2026
+
+#### ¿Por qué se hizo?
+El analizador semántico basado en reglas cubre ~200 combinaciones predefinidas, pero tiene limitaciones:
+- Combinaciones nuevas o poco comunes caen en el patrón `general` sin frase específica
+- La frase generada es mecánica ("Pide silencio. Pide calma o que paren.")
+
+Al integrar un modelo de lenguaje grande (Claude de Anthropic), el compilador puede generar frases en español natural para **cualquier combinación posible de tokens**, adaptadas al contexto, la negación y la urgencia. El sistema de reglas se conserva como respaldo.
+
+#### Arquitectura de la integración
+
+```
+Entrada de texto
+      │
+      ▼
+┌─────────────┐     ┌──────────────┐     ┌──────────────────────────┐
+│  lexer.py   │────▶│ sintactico.py│────▶│      semantico.py        │
+│ (55 tokens) │     │    (AST)     │     │                          │
+└─────────────┘     └──────────────┘     │  ┌─────────────────────┐ │
+                                         │  │ interpretador_ia.py │ │
+                                         │  │  (Claude API)       │ │
+                                         │  └────────┬────────────┘ │
+                                         │           │              │
+                                         │   IA disponible?         │
+                                         │   ┌───YES─┘  NO─┐        │
+                                         │   ▼              ▼        │
+                                         │ Frase IA    Sistema de   │
+                                         │ (natural)   Reglas       │
+                                         └──────────────────────────┘
+                                                      │
+                                                      ▼
+                                               Frase en español
+```
+
+#### Archivo nuevo: `interpretador_ia.py`
+
+Este archivo es el puente entre el compilador y la API de Anthropic. Sus responsabilidades son:
+
+1. **Cargar el SDK de Anthropic** de forma segura — si no está instalado, el módulo funciona igual pero todas las funciones devuelven `None` (no lanza excepciones)
+2. **Construir el prompt del sistema** — describe el lenguaje completo al modelo para que entienda el contexto
+3. **Transformar los datos internos** en texto comprensible para Claude
+4. **Cachear las respuestas** — misma combinación de tokens no llama la API dos veces
+5. **Manejar errores de red o de clave** sin detener el compilador
+
+**Estructura del módulo:**
+```python
+# ── Importación segura del SDK ───────────────────────────────────────────────
+try:
+    import anthropic as _anthropic_sdk
+    _IA_DISPONIBLE = True
+except ImportError:
+    _IA_DISPONIBLE = False   # el compilador sigue funcionando sin IA
+
+# ── Caché para no llamar la API dos veces con la misma entrada ───────────────
+_cache: dict = {}
+
+# ── Cliente con inicialización diferida ──────────────────────────────────────
+_cliente_ia = None
+
+def _obtener_cliente():
+    global _cliente_ia
+    if _cliente_ia is None:
+        api_key = os.environ.get("ANTHROPIC_API_KEY")
+        if not api_key:
+            raise EnvironmentError("ANTHROPIC_API_KEY no está definida.")
+        _cliente_ia = _anthropic_sdk.Anthropic(api_key=api_key)
+    return _cliente_ia
+```
+
+**El prompt del sistema** — le dice a Claude quién es la persona y qué significa cada token:
+
+```python
+_SYSTEM_PROMPT = """\
+Eres un asistente especializado en comunicación aumentativa y alternativa (CAA).
+Ayudas a los cuidadores de una persona con autismo no verbal a entender sus señales.
+
+El sistema de comunicación usa tokens que representan gestos, sonidos y movimientos:
+
+E1 – Sonidos vocales:
+  mmm=duda/pensamiento | ata=llama a alguien | aah=alivio/satisfacción
+  uuh=incomodidad      | oh=sorpresa          | shh=ganas de ir al baño
+  uff=cansancio/frustración | ay=dolor agudo  | ana=llama a "Ana"
+  bah=rechazo          | pff=desinterés/desacuerdo
+
+E2 – Gestos de manos:
+  senala=quiere algo en esa dirección  | palma_arriba=pide algo
+  ...  (todos los 57 tokens con su significado)
+
+Contextos temporales:
+  [manana] = momento del despertar
+  [tarde]  = hora de la tarde
+  [noche]  = hora de dormir
+  [dolor]  = la persona está experimentando dolor físico
+
+Operadores:
+  ~ antes de un token = NEGACIÓN
+  ! después de un token = URGENCIA MÁXIMA
+
+INSTRUCCIONES: Genera UNA SOLA ORACIÓN en español natural.
+- Tercera persona ("Quiere...", "Está...", "Siente...")
+- NO incluyas prefijos de contexto como "En la mañana:" (el sistema los agrega)
+- Máximo 2 oraciones cortas
+- Solo la oración, sin explicaciones ni comillas
+"""
+```
+
+**Función principal `interpretar_con_ia`:**
+
+```python
+def interpretar_con_ia(infos: list, contexto, hay_urgente: bool):
+    """
+    Parámetros:
+        infos       – lista de dicts: {valor, tipo, significado, negado, urgente}
+        contexto    – 'manana' | 'tarde' | 'noche' | 'dolor' | None
+        hay_urgente – True si algún token lleva '!'
+
+    Retorna:
+        str  – frase interpretada en español natural
+        None – si la IA no está disponible (usar sistema de reglas como respaldo)
+    """
+    if not _IA_DISPONIBLE:
+        return None
+
+    # 1. Revisar caché primero
+    clave = _clave_cache(infos, contexto, hay_urgente)
+    if clave in _cache:
+        return _cache[clave]
+
+    # 2. Construir el mensaje para Claude
+    mensaje = _construir_mensaje(infos, contexto, hay_urgente)
+
+    # 3. Llamar a la API
+    try:
+        cliente = _obtener_cliente()
+        respuesta = cliente.messages.create(
+            model="claude-opus-4-7",
+            max_tokens=200,
+            system=_SYSTEM_PROMPT,
+            messages=[{"role": "user", "content": mensaje}],
+        )
+        frase = respuesta.content[0].text.strip()
+        _cache[clave] = frase   # guardar en caché
+        return frase
+
+    except EnvironmentError as e:
+        # Avisar una sola vez si no hay API key
+        print(f"\n[IA] {e}")
+        print("[IA] Usando interpretación basada en reglas.\n")
+        return None
+
+    except Exception as e:
+        # Cualquier error de red, rate limit, etc. → respaldo a reglas
+        print(f"[IA] Error al contactar Claude → {e}")
+        return None
+```
+
+**Construcción del mensaje para Claude** — convierte los datos internos del compilador a texto legible:
+
+```python
+def _construir_mensaje(infos, contexto, hay_urgente):
+    partes = []
+
+    # Agregar contexto si existe
+    if contexto:
+        desc_ctx = {
+            'manana': 'mañana (momento de levantarse)',
+            'tarde':  'tarde (actividades diurnas)',
+            'noche':  'noche (hora de dormir)',
+            'dolor':  'dolor (la persona está sufriendo)',
+        }
+        partes.append(f"Contexto: {desc_ctx[contexto]}")
+
+    # Describir cada token con su significado y modificadores
+    tokens_desc = []
+    for info in infos:
+        desc = info['valor']
+        if info['negado']:
+            desc = f"~{desc} (NEGADO: {info['significado']})"
+        else:
+            desc = f"{desc} ({info['significado']})"
+        if info['urgente']:
+            desc += " [¡URGENTE!]"
+        tokens_desc.append(desc)
+
+    partes.append("Señales: " + ", ".join(tokens_desc))
+
+    if hay_urgente:
+        partes.append("⚠ Hay señal de URGENCIA MÁXIMA.")
+
+    return "\n".join(partes)
+```
+
+**Ejemplo de mensaje enviado a Claude:**
+```
+Contexto: dolor (la persona está sufriendo)
+Señales: ay (siente un dolor muy intenso), senala_propio (le duele algo en su cuerpo) [¡URGENTE!]
+⚠ Hay señal de URGENCIA MÁXIMA.
+```
+
+**Respuesta de Claude:**
+```
+Siente un dolor intenso en alguna parte de su cuerpo y necesita atención urgente ahora mismo.
+```
+
+#### Cambios en `semantico.py`
+
+**Nueva importación al inicio del archivo** (con fallback si el módulo no existe):
+
+```python
+# ── Importar intérprete de IA (opcional: funciona sin él) ───────────────────
+try:
+    from interpretador_ia import interpretar_con_ia, ia_disponible
+    _IA_IMPORTADA = True
+except ImportError:
+    _IA_IMPORTADA = False
+    def interpretar_con_ia(*args, **kwargs): return None
+    def ia_disponible(): return False
+```
+
+**Función `interpretar_secuencia` modificada** — se agregan dos líneas al final que intentan la IA antes de las reglas:
+
+```python
+def interpretar_secuencia(secuencia, contexto):
+    # ... (mismo código que antes: construir infos, detectar patrón, advertencias)
+
+    # ── Intentar interpretación con IA ──────────────────────────────────────
+    frase_ia = interpretar_con_ia(infos, contexto, hay_urgente)
+    if frase_ia:
+        return frase_ia          # ← IA tuvo éxito, usar su frase
+
+    # ── Interpretación basada en reglas (respaldo) ───────────────────────────
+    return generar_frase(infos, patron, contexto, hay_urgente)
+```
+
+**Nueva función `modo_interpretacion`** — reporta el motor activo para mostrarlo en la interfaz:
+
+```python
+def modo_interpretacion() -> str:
+    if _IA_IMPORTADA and ia_disponible():
+        return "IA (Claude)"
+    if _IA_IMPORTADA:
+        return "Reglas (ANTHROPIC_API_KEY no configurada)"
+    return "Reglas (módulo IA no disponible)"
+```
+
+#### Cambios en `interfaz.py`
+
+**Nueva importación:**
+```python
+from semantico import compilar, modo_interpretacion
+```
+
+**Indicador de modo en la interfaz** — pequeña etiqueta junto al encabezado TRADUCCIÓN:
+```python
+_modo = modo_interpretacion()
+_ia_activa = "IA" in _modo and "no" not in _modo.lower()
+_modo_color = "#06D6A0" if _ia_activa else "#888AAA"  # verde si IA, gris si reglas
+_modo_icono = "✦ IA" if _ia_activa else "⚙ Reglas"
+
+self.lbl_modo_ia = tk.Label(
+    f_frase_hdr, text=_modo_icono,
+    font=("Segoe UI", 7, "bold"), bg="#0F3460", fg=_modo_color
+)
+```
+
+**Compilación en hilo separado** — la Fase 3 (semántica) puede tardar 1-3 segundos cuando usa la IA. Para que la interfaz no se congele, se refactorizó `_compilar` para correr la fase 3 en un hilo:
+
+```python
+def _compilar(self):
+    entrada = self._construir_entrada()
+
+    # Fases 1 y 2 (léxico y sintáctico) — síncronas, muy rápidas
+    # ... (código igual que antes)
+
+    # Fase 3: semántica — puede llamar a la IA, corre en hilo
+    self.btn_compilar.configure(state="disabled", text="⏳ Interpretando...")
+    self.lbl_frase.config(text="⏳ Interpretando señales...")
+
+    def _fase3_hilo():
+        buf3 = io.StringIO()
+        with contextlib.redirect_stdout(buf3):
+            frases = compilar(entrada)      # ← aquí puede llamar a Claude
+        errores_sem = buf3.getvalue()
+        # Regresar al hilo principal para actualizar la UI
+        self.root.after(0, lambda: self._mostrar_semantico(entrada, frases, errores_sem))
+
+    threading.Thread(target=_fase3_hilo, daemon=True).start()
+
+
+def _mostrar_semantico(self, entrada, frases, errores_sem):
+    """Actualiza la UI con el resultado de la fase semántica."""
+    self.btn_compilar.configure(state="normal", text="▶  Compilar")
+    # ... muestra frases en el tab semántico y en el label prominente
+```
+
+> **¿Por qué `root.after(0, ...)`?**  
+> Tkinter no es thread-safe — si un hilo que no es el principal intenta modificar widgets, la aplicación crashea. `root.after(0, callback)` agenda el callback para que corra en el próximo ciclo del hilo principal de Tkinter, haciendo la actualización segura.
+
+#### Instalación requerida
+
+```bash
+pip install anthropic
+```
+
+#### Activación de la IA
+
+```bash
+# Configurar la clave de API (una sola vez en cada sesión de terminal)
+export ANTHROPIC_API_KEY='sk-ant-...'
+
+# Iniciar la aplicación
+python3 interfaz.py
+```
+
+Para hacerla permanente (no tener que escribirla cada vez):
+```bash
+echo 'export ANTHROPIC_API_KEY="sk-ant-..."' >> ~/.zshrc
+source ~/.zshrc
+```
+
+#### Comportamiento según disponibilidad
+
+| Situación | Comportamiento | Indicador en UI |
+|-----------|---------------|-----------------|
+| SDK instalado + API key configurada | Usa Claude para todas las frases | **✦ IA** (verde) |
+| SDK instalado + sin API key | Avisa una vez en consola, usa reglas | **⚙ Reglas** (gris) |
+| SDK no instalado | Usa reglas silenciosamente | **⚙ Reglas** (gris) |
+| Error de red o rate limit | Avisa en consola, usa reglas para esa frase | **⚙ Reglas** (gris) |
+
+#### Comparación de resultados: Reglas vs IA
+
+| Entrada | Sistema de Reglas | Claude (IA) |
+|---------|------------------|-------------|
+| `mueve_pulgares + agita` | `¡Quiere jugar videojuegos y llama la atención urgentemente! Es urgente.` | `Está agitado y llama la atención porque quiere que lo dejen jugar videojuegos.` |
+| `[tarde] manos_palmas_hacia_arriba + cabeza_si` | `En la tarde: confirma que sí y quiere que le den la razón` | `En la tarde confirma que sí tiene razón y quiere que se lo reconozcan.` |
+| `dedoindice_boca + palma_abajo` | `Pide silencio. Pide calma o que paren.` | `Pide que hagan silencio y se calmen.` |
+| `[dolor] ~sonrie + sonido_agudo !` | `Con señales de dolor: ¡siente un dolor agudo e intenso! Necesita atención urgente ahora mismo.` | `Con señales de dolor: no está bien y siente un dolor agudo muy intenso, necesita ayuda urgente.` |
+
+#### Decisión de diseño: IA como capa sobre el compilador, no en lugar de él
+
+La IA **no reemplaza** el analizador léxico ni el sintáctico. El pipeline `lexer → parser → semántico` corre completo antes de que la IA entre en juego. Esto es intencional:
+
+- El **lexer** garantiza que solo tokens válidos del alfabeto lleguen al semántico
+- El **parser** garantiza que la estructura gramatical es correcta (precedencia, operadores)
+- El **semántico** detecta el patrón, calcula los significados individuales con los overrides de contexto, y detecta las advertencias `[SEM-*]`
+- La **IA** recibe los datos ya procesados y listos — no texto crudo — lo que hace su tarea más precisa y predecible
+
+Esto también cumple completamente con los criterios de la rúbrica: las tres fases formales del compilador existen y funcionan independientemente de si la IA está disponible o no.
+
+---
+
 ## Estado actual del proyecto
 
 | Componente | Estado | Archivo |
 |------------|--------|---------|
-| Analizador léxico | ✅ Completo | `lexer.py` |
+| Analizador léxico (57 tokens) | ✅ Completo | `lexer.py` |
 | Analizador sintáctico | ✅ Completo | `sintactico.py` |
 | Analizador semántico | ✅ Completo | `semantico.py` |
+| Intérprete IA (Claude) | ✅ Completo | `interpretador_ia.py` |
 | Interfaz gráfica integrada | ✅ Completo | `interfaz.py` |
 | Suite de pruebas formales | ✅ Completo | `tests.py` |
 | Síntesis de voz (español) | ✅ Completo | `interfaz.py` |
@@ -553,4 +1100,4 @@ Los tabs de Fase 2 y Fase 3 filtran los `[LEX-*]` para no duplicar mensajes que 
 
 ---
 
-*Bitácora actualizada al terminar la Etapa 8 — Sistema de errores tipificados y sugerencias.*
+*Bitácora actualizada al terminar la Etapa 10 — Intérprete semántico con IA (Claude).*

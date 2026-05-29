@@ -2,7 +2,7 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
 from sintactico import (
-    NodoPrograma, NodoExpresion, NodoSecuencia, NodoTermino, analizar
+    NodoPrograma, NodoExpresion, NodoSecuencia, NodoTermino, NodoGrupo, analizar
 )
 
 # ── Importar intérprete de IA (opcional: funciona sin él) ───────────────────
@@ -440,14 +440,30 @@ def interpretar_secuencia(secuencia, contexto):
     for term in secuencia.terminos:
         if term.urgente:
             hay_urgente = True
-        sig = significado_token(term.token_valor, term.token_tipo, contexto, term.negado)
-        infos.append({
-            'valor':      term.token_valor,
-            'tipo':       term.token_tipo,
-            'significado': sig,
-            'negado':     term.negado,
-            'urgente':    term.urgente,
-        })
+
+        if isinstance(term, NodoGrupo):
+            # Interpretar el grupo recursivamente: (A | B) se convierte en una sola frase
+            frases_grupo = [
+                interpretar_secuencia(alt, contexto)
+                for alt in term.expresion.alternativas
+            ]
+            sig_grupo = interpretar_alternativa(frases_grupo)
+            infos.append({
+                'valor':       '(grupo)',
+                'tipo':        'GRUPO',
+                'significado': sig_grupo,
+                'negado':      term.negado,
+                'urgente':     term.urgente,
+            })
+        else:
+            sig = significado_token(term.token_valor, term.token_tipo, contexto, term.negado)
+            infos.append({
+                'valor':      term.token_valor,
+                'tipo':       term.token_tipo,
+                'significado': sig,
+                'negado':     term.negado,
+                'urgente':    term.urgente,
+            })
     tipos   = [i['tipo']   for i in infos]
     negados = [i['negado'] for i in infos]
     patron  = detectar_patron(tipos, contexto, hay_urgente, negados)

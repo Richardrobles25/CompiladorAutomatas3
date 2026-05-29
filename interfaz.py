@@ -348,6 +348,7 @@ class Interfaz:
         notebook = ttk.Notebook(marco)
         notebook.grid(row=4, column=0, sticky="nsew", padx=8, pady=(6, 8))
         marco.rowconfigure(4, weight=1)
+        self.notebook = notebook  # guardamos referencia para poder cambiar de tab
 
         style = ttk.Style()
         style.theme_use("default")
@@ -613,6 +614,11 @@ class Interfaz:
             self.lbl_frase.config(text="⚠ Error al generar la traducción.")
 
         self._escribir(self.tab_semantico, lineas_sem)
+
+        # ── Si hay errores sintácticos de tipo/agrupación, saltar al tab semántico ──
+        errores_tipo = ('[SIN-007]', '[SIN-008]', '[SIN-009]', '[SIN-010]')
+        if any(cod in errores_sem for cod in errores_tipo):
+            self.notebook.select(2)   # índice 2 = Fase 3 · Semántico
 
     def _escribir(self, widget, lineas):
         widget.configure(state="normal")
