@@ -22,6 +22,31 @@ import os
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
+# ── Cargar API key desde archivo de configuración (si no está en el entorno) ─
+# Busca 'config.env' en el mismo directorio que este archivo.
+# Formato del archivo:  ANTHROPIC_API_KEY=sk-ant-...
+# (una sola línea, sin comillas)
+
+def _cargar_config_local():
+    config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.env")
+    if not os.path.exists(config_path):
+        return
+    try:
+        with open(config_path, encoding="utf-8") as f:
+            for linea in f:
+                linea = linea.strip()
+                if linea.startswith("#") or "=" not in linea:
+                    continue
+                clave, _, valor = linea.partition("=")
+                clave  = clave.strip()
+                valor  = valor.strip().strip('"').strip("'")
+                if clave and valor and clave not in os.environ:
+                    os.environ[clave] = valor
+    except Exception:
+        pass
+
+_cargar_config_local()
+
 # ── Intentar importar el SDK de Anthropic ────────────────────────────────────
 
 try:

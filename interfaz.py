@@ -215,9 +215,9 @@ class Interfaz:
                  bg="#16213E", fg=color).pack(anchor="w", pady=(2, 2))
         grilla = tk.Frame(marco, bg="#16213E")
         grilla.pack(fill="x")
-        col, max_col = 0, 4
+        col, max_col = 0, 3
         for token in tokens:
-            tk.Button(grilla, text=token, font=("Consolas", 7),
+            tk.Button(grilla, text=token, font=("Consolas", 9),
                       bg="#0F3460", fg="#E0E0FF",
                       activebackground=color, activeforeground="white",
                       relief="flat", bd=0, padx=4, pady=2, cursor="hand2",
@@ -241,9 +241,10 @@ class Interfaz:
                  ).grid(row=0, column=0, sticky="w", padx=8, pady=(6, 2))
         f_ctx = tk.Frame(marco, bg="#16213E")
         f_ctx.grid(row=1, column=0, sticky="w", padx=8)
-        colores_ctx = {"manana":"#FFB703","tarde":"#FB8500","noche":"#4CC9F0","dolor":"#D62828"}
+        colores_ctx  = {"manana":"#FFB703","tarde":"#FB8500","noche":"#4CC9F0","dolor":"#D62828"}
+        etiquetas_ctx = {"manana":"mañana","tarde":"tarde","noche":"noche","dolor":"dolor"}
         for ctx in CONTEXTOS:
-            tk.Radiobutton(f_ctx, text=ctx, value=ctx,
+            tk.Radiobutton(f_ctx, text=etiquetas_ctx[ctx], value=ctx,
                            variable=self.contexto_activo,
                            font=("Segoe UI", 8, "bold"),
                            bg="#16213E", fg=colores_ctx[ctx],
@@ -339,10 +340,16 @@ class Interfaz:
         )
         self.btn_voz.grid(row=0, column=2, sticky="e")
 
-        self.lbl_frase = tk.Label(f_frase, text="— escribe una expresión y presiona Compilar —",
+        self.lbl_frase = tk.Text(f_frase,
                                   font=("Segoe UI", 10), bg="#0F3460", fg="#FFD166",
-                                  wraplength=480, justify="left")
-        self.lbl_frase.grid(row=1, column=0, sticky="ew", padx=8, pady=(1, 4))
+                                  relief="flat", bd=0, wrap="word",
+                                  height=2, state="disabled",
+                                  cursor="arrow", padx=8, pady=4)
+        self.lbl_frase.tag_config("frase", foreground="#FFD166",
+                                   font=("Segoe UI", 10))
+        self.lbl_frase.tag_config("placeholder", foreground="#888AAA",
+                                   font=("Segoe UI", 10, "italic"))
+        self.lbl_frase.grid(row=1, column=0, columnspan=3, sticky="ew", padx=0, pady=(1, 4))
 
         # ── Área de fases (tabs) ──────────────────────────────────
         notebook = ttk.Notebook(marco)
@@ -384,6 +391,9 @@ class Interfaz:
 
         # ── Pestaña Historial ─────────────────────────────────────
         self._construir_tab_historial(notebook)
+
+        # ── Pestaña Tabla de Errores ──────────────────────────────
+        self._construir_tab_errores(notebook)
 
     # ── Pestaña Historial ────────────────────────────────────────────────────
 
@@ -463,7 +473,119 @@ class Interfaz:
         self.historial.clear()
         self._actualizar_historial()
 
+    # ── Pestaña Tabla de Errores ─────────────────────────────────────────────
+
+    def _construir_tab_errores(self, notebook):
+        """Pestaña estática con la tabla completa de códigos de error."""
+        f = tk.Frame(notebook, bg="#0A0A1A")
+        notebook.add(f, text="  ⚠ Errores  ")
+
+        t = scrolledtext.ScrolledText(
+            f, font=("Consolas", 9),
+            bg="#0A0A1A", fg="#E0E0FF",
+            relief="flat", padx=8, pady=6,
+            state="normal"
+        )
+        t.pack(fill="both", expand=True)
+
+        # Etiquetas de color
+        t.tag_config("titulo",   foreground="#A0A8D0", font=("Segoe UI", 9, "bold"))
+        t.tag_config("fase_lex", foreground="#00FF9F", font=("Segoe UI", 8, "bold"))
+        t.tag_config("fase_sin", foreground="#4CC9F0", font=("Segoe UI", 8, "bold"))
+        t.tag_config("fase_sem", foreground="#FFB703", font=("Segoe UI", 8, "bold"))
+        t.tag_config("cod_lex",  foreground="#00FF9F", font=("Consolas", 9, "bold"))
+        t.tag_config("cod_sin",  foreground="#4CC9F0", font=("Consolas", 9, "bold"))
+        t.tag_config("cod_sem",  foreground="#FFB703", font=("Consolas", 9, "bold"))
+        t.tag_config("desc",     foreground="#C0C0D0")
+        t.tag_config("ejemplo",  foreground="#555577", font=("Consolas", 8, "italic"))
+        t.tag_config("sep",      foreground="#1E1E3A")
+        t.tag_config("cabecera", foreground="#555577", font=("Consolas", 8))
+
+        def linea(codigo, tag_cod, descripcion, ejemplo=""):
+            t.insert("end", f"  {codigo:<12}", tag_cod)
+            t.insert("end", f"  {descripcion}\n", "desc")
+            if ejemplo:
+                t.insert("end", f"  {'':12}  → {ejemplo}\n", "ejemplo")
+
+        # ── Encabezado ──────────────────────────────────────────
+        t.insert("end", "  Tabla de Códigos de Error del Compilador\n", "titulo")
+        t.insert("end", "  " + "─" * 62 + "\n", "sep")
+        t.insert("end", f"  {'CÓDIGO':<12}  {'DESCRIPCIÓN'}\n", "cabecera")
+        t.insert("end", "  " + "─" * 62 + "\n\n", "sep")
+
+        # ── FASE 1: Léxico ───────────────────────────────────────
+        t.insert("end", "  FASE 1 · ANÁLISIS LÉXICO\n", "fase_lex")
+        t.insert("end", "  " + "─" * 62 + "\n", "sep")
+        linea("LEX-001", "cod_lex", "Token no reconocido en el vocabulario",
+              "sonri  →  ¿Quisiste decir: sonrie?")
+        linea("LEX-002", "cod_lex", "Contexto inválido entre corchetes",
+              "[manyana]  →  ¿Quisiste decir: [manana]?")
+        linea("LEX-003", "cod_lex", "Carácter ilegal fuera del alfabeto permitido",
+              "mmm @ sonrie  →  '@' no es válido")
+        t.insert("end", "\n", "sep")
+
+        # ── FASE 2: Sintáctico ───────────────────────────────────
+        t.insert("end", "  FASE 2 · ANÁLISIS SINTÁCTICO\n", "fase_sin")
+        t.insert("end", "  " + "─" * 62 + "\n", "sep")
+        linea("SIN-001", "cod_sin", "Operador '+' o '|' en posición inválida",
+              "+ mmm  o  mmm + + sonrie")
+        linea("SIN-002", "cod_sin", "'!' sin token previo  /  '~' mal colocado",
+              "! sonido_largo  →  debe ir después: sonrie !")
+        linea("SIN-003", "cod_sin", "Token faltante después de '+'",
+              "mmm +  →  falta token a la derecha del +")
+        linea("SIN-004", "cod_sin", "';' sin expresión válida antes o después",
+              "; sonrie  →  falta expresión antes del ;")
+        linea("SIN-005", "cod_sin", "Contexto '[...]' fuera del inicio de la expresión",
+              "sonrie [dolor] uff  →  contexto debe ir al inicio")
+        linea("SIN-006", "cod_sin", "La entrada terminó de forma inesperada",
+              "mmm +  →  expresión incompleta")
+        linea("SIN-007", "cod_sin", "Se intentó negar un modificador E6",
+              "~rapido  →  los modificadores no tienen opuesto")
+        linea("SIN-008", "cod_sin", "'!' aplicado a un modificador E6",
+              "lento !  →  urgencia no aplica a modificadores")
+        linea("SIN-009", "cod_sin", "Modificador E6 usado solo sin token expresivo",
+              "rapido  →  debe ir con: sonrie + rapido")
+        linea("SIN-010", "cod_sin", "Paréntesis sin cerrar o paréntesis vacíos",
+              "(mmm | uff  →  falta ')'  /  ()  →  vacíos")
+        t.insert("end", "\n", "sep")
+
+        # ── FASE 3: Semántico ────────────────────────────────────
+        t.insert("end", "  FASE 3 · ANÁLISIS SEMÁNTICO\n", "fase_sem")
+        t.insert("end", "  " + "─" * 62 + "\n", "sep")
+        linea("SEM-001", "cod_sem", "Combinación de tokens sin patrón reconocible",
+              "Agrega palma_arriba (petición) o sonrie (positivo)")
+        linea("SEM-002", "cod_sem", "Todos los tokens de la secuencia están negados",
+              "~sonrie + ~cabeza_si  →  nada activo")
+        linea("SEM-003", "cod_sem", "'pausa' sola, sin ningún otro token",
+              "Úsala junto a otro token: mmm + pausa + sonrie")
+        linea("SEM-004", "cod_sem", "Secuencia demasiado larga (más de 6 tokens)",
+              "Divide con ';' en dos mensajes más claros")
+        t.insert("end", "\n", "sep")
+
+        # ── Leyenda ──────────────────────────────────────────────
+        t.insert("end", "  " + "─" * 62 + "\n", "sep")
+        t.insert("end", "  Leyenda de colores:\n", "titulo")
+        t.insert("end", "  LEX-###", "cod_lex")
+        t.insert("end", "  Error léxico        ", "desc")
+        t.insert("end", "  SIN-###", "cod_sin")
+        t.insert("end", "  Error sintáctico\n", "desc")
+        t.insert("end", "  SEM-###", "cod_sem")
+        t.insert("end", "  Advertencia semántica\n", "desc")
+
+        t.configure(state="disabled")
+
     # ── Lógica ───────────────────────────────────────────────────────────────
+
+    def _set_frase(self, texto, placeholder=False):
+        """Actualiza el widget de traducción y ajusta su altura al contenido."""
+        t = self.lbl_frase
+        t.configure(state="normal")
+        t.delete("1.0", "end")
+        tag = "placeholder" if placeholder else "frase"
+        t.insert("end", texto, tag)
+        # Contar líneas visuales y ajustar altura (mínimo 2, máximo 6)
+        lineas = texto.count('\n') + 1
+        t.configure(height=max(2, min(lineas * 2, 6)), state="disabled")
 
     def _agregar_token(self, token):
         actual = self.txt_expresion.get("1.0", "end-1c").strip()
@@ -495,12 +617,16 @@ class Interfaz:
         self.txt_expresion.delete("1.0", "end")
         self.contexto_activo.set("")
         self.frase_actual = ""
-        self.lbl_frase.config(text="— escribe una expresión y presiona Compilar —")
+        self._set_frase("— escribe una expresión y presiona Compilar —", placeholder=True)
         for tab in (self.tab_lexico, self.tab_sintactico, self.tab_semantico):
             self._escribir(tab, [("Borrado.\n", "dim")])
 
     def _construir_entrada(self):
         expr = self.txt_expresion.get("1.0", "end-1c").strip()
+        # Normalizar saltos de línea → espacio (Enter solo sirve para legibilidad)
+        expr = ' '.join(expr.splitlines()).strip()
+        # Quitar ';' al final — requeriría expresión después y causaría SIN-006
+        expr = expr.rstrip('; \t').strip()
         ctx  = self.contexto_activo.get()
         if ctx:
             # No duplicar si el usuario ya escribió [contexto] a mano
@@ -514,7 +640,7 @@ class Interfaz:
     def _compilar(self):
         entrada = self._construir_entrada()
         if not entrada:
-            self.lbl_frase.config(text="⚠ No hay nada que compilar.")
+            self._set_frase("⚠ No hay nada que compilar.", placeholder=True)
             return
 
         buf = io.StringIO()
@@ -572,7 +698,7 @@ class Interfaz:
 
         # ── FASE 3: Semántico (puede llamar a la IA — corre en hilo) ─────────
         self.btn_compilar.configure(state="disabled", text="⏳ Interpretando...")
-        self.lbl_frase.config(text="⏳ Interpretando señales...")
+        self._set_frase("⏳ Interpretando señales...", placeholder=True)
 
         def _fase3_hilo():
             buf3 = io.StringIO()
@@ -606,12 +732,12 @@ class Interfaz:
                 lineas_sem.append((f"{f}\n", "frase_tab"))
             texto_label = "\n".join(frases)
             self.frase_actual = texto_label
-            self.lbl_frase.config(text=texto_label)
+            self._set_frase(texto_label)
             self._agregar_a_historial(entrada, frases)
         else:
             lineas_sem.append(("No se pudo generar la frase.\n", "error"))
             self.frase_actual = ""
-            self.lbl_frase.config(text="⚠ Error al generar la traducción.")
+            self._set_frase("⚠ Error al generar la traducción.", placeholder=True)
 
         self._escribir(self.tab_semantico, lineas_sem)
 
