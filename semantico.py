@@ -591,22 +591,26 @@ def interpretar_secuencia(secuencia, contexto):
         print(f"[SEM-004] Advertencia semántica: secuencia larga ({len(tipos)} tokens).")
         print("  → Considera dividir con ';' para dos mensajes más claros.")
 
-    # ── SEM-005: secuencia sin estructura semántica definida ─────────────────
-    estructura = clasificar_estructura(tipos_activos)
-    if not estructura and tipos_activos:
-        nombres = ', '.join(f"'{e['descripcion']}'" for e in ESTRUCTURAS_SEMANTICAS.values())
-        print(f"[SEM-005] Advertencia semántica: la secuencia no pertenece a ninguna "
-              f"estructura definida.")
-        print(f"  → Tokens activos: {', '.join(sorted(tipos_activos))}")
-        print(f"  → Estructuras válidas: petición, dolor, emoción positiva/negativa,")
-        print(f"    llamado de atención, necesidad fisiológica, confirmación, duda.")
-
-    # ── SEM-006: combinación de tokens contradictorios ───────────────────────
+    # ── SEM-006: combinación de tokens contradictorios (bloquea traducción) ──
     contradiccion = detectar_contradiccion(tipos_activos)
     if contradiccion:
-        print(f"[SEM-006] Advertencia semántica: combinación semánticamente contradictoria.")
+        print(f"[SEM-006] Error semántico: combinación semánticamente contradictoria.")
         print(f"  → {contradiccion}.")
-        print(f"  → Una secuencia no debe expresar señales opuestas al mismo tiempo.")
+        print(f"  → Una secuencia no puede expresar señales opuestas al mismo tiempo.")
+        print(f"  → Ejemplo: 'sonrie + llanto' es inválido; elige uno de los dos.")
+        return None   # ← bloquea la traducción
+
+    # ── SEM-005: secuencia sin estructura semántica definida (bloquea) ───────
+    estructura = clasificar_estructura(tipos_activos)
+    if not estructura and tipos_activos:
+        print(f"[SEM-005] Error semántico: la secuencia no pertenece a ninguna "
+              f"estructura comunicativa definida.")
+        print(f"  → Tokens activos detectados: {', '.join(sorted(tipos_activos))}")
+        print(f"  → El lenguaje reconoce 8 estructuras válidas:")
+        for nombre, datos in ESTRUCTURAS_SEMANTICAS.items():
+            print(f"       {nombre}: {datos['descripcion']}")
+        print(f"  → Asegúrate de incluir al menos un token con intención clara.")
+        return None   # ← bloquea la traducción
 
     return generar_frase(infos, patron, contexto, hay_urgente)
 
@@ -616,10 +620,12 @@ def interpretar_expresion(expresion):
     contexto = expresion.contexto
     tabla.contexto_activo = contexto
 
-    frases_alternativas = [
-        interpretar_secuencia(seq, contexto)
-        for seq in expresion.alternativas
-    ]
+    frases_alternativas = []
+    for seq in expresion.alternativas:
+        resultado = interpretar_secuencia(seq, contexto)
+        if resultado is None:
+            return None   # propaga el error semántico hacia arriba
+        frases_alternativas.append(resultado)
 
     frase = interpretar_alternativa(frases_alternativas)
 
@@ -645,7 +651,10 @@ def compilar(entrada):
     frases = []
     for expresion in ast.expresiones:
         frase = interpretar_expresion(expresion)
-        frases.append(frase)
+        if frase is None:
+            frases.append("[Error semántico] No se generó traducción — corrige los errores SEM-005 o SEM-006 indicados arriba.")
+        else:
+            frases.append(frase)
     return frases
 
 

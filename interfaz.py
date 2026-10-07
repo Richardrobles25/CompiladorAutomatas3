@@ -548,10 +548,10 @@ class Interfaz:
               "Úsala junto a otro token: mmm + pausa + sonrie")
         linea("SEM-004", "cod_sem", "Secuencia demasiado larga (más de 6 tokens)",
               "Divide con ';' en dos mensajes más claros")
-        linea("SEM-005", "cod_sem", "Secuencia sin estructura semántica definida",
-              "mmm + oh  →  agrega un token con intención clara (petición, dolor…)")
-        linea("SEM-006", "cod_sem", "Combinación semánticamente contradictoria",
-              "sonrie + llanto  →  tokens de estados opuestos en la misma frase")
+        linea("SEM-005", "cod_sem", "Error: secuencia sin estructura semántica definida (bloquea traducción)",
+              "mmm + oh  →  ningún token pertenece a las 8 estructuras válidas")
+        linea("SEM-006", "cod_sem", "Error: combinación semánticamente contradictoria (bloquea traducción)",
+              "sonrie + llanto  →  positivo + negativo no pueden coexistir")
         t.insert("end", "\n", "sep")
 
         # ── Leyenda ──────────────────────────────────────────────
@@ -747,6 +747,8 @@ def _clasificar_lineas(texto, ocultar_lex=False):
             tag = "error"
         elif linea.startswith("[SIN-"):
             tag = "error"
+        elif linea.startswith("[SEM-005]") or linea.startswith("[SEM-006]"):
+            tag = "error"       # errores que bloquean la traducción
         elif linea.startswith("[SEM-"):
             tag = "advertencia"
         elif linea.strip().startswith("→"):
