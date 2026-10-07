@@ -5,15 +5,6 @@ from sintactico import (
     NodoPrograma, NodoExpresion, NodoSecuencia, NodoTermino, NodoGrupo, analizar
 )
 
-# ── Importar intérprete de IA (opcional: funciona sin él) ───────────────────
-try:
-    from interpretador_ia import interpretar_con_ia, ia_disponible
-    _IA_IMPORTADA = True
-except ImportError:
-    _IA_IMPORTADA = False
-    def interpretar_con_ia(*args, **kwargs): return None
-    def ia_disponible(): return False
-
 # ── Tabla de símbolos ────────────────────────────────────────────────────────
 
 class TablaSimbolos:
@@ -182,6 +173,116 @@ TOKENS_NEGATIVO  = {'LLANTO','MIRA_ABAJO','BAH','PFF','ALEJA_CUERPO','MANO_DEREC
 TOKENS_CONFIRM   = {'CABEZA_SI','CABEZA_NO','CABEZA_LADO','APUNTA_SI','JUNTA_DEDOS','MANOS_PALMAS_HACIA_ARRIBA'}
 TOKENS_CANSANCIO = {'CIERRA_OJOS','SONIDO_GRAVE','MIRA_ABAJO','SONIDO_RONQUIDO'}
 TOKENS_HAMBRE    = {'BOCA_ABIERTA'}
+
+# ── Estructuras semánticas definidas ─────────────────────────────────────────
+# Cada estructura tiene un nombre, descripción y conjunto de tokens núcleo.
+# Una secuencia pertenece a una estructura si contiene al menos un token núcleo
+# activo (no negado, no E6).
+
+ESTRUCTURAS_SEMANTICAS = {
+    'PETICION': {
+        'descripcion': 'Solicitud o petición de algo',
+        'tokens_nucleo': frozenset({
+            'PALMA_ARRIBA', 'SENALA', 'TOCA', 'MIRA_OBJETO',
+            'PUNO', 'MUEVE_PULGARES', 'SONIDO_CORTO', 'SHH',
+            'SENALA_EXTERNO', 'MANO_ABIERTA',
+        }),
+    },
+    'EXPRESION_DOLOR': {
+        'descripcion': 'Comunicación de dolor o malestar físico',
+        'tokens_nucleo': frozenset({
+            'AY', 'UFF', 'UUH', 'FRUNCE_CENO', 'SONIDO_AGUDO',
+            'LLANTO', 'SENALA_PROPIO', 'PARPADEO_RAPIDO',
+        }),
+    },
+    'EMOCION_POSITIVA': {
+        'descripcion': 'Estado emocional positivo o de acuerdo',
+        'tokens_nucleo': frozenset({
+            'SONRIE', 'AAH', 'APUNTA_SI', 'ACERCA_CUERPO', 'INCLINA_CUERPO',
+        }),
+    },
+    'EMOCION_NEGATIVA': {
+        'descripcion': 'Estado emocional negativo o rechazo',
+        'tokens_nucleo': frozenset({
+            'LLANTO', 'BAH', 'PFF', 'MIRA_ABAJO', 'ALEJA_CUERPO',
+            'MANO_DERECHA_A_IZQUIERDA', 'ENCOGE_HOMBROS',
+        }),
+    },
+    'LLAMADO_ATENCION': {
+        'descripcion': 'Llamado de atención o solicitud de ayuda',
+        'tokens_nucleo': frozenset({
+            'AGITA', 'LEVANTA_BRAZO', 'ATA', 'ANA',
+            'SONIDO_LARGO', 'SONIDO_REPETIDO',
+        }),
+    },
+    'NECESIDAD_FISIOLOGICA': {
+        'descripcion': 'Necesidad física básica (hambre, baño, sueño)',
+        'tokens_nucleo': frozenset({
+            'BOCA_ABIERTA', 'SHH', 'SONIDO_RONQUIDO',
+            'CIERRA_OJOS', 'SONIDO_GRAVE',
+        }),
+    },
+    'CONFIRMACION_RESPUESTA': {
+        'descripcion': 'Respuesta afirmativa, negativa o de duda',
+        'tokens_nucleo': frozenset({
+            'CABEZA_SI', 'CABEZA_NO', 'CABEZA_LADO',
+            'APUNTA_SI', 'MANOS_PALMAS_HACIA_ARRIBA',
+        }),
+    },
+    'INDECISION_CONFUSION': {
+        'descripcion': 'Estado de duda o confusión',
+        'tokens_nucleo': frozenset({
+            'MMM', 'ENCOGE_HOMBROS', 'SEPARA_MANOS',
+            'CABEZA_LADO', 'MIRA_ARRIBA',
+        }),
+    },
+}
+
+# ── Pares de tokens contradictorios (SEM-006) ────────────────────────────────
+# (grupo_A, grupo_B, descripcion): si la secuencia activa tiene tokens de A y de B
+# al mismo tiempo, la combinación es semánticamente contradictoria.
+
+_PARES_CONTRADICTORIOS = [
+    (
+        frozenset({'SONRIE', 'AAH', 'ACERCA_CUERPO', 'INCLINA_CUERPO'}),
+        frozenset({'LLANTO', 'FRUNCE_CENO', 'BAH', 'ALEJA_CUERPO'}),
+        "emoción positiva (sonrie/aah) junto con emoción negativa/dolor (llanto/frunce_ceno/bah)",
+    ),
+    (
+        frozenset({'CABEZA_SI', 'APUNTA_SI'}),
+        frozenset({'CABEZA_NO', 'BAH', 'PFF'}),
+        "afirmación (cabeza_si/apunta_si) junto con negación (cabeza_no/bah/pff)",
+    ),
+    (
+        frozenset({'ACERCA_CUERPO'}),
+        frozenset({'ALEJA_CUERPO'}),
+        "acercarse y alejarse al mismo tiempo (acerca_cuerpo + aleja_cuerpo)",
+    ),
+    (
+        frozenset({'SONIDO_SUAVE'}),
+        frozenset({'SONIDO_AGUDO', 'SONIDO_REPETIDO', 'SONIDO_LARGO'}),
+        "calma (sonido_suave) con alerta o insistencia (sonido_agudo/repetido/largo)",
+    ),
+]
+
+_E6 = frozenset({'RAPIDO', 'LENTO', 'DOBLE', 'TRIPLE', 'PAUSA'})
+
+
+def clasificar_estructura(tipos_activos: set):
+    """Retorna el nombre de la estructura semántica o None si ninguna aplica."""
+    for nombre, estructura in ESTRUCTURAS_SEMANTICAS.items():
+        if estructura['tokens_nucleo'] & tipos_activos:
+            return nombre
+    return None
+
+
+def detectar_contradiccion(tipos_activos: set):
+    """Retorna descripción de la contradicción o None si no hay."""
+    for grupo_a, grupo_b, descripcion in _PARES_CONTRADICTORIOS:
+        if (grupo_a & tipos_activos) and (grupo_b & tipos_activos):
+            return descripcion
+    return None
+
 
 # ── Obtener significado de un token (con override de contexto) ───────────────
 
@@ -468,6 +569,10 @@ def interpretar_secuencia(secuencia, contexto):
     negados = [i['negado'] for i in infos]
     patron  = detectar_patron(tipos, contexto, hay_urgente, negados)
 
+    # Tokens activos: no negados, no E6, no grupos — son los que definen la estructura
+    tipos_activos = {t for t, n in zip(tipos, negados)
+                     if not n and t not in _E6 and t != 'GRUPO'}
+
     # ── Advertencias semánticas ──────────────────────────────────────────────
     if patron == 'general':
         print("[SEM-001] Advertencia semántica: combinación sin patrón específico.")
@@ -486,12 +591,23 @@ def interpretar_secuencia(secuencia, contexto):
         print(f"[SEM-004] Advertencia semántica: secuencia larga ({len(tipos)} tokens).")
         print("  → Considera dividir con ';' para dos mensajes más claros.")
 
-    # ── Intentar interpretación con IA ──────────────────────────────────────
-    frase_ia = interpretar_con_ia(infos, contexto, hay_urgente)
-    if frase_ia:
-        return frase_ia
+    # ── SEM-005: secuencia sin estructura semántica definida ─────────────────
+    estructura = clasificar_estructura(tipos_activos)
+    if not estructura and tipos_activos:
+        nombres = ', '.join(f"'{e['descripcion']}'" for e in ESTRUCTURAS_SEMANTICAS.values())
+        print(f"[SEM-005] Advertencia semántica: la secuencia no pertenece a ninguna "
+              f"estructura definida.")
+        print(f"  → Tokens activos: {', '.join(sorted(tipos_activos))}")
+        print(f"  → Estructuras válidas: petición, dolor, emoción positiva/negativa,")
+        print(f"    llamado de atención, necesidad fisiológica, confirmación, duda.")
 
-    # ── Interpretación basada en reglas (respaldo) ───────────────────────────
+    # ── SEM-006: combinación de tokens contradictorios ───────────────────────
+    contradiccion = detectar_contradiccion(tipos_activos)
+    if contradiccion:
+        print(f"[SEM-006] Advertencia semántica: combinación semánticamente contradictoria.")
+        print(f"  → {contradiccion}.")
+        print(f"  → Una secuencia no debe expresar señales opuestas al mismo tiempo.")
+
     return generar_frase(infos, patron, contexto, hay_urgente)
 
 # ── Interpretar una expresión completa ───────────────────────────────────────
@@ -531,15 +647,6 @@ def compilar(entrada):
         frase = interpretar_expresion(expresion)
         frases.append(frase)
     return frases
-
-
-def modo_interpretacion() -> str:
-    """Retorna una cadena que describe el motor de interpretación activo."""
-    if _IA_IMPORTADA and ia_disponible():
-        return "IA (Claude)"
-    if _IA_IMPORTADA:
-        return "Reglas (ANTHROPIC_API_KEY no configurada)"
-    return "Reglas (módulo IA no disponible)"
 
 
 # ── Pruebas ──────────────────────────────────────────────────────────────────

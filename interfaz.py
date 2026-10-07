@@ -8,7 +8,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 from lexer    import lexer, CONTEXTOS_VALIDOS
 from sintactico import analizar, imprimir_ast
-from semantico  import compilar, modo_interpretacion
+from semantico  import compilar
 
 # ── Síntesis de voz (PowerShell + System.Speech) ─────────────────────────────
 # Se usa PowerShell en lugar de pyttsx3 porque pyttsx3 deja el motor COM de
@@ -316,18 +316,6 @@ class Interfaz:
                  font=("Segoe UI", 7, "bold"), bg="#0F3460", fg="#A0A8D0"
                  ).grid(row=0, column=0, sticky="w")
 
-        # Indicador de modo de interpretación (IA o Reglas)
-        _modo = modo_interpretacion()
-        _ia_activa = "IA" in _modo and "no" not in _modo.lower()
-        _modo_color = "#06D6A0" if _ia_activa else "#888AAA"
-        _modo_icono = "✦ IA" if _ia_activa else "⚙ Reglas"
-        self.lbl_modo_ia = tk.Label(
-            f_frase_hdr, text=_modo_icono,
-            font=("Segoe UI", 7, "bold"), bg="#0F3460", fg=_modo_color
-        )
-        self.lbl_modo_ia.grid(row=0, column=1, sticky="e", padx=(0, 4))
-
-        tip_voz = "Leer en voz alta" if _VOZ_DISPONIBLE else "Voz no disponible"
         self.btn_voz = tk.Button(
             f_frase_hdr,
             text="🔊",
@@ -338,7 +326,7 @@ class Interfaz:
             state="normal" if _VOZ_DISPONIBLE else "disabled",
             command=self._hablar
         )
-        self.btn_voz.grid(row=0, column=2, sticky="e")
+        self.btn_voz.grid(row=0, column=1, sticky="e")
 
         self.lbl_frase = tk.Text(f_frase,
                                   font=("Segoe UI", 10), bg="#0F3460", fg="#FFD166",
@@ -560,6 +548,10 @@ class Interfaz:
               "Úsala junto a otro token: mmm + pausa + sonrie")
         linea("SEM-004", "cod_sem", "Secuencia demasiado larga (más de 6 tokens)",
               "Divide con ';' en dos mensajes más claros")
+        linea("SEM-005", "cod_sem", "Secuencia sin estructura semántica definida",
+              "mmm + oh  →  agrega un token con intención clara (petición, dolor…)")
+        linea("SEM-006", "cod_sem", "Combinación semánticamente contradictoria",
+              "sonrie + llanto  →  tokens de estados opuestos en la misma frase")
         t.insert("end", "\n", "sep")
 
         # ── Leyenda ──────────────────────────────────────────────
@@ -696,30 +688,17 @@ class Interfaz:
             lineas_sint.append(("No se pudo construir el AST.\n", "error"))
         self._escribir(self.tab_sintactico, lineas_sint)
 
-        # ── FASE 3: Semántico (puede llamar a la IA — corre en hilo) ─────────
-        self.btn_compilar.configure(state="disabled", text="⏳ Interpretando...")
-        self._set_frase("⏳ Interpretando señales...", placeholder=True)
-
-        def _fase3_hilo():
-            buf3 = io.StringIO()
-            with contextlib.redirect_stdout(buf3):
-                frases = compilar(entrada)
-            errores_sem = buf3.getvalue()
-            self.root.after(0, lambda: self._mostrar_semantico(entrada, frases, errores_sem))
-
-        threading.Thread(target=_fase3_hilo, daemon=True).start()
+        # ── FASE 3: Semántico ─────────────────────────────────────────────────
+        buf3 = io.StringIO()
+        with contextlib.redirect_stdout(buf3):
+            frases = compilar(entrada)
+        errores_sem = buf3.getvalue()
+        self._mostrar_semantico(entrada, frases, errores_sem)
 
     def _mostrar_semantico(self, entrada, frases, errores_sem):
-        """Actualiza la UI con el resultado de la fase semántica (llamado desde el hilo principal)."""
-        # Re-habilitar botón
-        self.btn_compilar.configure(state="normal", text="▶  Compilar")
-
+        """Actualiza la UI con el resultado de la fase semántica."""
         lineas_sem = []
         lineas_sem.append((f"Entrada: {entrada}\n", "titulo"))
-        # Mostrar modo de interpretación
-        _modo = modo_interpretacion()
-        _ia_ok = "IA" in _modo and "no" not in _modo.lower()
-        lineas_sem.append((f"Motor: {_modo}\n", "dim"))
         lineas_sem.append(("─" * 48 + "\n", "dim"))
         if errores_sem.strip():
             lineas_sem.extend(_clasificar_lineas(errores_sem, ocultar_lex=True))
