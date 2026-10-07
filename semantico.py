@@ -186,6 +186,7 @@ ESTRUCTURAS_SEMANTICAS = {
             'PALMA_ARRIBA', 'SENALA', 'TOCA', 'MIRA_OBJETO',
             'PUNO', 'MUEVE_PULGARES', 'SONIDO_CORTO', 'SHH',
             'SENALA_EXTERNO', 'MANO_ABIERTA',
+            'JUNTA_DEDOS',          # pide una cantidad pequeña de algo
         }),
     },
     'EXPRESION_DOLOR': {
@@ -193,12 +194,15 @@ ESTRUCTURAS_SEMANTICAS = {
         'tokens_nucleo': frozenset({
             'AY', 'UFF', 'UUH', 'FRUNCE_CENO', 'SONIDO_AGUDO',
             'LLANTO', 'SENALA_PROPIO', 'PARPADEO_RAPIDO',
+            'ABRE_OJOS',            # reacción de susto o dolor agudo
         }),
     },
     'EMOCION_POSITIVA': {
         'descripcion': 'Estado emocional positivo o de acuerdo',
         'tokens_nucleo': frozenset({
             'SONRIE', 'AAH', 'APUNTA_SI', 'ACERCA_CUERPO', 'INCLINA_CUERPO',
+            'OH',                   # sorpresa agradable
+            'SONIDO_SUAVE',         # está tranquilo y bien
         }),
     },
     'EMOCION_NEGATIVA': {
@@ -213,6 +217,7 @@ ESTRUCTURAS_SEMANTICAS = {
         'tokens_nucleo': frozenset({
             'AGITA', 'LEVANTA_BRAZO', 'ATA', 'ANA',
             'SONIDO_LARGO', 'SONIDO_REPETIDO',
+            'DEDOINDICE_BOCA',      # pide silencio / atención
         }),
     },
     'NECESIDAD_FISIOLOGICA': {
@@ -227,6 +232,7 @@ ESTRUCTURAS_SEMANTICAS = {
         'tokens_nucleo': frozenset({
             'CABEZA_SI', 'CABEZA_NO', 'CABEZA_LADO',
             'APUNTA_SI', 'MANOS_PALMAS_HACIA_ARRIBA',
+            'PALMA_ABAJO',          # "para / no quiero eso" es una respuesta
         }),
     },
     'INDECISION_CONFUSION': {
@@ -652,7 +658,7 @@ def compilar(entrada):
     for expresion in ast.expresiones:
         frase = interpretar_expresion(expresion)
         if frase is None:
-            frases.append("[Error semántico] No se generó traducción — corrige los errores SEM-005 o SEM-006 indicados arriba.")
+            frases.append("[Error semántico] No se generó traducción. Revisa la pestaña 'Fase 3 · Semántico' para ver el error.")
         else:
             frases.append(frase)
     return frases
