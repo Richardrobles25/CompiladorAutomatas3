@@ -175,145 +175,176 @@ TOKENS_CANSANCIO = {'CIERRA_OJOS','SONIDO_GRAVE','MIRA_ABAJO','SONIDO_RONQUIDO'}
 TOKENS_HAMBRE    = {'BOCA_ABIERTA'}
 
 # ── Estructuras semánticas definidas ─────────────────────────────────────────
-# Cada estructura tiene un nombre, descripción y conjunto de tokens núcleo.
-# Una secuencia pertenece a una estructura si contiene al menos un token núcleo
-# activo (no negado, no E6).
+# Cada estructura define ROLES con nombre, como una oración tiene sujeto/verbo/objeto.
+# Cada rol tiene un conjunto de tokens válidos y si es obligatorio o no.
+# La secuencia es válida para una estructura si TODOS sus roles obligatorios
+# tienen al menos un token activo presente.
+#
+# Analogía:
+#   PETICION        = Señal_gesto(oblig) + [Objetivo] + [Apoyo_vocal]
+#   EXPRESION_DOLOR = Señal_dolor(oblig) + [Localización]
+#   LLAMADO_ATENCION= Movimiento(oblig)  + Sonido(oblig)   ← dos obligatorios
+#   etc.
 
 ESTRUCTURAS_SEMANTICAS = {
     'PETICION': {
         'descripcion': 'Solicitud o petición de algo',
-        'tokens_nucleo': frozenset({
-            'PALMA_ARRIBA', 'SENALA', 'TOCA', 'MIRA_OBJETO',
-            'PUNO', 'MUEVE_PULGARES', 'SONIDO_CORTO', 'SHH',
-            'SENALA_EXTERNO', 'MANO_ABIERTA',
-            'JUNTA_DEDOS',
-        }),
-        # Una petición requiere gesto de mano (E2), mirada al objeto (E5),
-        # sonido de petición (E3) o señalar externamente (E4).
-        # Regla: E2  ó  E5  ó  E3  ó  E4
-        'combos_requeridos': [
-            frozenset({'E2'}),
-            frozenset({'E5'}),
-            frozenset({'E3'}),
-            frozenset({'E4'}),
-        ],
+        'patron':      'Señal_gesto  +  [Objetivo]  +  [Apoyo_vocal]',
+        'roles': {
+            'señal_gesto': {
+                'descripcion': 'Gesto de solicitud con la mano (E2)',
+                'obligatorio': True,
+                'tokens': frozenset({
+                    'PALMA_ARRIBA', 'SENALA', 'TOCA', 'PUNO',
+                    'MANO_ABIERTA', 'JUNTA_DEDOS', 'MUEVE_PULGARES',
+                }),
+            },
+            'objetivo': {
+                'descripcion': 'Qué o a dónde quiere (E4/E5)',
+                'obligatorio': False,
+                'tokens': frozenset({'MIRA_OBJETO', 'SENALA_EXTERNO'}),
+            },
+            'apoyo_vocal': {
+                'descripcion': 'Refuerzo vocal de la petición (E1/E3)',
+                'obligatorio': False,
+                'tokens': frozenset({'SHH', 'SONIDO_CORTO'}),
+            },
+        },
     },
+
     'EXPRESION_DOLOR': {
         'descripcion': 'Comunicación de dolor o malestar físico',
-        'tokens_nucleo': frozenset({
-            'AY', 'UFF', 'UUH', 'FRUNCE_CENO', 'SONIDO_AGUDO',
-            'LLANTO', 'SENALA_PROPIO', 'PARPADEO_RAPIDO',
-            'ABRE_OJOS',
-        }),
-        # El dolor puede manifestarse por sonido vocal (E1: ay/uff/uuh),
-        # expresión facial (E5: frunce_ceno/llanto), vocalización (E3: sonido_agudo)
-        # o señalando la zona corporal (E4: senala_propio).
-        # Regla: E1  ó  E5  ó  E3  ó  E4
-        'combos_requeridos': [
-            frozenset({'E1'}),
-            frozenset({'E5'}),
-            frozenset({'E3'}),
-            frozenset({'E4'}),
-        ],
+        'patron':      'Señal_dolor  +  [Localización_o_intensidad]',
+        'roles': {
+            'señal_dolor': {
+                'descripcion': 'Sonido o expresión de dolor (E1/E5)',
+                'obligatorio': True,
+                'tokens': frozenset({
+                    'AY', 'UFF', 'UUH',
+                    'FRUNCE_CENO', 'LLANTO', 'PARPADEO_RAPIDO', 'ABRE_OJOS',
+                }),
+            },
+            'localizacion_o_intensidad': {
+                'descripcion': 'Dónde duele o qué tan intenso (E3/E4)',
+                'obligatorio': False,
+                'tokens': frozenset({'SONIDO_AGUDO', 'SENALA_PROPIO'}),
+            },
+        },
     },
+
     'EMOCION_POSITIVA': {
         'descripcion': 'Estado emocional positivo o de acuerdo',
-        'tokens_nucleo': frozenset({
-            'SONRIE', 'AAH', 'APUNTA_SI', 'ACERCA_CUERPO', 'INCLINA_CUERPO',
-            'OH', 'SONIDO_SUAVE',
-        }),
-        # La emoción positiva puede expresarse con cara (E5: sonrie/oh),
-        # vocalización (E1: aah), movimiento corporal (E4: acerca_cuerpo)
-        # o sonido tranquilo (E3: sonido_suave).
-        # Regla: E5  ó  E1  ó  E4  ó  E3
-        'combos_requeridos': [
-            frozenset({'E5'}),
-            frozenset({'E1'}),
-            frozenset({'E4'}),
-            frozenset({'E3'}),
-        ],
+        'patron':      'Señal_positiva  +  [Refuerzo_corporal]  +  [Confirmación_gesto]',
+        'roles': {
+            'señal_positiva': {
+                'descripcion': 'Expresión positiva primaria (E1/E5)',
+                'obligatorio': True,
+                'tokens': frozenset({'SONRIE', 'AAH', 'OH'}),
+            },
+            'refuerzo_corporal': {
+                'descripcion': 'Acercamiento o sonido tranquilo (E3/E4)',
+                'obligatorio': False,
+                'tokens': frozenset({'ACERCA_CUERPO', 'INCLINA_CUERPO', 'SONIDO_SUAVE'}),
+            },
+            'confirmacion_gesto': {
+                'descripcion': 'Gesto de confirmación positiva (E2)',
+                'obligatorio': False,
+                'tokens': frozenset({'APUNTA_SI'}),
+            },
+        },
     },
+
     'EMOCION_NEGATIVA': {
         'descripcion': 'Estado emocional negativo o rechazo',
-        'tokens_nucleo': frozenset({
-            'LLANTO', 'BAH', 'PFF', 'MIRA_ABAJO', 'ALEJA_CUERPO',
-            'MANO_DERECHA_A_IZQUIERDA', 'ENCOGE_HOMBROS',
-        }),
-        # La emoción negativa puede expresarse con cara (E5: llanto/mira_abajo),
-        # vocalización (E1: bah/pff), movimiento corporal (E4: aleja_cuerpo)
-        # o gesto de rechazo (E2: mano_derecha_a_izquierda).
-        # Regla: E5  ó  E1  ó  E4  ó  E2
-        'combos_requeridos': [
-            frozenset({'E5'}),
-            frozenset({'E1'}),
-            frozenset({'E4'}),
-            frozenset({'E2'}),
-        ],
+        'patron':      'Señal_negativa  +  [Distanciamiento]  +  [Gesto_rechazo]',
+        'roles': {
+            'señal_negativa': {
+                'descripcion': 'Expresión negativa primaria (E1/E5)',
+                'obligatorio': True,
+                'tokens': frozenset({'LLANTO', 'BAH', 'PFF', 'MIRA_ABAJO'}),
+            },
+            'distanciamiento': {
+                'descripcion': 'Alejamiento o encogimiento corporal (E4)',
+                'obligatorio': False,
+                'tokens': frozenset({'ALEJA_CUERPO', 'ENCOGE_HOMBROS'}),
+            },
+            'gesto_rechazo': {
+                'descripcion': 'Gesto de rechazo con la mano (E2)',
+                'obligatorio': False,
+                'tokens': frozenset({'MANO_DERECHA_A_IZQUIERDA'}),
+            },
+        },
     },
+
     'LLAMADO_ATENCION': {
         'descripcion': 'Llamado de atención o solicitud de ayuda',
-        'tokens_nucleo': frozenset({
-            'AGITA', 'LEVANTA_BRAZO', 'ATA', 'ANA',
-            'SONIDO_LARGO', 'SONIDO_REPETIDO',
-            'DEDOINDICE_BOCA',
-        }),
-        # Llamar la atención requiere OBLIGATORIAMENTE combinar
-        # movimiento con sonido/vocalización.
-        # Regla: (E2+E3) ó (E4+E3) ó (E1+E2) ó (E1+E4) ó (E1+E3)
-        'combos_requeridos': [
-            frozenset({'E2', 'E3'}),   # gesto de mano + vocalización
-            frozenset({'E4', 'E3'}),   # movimiento corporal + vocalización
-            frozenset({'E1', 'E2'}),   # llamado vocal + gesto de mano
-            frozenset({'E1', 'E4'}),   # llamado vocal + movimiento corporal
-            frozenset({'E1', 'E3'}),   # llamado vocal + vocalización sostenida
-        ],
+        'patron':      'Movimiento(oblig)  +  Sonido(oblig)',
+        'roles': {
+            'movimiento': {
+                'descripcion': 'Movimiento visible para atraer atención (E2/E4)',
+                'obligatorio': True,
+                'tokens': frozenset({'AGITA', 'LEVANTA_BRAZO', 'DEDOINDICE_BOCA'}),
+            },
+            'sonido': {
+                'descripcion': 'Sonido audible para atraer atención (E1/E3)',
+                'obligatorio': True,
+                'tokens': frozenset({'ATA', 'ANA', 'SONIDO_LARGO', 'SONIDO_REPETIDO'}),
+            },
+        },
     },
+
     'NECESIDAD_FISIOLOGICA': {
         'descripcion': 'Necesidad física básica (hambre, baño, sueño)',
-        'tokens_nucleo': frozenset({
-            'BOCA_ABIERTA', 'SHH', 'SONIDO_RONQUIDO',
-            'CIERRA_OJOS', 'SONIDO_GRAVE',
-        }),
-        # La necesidad física se expresa con cara (E5: boca_abierta/cierra_ojos),
-        # vocalización corporal (E3: sonido_ronquido/sonido_grave) o vocal (E1: shh).
-        # Regla: E5  ó  E3  ó  E1
-        'combos_requeridos': [
-            frozenset({'E5'}),
-            frozenset({'E3'}),
-            frozenset({'E1'}),
-        ],
+        'patron':      'Señal_necesidad  +  [Apoyo_vocal]',
+        'roles': {
+            'señal_necesidad': {
+                'descripcion': 'Señal facial o sonora de necesidad (E3/E5)',
+                'obligatorio': True,
+                'tokens': frozenset({
+                    'BOCA_ABIERTA', 'CIERRA_OJOS',
+                    'SONIDO_RONQUIDO', 'SONIDO_GRAVE',
+                }),
+            },
+            'apoyo_vocal': {
+                'descripcion': 'Señal vocal de urgencia fisiológica (E1)',
+                'obligatorio': False,
+                'tokens': frozenset({'SHH'}),
+            },
+        },
     },
+
     'CONFIRMACION_RESPUESTA': {
         'descripcion': 'Respuesta afirmativa, negativa o de duda',
-        'tokens_nucleo': frozenset({
-            'CABEZA_SI', 'CABEZA_NO', 'CABEZA_LADO',
-            'APUNTA_SI', 'MANOS_PALMAS_HACIA_ARRIBA',
-            'PALMA_ABAJO',
-        }),
-        # La confirmación se expresa con movimiento de cabeza/cuerpo (E4)
-        # o con gesto de mano (E2: apunta_si/palma_abajo).
-        # Regla: E4  ó  E2
-        'combos_requeridos': [
-            frozenset({'E4'}),
-            frozenset({'E2'}),
-        ],
+        'patron':      'Respuesta_cabeza  +  [Refuerzo_gesto]',
+        'roles': {
+            'respuesta_cabeza': {
+                'descripcion': 'Movimiento de cabeza como respuesta (E4)',
+                'obligatorio': True,
+                'tokens': frozenset({'CABEZA_SI', 'CABEZA_NO', 'CABEZA_LADO'}),
+            },
+            'refuerzo_gesto': {
+                'descripcion': 'Gesto de confirmación o negación con la mano (E2)',
+                'obligatorio': False,
+                'tokens': frozenset({
+                    'APUNTA_SI', 'MANOS_PALMAS_HACIA_ARRIBA', 'PALMA_ABAJO',
+                }),
+            },
+        },
     },
+
     'INDECISION_CONFUSION': {
         'descripcion': 'Estado de duda o confusión',
-        'tokens_nucleo': frozenset({
-            'MMM', 'ENCOGE_HOMBROS', 'SEPARA_MANOS',
-            'CABEZA_LADO', 'MIRA_ARRIBA',
-        }),
-        # La indecisión se expresa con lenguaje corporal (E4: encoge_hombros/cabeza_lado),
-        # vocalización de duda (E1: mmm), gesto de manos (E2: separa_manos)
-        # o expresión facial (E5: mira_arriba).
-        # Regla: E4  ó  E1  ó  E2  ó  E5
-        'combos_requeridos': [
-            frozenset({'E4'}),
-            frozenset({'E1'}),
-            frozenset({'E2'}),
-            frozenset({'E5'}),
-        ],
+        'patron':      'Señal_duda',
+        'roles': {
+            'señal_duda': {
+                'descripcion': 'Cualquier señal de indecisión (E1/E2/E4/E5)',
+                'obligatorio': True,
+                'tokens': frozenset({
+                    'MMM', 'ENCOGE_HOMBROS', 'SEPARA_MANOS',
+                    'CABEZA_LADO', 'MIRA_ARRIBA',
+                }),
+            },
+        },
     },
 }
 
@@ -346,34 +377,31 @@ _PARES_CONTRADICTORIOS = [
 
 _E6 = frozenset({'RAPIDO', 'LENTO', 'DOBLE', 'TRIPLE', 'PAUSA'})
 
-_NOMBRE_CATEGORIA = {
-    'E1': 'E1·Sonidos vocales',
-    'E2': 'E2·Gestos de manos',
-    'E3': 'E3·Vocalizaciones',
-    'E4': 'E4·Movimientos corporales',
-    'E5': 'E5·Expresiones faciales',
-}
-
-
-def _cats(tipos_activos: set) -> set:
-    """Devuelve el conjunto de categorías (E1-E5) presentes en tipos_activos."""
-    return {CATEGORIA[t] for t in tipos_activos if t in CATEGORIA and CATEGORIA[t] != 'E6'}
+def _todos_tokens(estructura: dict) -> frozenset:
+    """Devuelve la unión de tokens de todos los roles de una estructura."""
+    resultado = frozenset()
+    for rol in estructura['roles'].values():
+        resultado = resultado | rol['tokens']
+    return resultado
 
 
 def clasificar_estructura(tipos_activos: set):
     """Retorna el nombre de la estructura semántica o None si ninguna aplica.
 
-    Doble condición:
-      1. Al menos un token núcleo de la estructura debe estar presente.
-      2. Las categorías activas deben satisfacer al menos un combo requerido.
+    Una estructura coincide si TODOS sus roles obligatorios tienen al menos
+    un token activo presente en la secuencia.
     """
-    categorias = _cats(tipos_activos)
     for nombre, estructura in ESTRUCTURAS_SEMANTICAS.items():
-        if not (estructura['tokens_nucleo'] & tipos_activos):
-            continue
-        for combo in estructura['combos_requeridos']:
-            if combo.issubset(categorias):
-                return nombre
+        roles = estructura['roles']
+        if all(
+            rol['tokens'] & tipos_activos
+            for rol in roles.values()
+            if rol['obligatorio']
+        ) and any(
+            rol['tokens'] & tipos_activos
+            for rol in roles.values()
+        ):
+            return nombre
     return None
 
 
@@ -704,24 +732,26 @@ def interpretar_secuencia(secuencia, contexto):
     # ── SEM-005: secuencia sin estructura semántica definida (bloquea) ───────
     estructura = clasificar_estructura(tipos_activos)
     if not estructura and tipos_activos:
-        cats_detectadas = _cats(tipos_activos)
-        cats_nombres = ', '.join(
-            _NOMBRE_CATEGORIA.get(c, c) for c in sorted(cats_detectadas)
-        )
-        print(f"[SEM-005] Error semántico: la secuencia no cumple con ninguna "
+        print(f"[SEM-005] Error semántico: la secuencia no encaja en ninguna "
               f"estructura comunicativa definida.")
-        print(f"  → Categorías detectadas en la secuencia: {cats_nombres}")
-        print(f"  → Cada estructura exige al menos una de estas combinaciones de categorías:")
+        print(f"  → Tokens activos: {', '.join(sorted(tipos_activos))}")
+        print(f"  → Cada estructura tiene roles obligatorios (O) y opcionales (o):")
         for nombre, datos in ESTRUCTURAS_SEMANTICAS.items():
-            tiene_nucleo = bool(datos['tokens_nucleo'] & tipos_activos)
-            combos_str = '  ó  '.join(
-                '+'.join(_NOMBRE_CATEGORIA.get(c, c) for c in sorted(combo))
-                for combo in datos['combos_requeridos']
-            )
-            marca = '  ← token presente, pero falta categoría' if tiene_nucleo else ''
-            print(f"       {nombre}: {combos_str}{marca}")
-        print(f"  → Ejemplo: para LLAMADO_ATENCION escribe 'agita + sonido_largo'")
-        print(f"    (combina E2·gesto + E3·vocalización).")
+            roles = datos['roles']
+            tokens_presentes = _todos_tokens(datos) & tipos_activos
+            if not tokens_presentes:
+                continue   # sin ningún token de esta estructura, no mostrar
+            roles_faltantes = [
+                f"'{rnom}' ({rol['descripcion']})"
+                for rnom, rol in roles.items()
+                if rol['obligatorio'] and not (rol['tokens'] & tipos_activos)
+            ]
+            patron = datos.get('patron', '')
+            if roles_faltantes:
+                print(f"       {nombre} [{patron}]")
+                print(f"         Tienes: {', '.join(tokens_presentes)}")
+                print(f"         Falta rol obligatorio: {', '.join(roles_faltantes)}")
+        print(f"  → Revisa el patrón de la estructura que intentas formar.")
         return None   # ← bloquea la traducción
 
     return generar_frase(infos, patron, contexto, hay_urgente)
