@@ -186,24 +186,52 @@ ESTRUCTURAS_SEMANTICAS = {
             'PALMA_ARRIBA', 'SENALA', 'TOCA', 'MIRA_OBJETO',
             'PUNO', 'MUEVE_PULGARES', 'SONIDO_CORTO', 'SHH',
             'SENALA_EXTERNO', 'MANO_ABIERTA',
-            'JUNTA_DEDOS',          # pide una cantidad pequeña de algo
+            'JUNTA_DEDOS',
         }),
+        # Una petición requiere gesto de mano (E2), mirada al objeto (E5),
+        # sonido de petición (E3) o señalar externamente (E4).
+        # Regla: E2  ó  E5  ó  E3  ó  E4
+        'combos_requeridos': [
+            frozenset({'E2'}),
+            frozenset({'E5'}),
+            frozenset({'E3'}),
+            frozenset({'E4'}),
+        ],
     },
     'EXPRESION_DOLOR': {
         'descripcion': 'Comunicación de dolor o malestar físico',
         'tokens_nucleo': frozenset({
             'AY', 'UFF', 'UUH', 'FRUNCE_CENO', 'SONIDO_AGUDO',
             'LLANTO', 'SENALA_PROPIO', 'PARPADEO_RAPIDO',
-            'ABRE_OJOS',            # reacción de susto o dolor agudo
+            'ABRE_OJOS',
         }),
+        # El dolor puede manifestarse por sonido vocal (E1: ay/uff/uuh),
+        # expresión facial (E5: frunce_ceno/llanto), vocalización (E3: sonido_agudo)
+        # o señalando la zona corporal (E4: senala_propio).
+        # Regla: E1  ó  E5  ó  E3  ó  E4
+        'combos_requeridos': [
+            frozenset({'E1'}),
+            frozenset({'E5'}),
+            frozenset({'E3'}),
+            frozenset({'E4'}),
+        ],
     },
     'EMOCION_POSITIVA': {
         'descripcion': 'Estado emocional positivo o de acuerdo',
         'tokens_nucleo': frozenset({
             'SONRIE', 'AAH', 'APUNTA_SI', 'ACERCA_CUERPO', 'INCLINA_CUERPO',
-            'OH',                   # sorpresa agradable
-            'SONIDO_SUAVE',         # está tranquilo y bien
+            'OH', 'SONIDO_SUAVE',
         }),
+        # La emoción positiva puede expresarse con cara (E5: sonrie/oh),
+        # vocalización (E1: aah), movimiento corporal (E4: acerca_cuerpo)
+        # o sonido tranquilo (E3: sonido_suave).
+        # Regla: E5  ó  E1  ó  E4  ó  E3
+        'combos_requeridos': [
+            frozenset({'E5'}),
+            frozenset({'E1'}),
+            frozenset({'E4'}),
+            frozenset({'E3'}),
+        ],
     },
     'EMOCION_NEGATIVA': {
         'descripcion': 'Estado emocional negativo o rechazo',
@@ -211,14 +239,34 @@ ESTRUCTURAS_SEMANTICAS = {
             'LLANTO', 'BAH', 'PFF', 'MIRA_ABAJO', 'ALEJA_CUERPO',
             'MANO_DERECHA_A_IZQUIERDA', 'ENCOGE_HOMBROS',
         }),
+        # La emoción negativa puede expresarse con cara (E5: llanto/mira_abajo),
+        # vocalización (E1: bah/pff), movimiento corporal (E4: aleja_cuerpo)
+        # o gesto de rechazo (E2: mano_derecha_a_izquierda).
+        # Regla: E5  ó  E1  ó  E4  ó  E2
+        'combos_requeridos': [
+            frozenset({'E5'}),
+            frozenset({'E1'}),
+            frozenset({'E4'}),
+            frozenset({'E2'}),
+        ],
     },
     'LLAMADO_ATENCION': {
         'descripcion': 'Llamado de atención o solicitud de ayuda',
         'tokens_nucleo': frozenset({
             'AGITA', 'LEVANTA_BRAZO', 'ATA', 'ANA',
             'SONIDO_LARGO', 'SONIDO_REPETIDO',
-            'DEDOINDICE_BOCA',      # pide silencio / atención
+            'DEDOINDICE_BOCA',
         }),
+        # Llamar la atención requiere OBLIGATORIAMENTE combinar
+        # movimiento con sonido/vocalización.
+        # Regla: (E2+E3) ó (E4+E3) ó (E1+E2) ó (E1+E4) ó (E1+E3)
+        'combos_requeridos': [
+            frozenset({'E2', 'E3'}),   # gesto de mano + vocalización
+            frozenset({'E4', 'E3'}),   # movimiento corporal + vocalización
+            frozenset({'E1', 'E2'}),   # llamado vocal + gesto de mano
+            frozenset({'E1', 'E4'}),   # llamado vocal + movimiento corporal
+            frozenset({'E1', 'E3'}),   # llamado vocal + vocalización sostenida
+        ],
     },
     'NECESIDAD_FISIOLOGICA': {
         'descripcion': 'Necesidad física básica (hambre, baño, sueño)',
@@ -226,14 +274,29 @@ ESTRUCTURAS_SEMANTICAS = {
             'BOCA_ABIERTA', 'SHH', 'SONIDO_RONQUIDO',
             'CIERRA_OJOS', 'SONIDO_GRAVE',
         }),
+        # La necesidad física se expresa con cara (E5: boca_abierta/cierra_ojos),
+        # vocalización corporal (E3: sonido_ronquido/sonido_grave) o vocal (E1: shh).
+        # Regla: E5  ó  E3  ó  E1
+        'combos_requeridos': [
+            frozenset({'E5'}),
+            frozenset({'E3'}),
+            frozenset({'E1'}),
+        ],
     },
     'CONFIRMACION_RESPUESTA': {
         'descripcion': 'Respuesta afirmativa, negativa o de duda',
         'tokens_nucleo': frozenset({
             'CABEZA_SI', 'CABEZA_NO', 'CABEZA_LADO',
             'APUNTA_SI', 'MANOS_PALMAS_HACIA_ARRIBA',
-            'PALMA_ABAJO',          # "para / no quiero eso" es una respuesta
+            'PALMA_ABAJO',
         }),
+        # La confirmación se expresa con movimiento de cabeza/cuerpo (E4)
+        # o con gesto de mano (E2: apunta_si/palma_abajo).
+        # Regla: E4  ó  E2
+        'combos_requeridos': [
+            frozenset({'E4'}),
+            frozenset({'E2'}),
+        ],
     },
     'INDECISION_CONFUSION': {
         'descripcion': 'Estado de duda o confusión',
@@ -241,6 +304,16 @@ ESTRUCTURAS_SEMANTICAS = {
             'MMM', 'ENCOGE_HOMBROS', 'SEPARA_MANOS',
             'CABEZA_LADO', 'MIRA_ARRIBA',
         }),
+        # La indecisión se expresa con lenguaje corporal (E4: encoge_hombros/cabeza_lado),
+        # vocalización de duda (E1: mmm), gesto de manos (E2: separa_manos)
+        # o expresión facial (E5: mira_arriba).
+        # Regla: E4  ó  E1  ó  E2  ó  E5
+        'combos_requeridos': [
+            frozenset({'E4'}),
+            frozenset({'E1'}),
+            frozenset({'E2'}),
+            frozenset({'E5'}),
+        ],
     },
 }
 
@@ -273,12 +346,34 @@ _PARES_CONTRADICTORIOS = [
 
 _E6 = frozenset({'RAPIDO', 'LENTO', 'DOBLE', 'TRIPLE', 'PAUSA'})
 
+_NOMBRE_CATEGORIA = {
+    'E1': 'E1·Sonidos vocales',
+    'E2': 'E2·Gestos de manos',
+    'E3': 'E3·Vocalizaciones',
+    'E4': 'E4·Movimientos corporales',
+    'E5': 'E5·Expresiones faciales',
+}
+
+
+def _cats(tipos_activos: set) -> set:
+    """Devuelve el conjunto de categorías (E1-E5) presentes en tipos_activos."""
+    return {CATEGORIA[t] for t in tipos_activos if t in CATEGORIA and CATEGORIA[t] != 'E6'}
+
 
 def clasificar_estructura(tipos_activos: set):
-    """Retorna el nombre de la estructura semántica o None si ninguna aplica."""
+    """Retorna el nombre de la estructura semántica o None si ninguna aplica.
+
+    Doble condición:
+      1. Al menos un token núcleo de la estructura debe estar presente.
+      2. Las categorías activas deben satisfacer al menos un combo requerido.
+    """
+    categorias = _cats(tipos_activos)
     for nombre, estructura in ESTRUCTURAS_SEMANTICAS.items():
-        if estructura['tokens_nucleo'] & tipos_activos:
-            return nombre
+        if not (estructura['tokens_nucleo'] & tipos_activos):
+            continue
+        for combo in estructura['combos_requeridos']:
+            if combo.issubset(categorias):
+                return nombre
     return None
 
 
@@ -609,13 +704,24 @@ def interpretar_secuencia(secuencia, contexto):
     # ── SEM-005: secuencia sin estructura semántica definida (bloquea) ───────
     estructura = clasificar_estructura(tipos_activos)
     if not estructura and tipos_activos:
-        print(f"[SEM-005] Error semántico: la secuencia no pertenece a ninguna "
+        cats_detectadas = _cats(tipos_activos)
+        cats_nombres = ', '.join(
+            _NOMBRE_CATEGORIA.get(c, c) for c in sorted(cats_detectadas)
+        )
+        print(f"[SEM-005] Error semántico: la secuencia no cumple con ninguna "
               f"estructura comunicativa definida.")
-        print(f"  → Tokens activos detectados: {', '.join(sorted(tipos_activos))}")
-        print(f"  → El lenguaje reconoce 8 estructuras válidas:")
+        print(f"  → Categorías detectadas en la secuencia: {cats_nombres}")
+        print(f"  → Cada estructura exige al menos una de estas combinaciones de categorías:")
         for nombre, datos in ESTRUCTURAS_SEMANTICAS.items():
-            print(f"       {nombre}: {datos['descripcion']}")
-        print(f"  → Asegúrate de incluir al menos un token con intención clara.")
+            tiene_nucleo = bool(datos['tokens_nucleo'] & tipos_activos)
+            combos_str = '  ó  '.join(
+                '+'.join(_NOMBRE_CATEGORIA.get(c, c) for c in sorted(combo))
+                for combo in datos['combos_requeridos']
+            )
+            marca = '  ← token presente, pero falta categoría' if tiene_nucleo else ''
+            print(f"       {nombre}: {combos_str}{marca}")
+        print(f"  → Ejemplo: para LLAMADO_ATENCION escribe 'agita + sonido_largo'")
+        print(f"    (combina E2·gesto + E3·vocalización).")
         return None   # ← bloquea la traducción
 
     return generar_frase(infos, patron, contexto, hay_urgente)
