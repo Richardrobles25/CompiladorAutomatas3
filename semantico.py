@@ -379,7 +379,7 @@ _E6 = frozenset({'RAPIDO', 'LENTO', 'DOBLE', 'TRIPLE', 'PAUSA'})
 
 def _todos_tokens(estructura: dict) -> frozenset:
     """Devuelve la unión de tokens de todos los roles de una estructura."""
-    resultado = frozenset()
+    resultado = frozenset() 
     for rol in estructura['roles'].values():
         resultado = resultado | rol['tokens']
     return resultado

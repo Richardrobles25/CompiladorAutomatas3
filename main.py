@@ -3,7 +3,7 @@ main.py — Punto de entrada del compilador
 ==========================================
 Lenguaje de Comunicación Personal · Lenguajes y Autómatas
 
-Equipo: Nicolás · Ricardo · Rasshid
+Equipo: Nicolas · Ricardo · Rasshid
 
 Uso:
     python main.py

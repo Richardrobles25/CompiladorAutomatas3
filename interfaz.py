@@ -10,10 +10,7 @@ from lexer    import lexer, CONTEXTOS_VALIDOS
 from sintactico import analizar, imprimir_ast
 from semantico  import compilar
 
-# ── Síntesis de voz (PowerShell + System.Speech) ─────────────────────────────
-# Se usa PowerShell en lugar de pyttsx3 porque pyttsx3 deja el motor COM de
-# Windows en mal estado al llamar init() varias veces en el mismo proceso.
-# PowerShell crea un proceso limpio cada vez → funciona siempre.
+# ── Síntesis de voz (PowerShell + System.Speech) ───────────────────
 import subprocess as _sp
 
 def _detectar_voz_es():
